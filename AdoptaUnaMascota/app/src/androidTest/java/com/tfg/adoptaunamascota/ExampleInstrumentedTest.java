@@ -1,4 +1,4 @@
-package com.example.adoptaunamascota;
+package com.tfg.adoptaunamascota;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.adoptaunamascota", appContext.getPackageName());
+        assertEquals("com.tfg.adoptaunamascota", appContext.getPackageName());
     }
 }

@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.adoptaunamascota'
+    namespace 'com.tfg.adoptaunamascota'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.adoptaunamascota"
+        applicationId "com.tfg.adoptaunamascota"
         minSdk 29
         targetSdk 33
         versionCode 1
