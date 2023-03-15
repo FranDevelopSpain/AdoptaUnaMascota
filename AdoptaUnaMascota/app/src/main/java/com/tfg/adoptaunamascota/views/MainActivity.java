@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.model.Login;
 import com.tfg.adoptaunamascota.viewmodels.LoginViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,33 +20,27 @@ public class MainActivity extends AppCompatActivity {
     TextView register;
     TextView login;
     Button loginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        EditText etEmail = mail;
-        etEmail.findViewById(R.id.Email);
-        EditText etPassword = password;
-        etPassword.findViewById(R.id.Password);
-        TextView tvRegister = register;
-        tvRegister.findViewById(R.id.Register);
-        TextView tvLogin = login;
-        tvLogin.findViewById(R.id.passwordForget);
-        Button btnLogin = loginButton;
-        btnLogin.findViewById(R.id.BtnRegister);
-        loginViewModel = new LoginViewModel();
-        mail = loginViewModel.setUserEmail(etEmail.getText().toString());
-        password = loginViewModel.setUserPassword(etPassword.getText().toString());
-        btnLogin.setOnClickListener(v -> {
+
+        mail = findViewById(R.id.Email);
+        password = findViewById(R.id.Password);
+        register = findViewById(R.id.Register);
+        login = findViewById(R.id.passwordForget);
+        loginButton = findViewById(R.id.BtnRegister);
+        loginViewModel = new LoginViewModel(new Login(mail.getText().toString(), password.getText().toString()));
+        mail = loginViewModel.setUserEmail(mail.getText().toString());
+        password = loginViewModel.setUserPassword(password.getText().toString());
+        loginButton.setOnClickListener(v -> {
             runMe(v, loginViewModel.getToastMessage());
-            loginViewModel.onLoginClicked();
         });
-
-
     }
-    @BindingAdapter({"toastMessage"})
+    @BindingAdapter({"mail"})
     public static void runMe(View view, String message) {
-        if (message != null)
+        if (message!= null)
             Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
