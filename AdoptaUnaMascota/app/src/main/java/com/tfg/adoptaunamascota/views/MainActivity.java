@@ -2,12 +2,11 @@ package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.viewmodels.LoginViewModel;
 
 public class MainActivity extends AppCompatActivity {
 

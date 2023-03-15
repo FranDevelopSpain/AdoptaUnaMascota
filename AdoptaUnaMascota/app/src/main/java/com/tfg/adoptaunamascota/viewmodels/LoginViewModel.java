@@ -27,11 +27,11 @@ public class LoginViewModel extends BaseObservable {
     }
 
     public void setUserEmail(String mail){
-        login.setUser(mail);
+        login.setMail(mail);
     }
     @Bindable
     public String getUserEmail(){
-        return login.getUser();
+        return login.getMail();
     }
     @Bindable
     public String getUserPassword(){
@@ -42,7 +42,12 @@ public class LoginViewModel extends BaseObservable {
         login.setPassword(password);
     }
     public LoginViewModel(){
-        login = new Login("","");
+        if (validateIfIsAdmin()||validateIfOtherUser()){
+            login = new Login("","");
+            onLoginClicked();
+        }else{
+            onLoginClicked();
+        }
     }
     public void onLoginClicked(){
         if(isInputDataValid())
@@ -52,5 +57,23 @@ public class LoginViewModel extends BaseObservable {
     }
     public boolean isInputDataValid(){
         return !TextUtils.isEmpty(getUserEmail()) && Patterns.EMAIL_ADDRESS.matcher(getUserEmail()).matches() && getUserPassword().length() > 5;
+    }
+    public boolean validateIfIsAdmin() {
+        boolean validar = false;
+        if (login.setPassword("admin")) {
+            validar = true;
+        }else if(login.setMail("admin@mail.com")){
+            validar = true;
+        }else{}
+        return validar;
+    }
+    public boolean validateIfOtherUser() {
+        boolean validar = false;
+        if (login.getMail().isEmpty()) {
+        }else if(login.getPassword().isEmpty()){
+        }else{
+            validar=true;
+        }
+        return validar;
     }
 }
