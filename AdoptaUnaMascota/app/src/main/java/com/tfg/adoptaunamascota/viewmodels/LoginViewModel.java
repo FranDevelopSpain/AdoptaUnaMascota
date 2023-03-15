@@ -2,6 +2,7 @@ package com.tfg.adoptaunamascota.viewmodels;
 
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.widget.EditText;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -26,8 +27,9 @@ public class LoginViewModel extends BaseObservable {
         this.toastMessage = toastMessage;
     }
 
-    public void setUserEmail(String mail){
+    public EditText setUserEmail(String mail){
         login.setMail(mail);
+        return null;
     }
     @Bindable
     public String getUserEmail(){
@@ -38,8 +40,9 @@ public class LoginViewModel extends BaseObservable {
         return login.getPassword();
     }
 
-    public void setUserPassword(String password){
+    public EditText setUserPassword(String password){
         login.setPassword(password);
+        return null;
     }
     public LoginViewModel(){
         if (validateIfIsAdmin()||validateIfOtherUser()){

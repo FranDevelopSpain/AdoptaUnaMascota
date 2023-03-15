@@ -31,7 +31,7 @@
                 android:src="@drawable/logo" />
 
             <EditText
-                android:id="@+id/inEmail"
+                android:id="@+id/Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
@@ -42,7 +42,7 @@
 
 
             <EditText
-                android:id="@+id/inPassword"
+                android:id="@+id/Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
@@ -77,6 +77,7 @@
 
 
             <Button
+                android:id="@+id/BtnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
