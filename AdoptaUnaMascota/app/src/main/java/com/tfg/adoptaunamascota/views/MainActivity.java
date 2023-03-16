@@ -9,10 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.adapter.Adapter;
 import com.tfg.adoptaunamascota.model.Login;
 import com.tfg.adoptaunamascota.viewmodels.LoginViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
 
     private LoginViewModel loginViewModel;
     EditText mail;
@@ -42,5 +43,21 @@ public class MainActivity extends AppCompatActivity {
     public static void runMe(View view, String message) {
         if (message!= null)
             Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void validateFields(){
+        if (mail.getText().toString().isEmpty() || password.getText().toString().isEmpty()){
+            Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

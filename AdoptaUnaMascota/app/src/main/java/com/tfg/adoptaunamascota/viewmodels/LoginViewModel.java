@@ -51,21 +51,17 @@ public class LoginViewModel extends BaseObservable {
         }
     }
     public boolean validateIfIsAdmin() {
-        boolean validar = false;
-        if (login.setPassword("admin")) {
-            validar = true;
-        }else if(login.setMail("admin@mail.com")){
+        boolean validar;
+        if (login.setPassword("admin")&&login.setMail("admin@mail.com")) {
             validar = true;
         }else{
-            validar=false;
+            validar = false;
         }
         return validar;
     }
     public boolean validateIfOtherUser() {
         boolean validar = false;
-        if (login.getMail().isEmpty()) {
-        }else if(login.getPassword().isEmpty()){
-        }else{
+        if (login.getMail().isEmpty() && login.getPassword().isEmpty()) {
             validar=true;
         }
         return validar;
