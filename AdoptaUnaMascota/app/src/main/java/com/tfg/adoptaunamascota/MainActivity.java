@@ -8,11 +8,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.tfg.adoptaunamascota.models.Login;
+import com.tfg.adoptaunamascota.services.LoginService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
 
     EditText mail;
-    EditText password;
+    EditText passwordEt;
     TextView register;
     TextView forgetPassword;
     Button loginButton;
@@ -21,26 +28,52 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mail = findViewById(R.id.Email);
-        password = findViewById(R.id.Password);
+        passwordEt = findViewById(R.id.Password);
         register = findViewById(R.id.Register);
         forgetPassword = findViewById(R.id.passwordForget);
         loginButton = findViewById(R.id.BtnRegister);
+
         loginButton.setOnClickListener(v -> {
             String email = mail.getText().toString();
-            String passwordEt = password.getText().toString();
-            if (email.isEmpty() || passwordEt.isEmpty()) {
-                // Si el correo electrónico o la contraseña están vacíos, mostrar un mensaje de error
-                Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show();
-            } else if (!email.equals("admin@mail.com") && !passwordEt.equals("admin")) {
-                // Si el correo electrónico y la contraseña son para el usuario admin, mostrar un mensaje de error
-                Toast.makeText(this, "Usuario o contraseña no válido", Toast.LENGTH_SHORT).show();
-            } else {
-                // En caso contrario, mostrar un mensaje de éxito y abrir la siguiente pantalla
-                Toast.makeText(this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, HomeActivity.class);
-                startActivity(intent);
-            }
+            String password = passwordEt.getText().toString();
+            Login login = new Login(email, password);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.adoptaunamascota.com")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            LoginService loginService = retrofit.create(LoginService.class);
+            Call<Login> call = loginService.login(login);
+
+            call.enqueue(new Callback<Login>() {
+                @Override
+                public void onResponse(Call<Login> call, Response<Login> response) {
+                    Login user = response.body();
+                    if (response.isSuccessful()) {
+                        // La petición fue exitosa
+                        if (user == null || !email.equals("admin@mail.com") || !password.equals("admin")) {
+                            // Las credenciales son válidas
+                            Toast.makeText(MainActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        } else {
+                            // Las credenciales son inválidas
+                            Toast.makeText(MainActivity.this, "Usuario o contraseña no válido", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // La petición falló
+                        Toast.makeText(MainActivity.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Login> call, Throwable t) {
+                    // La petición falló
+                    Toast.makeText(MainActivity.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
@@ -48,4 +81,10 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     public void onClick(View view, int position) {
 
     }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
 }
