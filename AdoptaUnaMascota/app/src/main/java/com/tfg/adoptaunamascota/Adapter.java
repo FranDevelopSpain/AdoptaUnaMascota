@@ -1,14 +1,10 @@
-package com.tfg.adoptaunamascota.adapter;
+package com.tfg.adoptaunamascota;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.model.Login;
-import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @NonNull
