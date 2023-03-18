@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
             String email = mail.getText().toString();
             String password = passwordEt.getText().toString();
             Login login = new Login(email, password);
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://api.adoptaunamascota.com")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -52,29 +51,49 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                 public void onResponse(Call<Login> call, Response<Login> response) {
                     Login user = response.body();
                     if (response.isSuccessful()) {
-                        // La petición fue exitosa
-                        if (user == null || !email.equals("admin@mail.com") || !password.equals("admin")) {
-                            // Las credenciales son válidas
-                            Toast.makeText(MainActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                        } else {
-                            // Las credenciales son inválidas
-                            Toast.makeText(MainActivity.this, "Usuario o contraseña no válido", Toast.LENGTH_SHORT).show();
+                        switch (response.code()) {
+                            case 200:
+                                // La petición fue exitosa
+                                if (user != null || !email.equals("admin@mail.com") || !password.equals("admin")){
+                                    // Las credenciales son válidas
+                                    Toast.makeText(MainActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                                else if(user != null || email.equals("admin@mail.com") && password.equals("admin")) {
+                                    Toast.makeText(MainActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
+                                    Intent intent2 = new Intent(MainActivity.this, HomeActivityAdmin.class);
+                                    startActivity(intent2);
+                                } else {
+                                    // Las credenciales son inválidas
+                                    Toast.makeText(MainActivity.this, "Usuario o contraseña no válido", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+
+                            case 401:
+                                if (user == null || email.isEmpty() || password.isEmpty()) {
+                                    Toast.makeText(MainActivity.this, "Usuario o contraseña no válido", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+
+                            default:
+                                Toast.makeText(MainActivity.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                                break;
                         }
-                    } else {
-                        // La petición falló
-                        Toast.makeText(MainActivity.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Ups estamos revisando el problema", Toast.LENGTH_SHORT).show();
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Login> call, Throwable t) {
-                    // La petición falló
-                    Toast.makeText(MainActivity.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+
                 }
             });
         });
+
     }
 
     @Override
@@ -86,5 +105,4 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
-
 }
