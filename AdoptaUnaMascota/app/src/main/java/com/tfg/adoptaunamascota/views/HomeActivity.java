@@ -1,14 +1,16 @@
-package com.tfg.adoptaunamascota;
+package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class HomeActivityAdmin extends AppCompatActivity {
+import com.tfg.adoptaunamascota.R;
+
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_admin);
+        setContentView(R.layout.activity_home);
     }
 }

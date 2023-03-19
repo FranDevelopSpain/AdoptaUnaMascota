@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".views.LoginActivity">
 
 
     <ImageView
@@ -65,9 +65,10 @@
 
     <Button
         android:id="@+id/BtnRegister"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
         android:backgroundTint="#8FA5D5"
         android:onClick="@{()-> viewModel.onLoginClicked()}"
         android:text="Iniciar sesion" />
