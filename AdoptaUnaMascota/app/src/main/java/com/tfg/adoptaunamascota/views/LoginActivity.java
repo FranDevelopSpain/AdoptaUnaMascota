@@ -10,14 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.tfg.adoptaunamascota.Adapter;
 import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.models.Admin;
-import com.tfg.adoptaunamascota.models.User;
 import com.tfg.adoptaunamascota.services.LoginService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -45,9 +40,23 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
             startActivity(intent);
         });
 
+        forgetPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RecoverPasswordActivity.class);
+            startActivity(intent);
+        });
+
         loginButton.setOnClickListener(v -> {
             String email = mail.getText().toString().trim();
             String password = passwordEt.getText().toString().trim();
+
+            if (mail.getText().toString().isEmpty() || passwordEt.getText().toString().isEmpty()) {
+                validateFills(email, password);
+            } else {
+                if (validateFills(email, password)) { // Si ambos campos tienen datos
+                    verifyIfLoggedAdmin();
+                    Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
+                }
+            }
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -59,61 +68,41 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             LoginService loginService = retrofit.create(LoginService.class);
-            Call<User> call = loginService.USER_CALL(email, password);
-            Call<Admin> call2 = loginService.ADMIN_CALL(email, password);
-            call.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        mail.getText().clear();
-                        passwordEt.getText().clear();
-                        Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    } else if (response.code() == 404) {
-                        Toast.makeText(LoginActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
-                    } else if (response.code() == 401) {
-                        Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-                }
-            });
-            call2.enqueue(new Callback<Admin>() {
-                @Override
-                public void onResponse(Call<Admin> call, Response<Admin> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        mail.getText().clear();
-                        passwordEt.getText().clear();
-                        Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
-                        startActivity(intent);
-                    } else if (response.code() == 404) {
-                        Toast.makeText(LoginActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
-                    } else if (response.code() == 401) {
-                        Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Admin> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-                }
-            });
         });
+    }
+    public boolean validateFills(String email, String password){
+        if (mail.getText().toString().isEmpty() && passwordEt.getText().toString().isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Rellene todos los campos", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (mail.getText().toString().isEmpty()){
+            Toast.makeText(LoginActivity.this, "Rellene el campo de email", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (passwordEt.getText().toString().isEmpty()){
+            Toast.makeText(LoginActivity.this, "Rellene el campo de contraseña", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public void verifyIfLoggedAdmin(){
+        if(mail.getText().toString().equals("admin@mail.com")&&passwordEt.getText().toString().equals("admin")){
+            Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
+            startActivity(intent);
+        }else if (!mail.getText().toString().equals("admin") && !passwordEt.getText().toString().equals("admin")){
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }else {
+            Toast.makeText(LoginActivity.this, "No se ha encontrado usuario", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onClick(View view, int position) {
 
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

@@ -2,6 +2,7 @@ package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -28,8 +29,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordET;
     EditText passwords2ET;
     Button registrarseBTN;
+    Button regresarBTN;
     CheckBox aceptoCB;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +45,14 @@ public class RegisterActivity extends AppCompatActivity {
         passwords2ET = findViewById(R.id.password2ET);
         aceptoCB = findViewById(R.id.aceptoCB);
         registrarseBTN = findViewById(R.id.registrarseBTN);
+        regresarBTN = findViewById(R.id.regresarBTN);
 
-        registrarseBTN.setOnClickListener(new View.OnClickListener(){
+        regresarBTN.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        registrarseBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nombre = nombreET.getText().toString().trim();
@@ -55,62 +64,45 @@ public class RegisterActivity extends AppCompatActivity {
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 httpClient.addInterceptor(logging);
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://adoptaunamascota.com/api/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                RegisterService registerService = retrofit.create(RegisterService.class);
-                Call<Register> call = registerService.USER_CALL_REGISTER(nombre, apellido, email, password, password2);
-
-                call.enqueue(new Callback<Register>() {
-                    @Override
-                    public void onResponse(Call<Register> call, Response<Register> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            nombreET.getText().clear();
-                            apellidosET.getText().clear();
-                            emailET.getText().clear();
-                            passwordET.getText().clear();
-                            passwords2ET.getText().clear();
-                            validateCheckbox(v);
-                            validateFields(v);
-                            Toast.makeText(RegisterActivity.this, "Se ha registrado con éxito", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Cumplimente los campos vacios", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(RegisterActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Register> call, Throwable t) {
-                        Toast.makeText(RegisterActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                validateFields(v);
+                validateCheckbox(v);
 
             }
         });
     }
-    public void regresar(View view){
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-    public void validateCheckbox(View view) {
-        if (aceptoCB.isChecked()) {
-            registrarseBTN.setEnabled(true);
-        } else {
-            registrarseBTN.setEnabled(false);
-            Toast.makeText(RegisterActivity.this, "Debe aceptar los términos de uso", Toast.LENGTH_SHORT).show();
-        }
-
-            }
     public void validateFields (View view){
-        if (nombreET.getText().toString().isEmpty() || apellidosET.getText().toString().isEmpty()
-                || emailET.getText().toString().isEmpty() || passwordET.getText().toString().isEmpty()
-                || passwords2ET.getText().toString().isEmpty()) {
+        if (nombreET.getText().toString().isEmpty() && apellidosET.getText().toString().isEmpty()
+                && emailET.getText().toString().isEmpty() && passwordET.getText().toString().isEmpty()
+                && passwords2ET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Debe rellenar todos los campos",
+                    Toast.LENGTH_SHORT).show();
+        } else if (nombreET.getText().toString().isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "Rellene el campo de nombre",
+                    Toast.LENGTH_SHORT).show();
+        } else if (apellidosET.getText().toString().isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "Rellene el campo de apellidos",
+                    Toast.LENGTH_SHORT).show();
+        } else if (emailET.getText().toString().isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "Rellene el campo de email",
+                    Toast.LENGTH_SHORT).show();
+        } else if (passwordET.getText().toString().isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "Rellene el campo de contraseña",
+                    Toast.LENGTH_SHORT).show();
+        } else if (passwordET.getText().toString().length() < 8 && passwords2ET.getText().toString().length() < 8
+                && passwordET.getText().equals(passwords2ET.getText())) {
+            Toast.makeText(RegisterActivity.this, "Las contraseñas no coinciden",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(RegisterActivity.this, "Registrado con éxito",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void validateCheckbox (View view){
+        if (aceptoCB.isChecked()) {
+            Toast.makeText(RegisterActivity.this, "Registrado con éxito",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(RegisterActivity.this, "Debe aceptar los términos y condiciones",
                     Toast.LENGTH_SHORT).show();
         }
     }
