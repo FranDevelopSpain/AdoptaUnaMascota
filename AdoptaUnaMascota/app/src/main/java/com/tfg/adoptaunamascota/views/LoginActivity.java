@@ -40,6 +40,14 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
         forgetPassword = findViewById(R.id.passwordForget);
         loginButton = findViewById(R.id.BtnRegister);
 
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,13 +118,6 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
 
     @Override
     public void onClick(View view, int position) {
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        
     }
 }

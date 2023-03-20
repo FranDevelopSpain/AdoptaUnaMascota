@@ -72,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity {
                             emailET.getText().clear();
                             passwordET.getText().clear();
                             passwords2ET.getText().clear();
+                            validateCheckbox(v);
+                            validateFields(v);
                             Toast.makeText(RegisterActivity.this, "Se ha registrado con éxito", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
@@ -90,5 +92,26 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void regresar(View view){
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+    public void validateCheckbox(View view) {
+        if (aceptoCB.isChecked()) {
+            registrarseBTN.setEnabled(true);
+        } else {
+            registrarseBTN.setEnabled(false);
+            Toast.makeText(RegisterActivity.this, "Debe aceptar los términos de uso", Toast.LENGTH_SHORT).show();
+        }
+
+            }
+    public void validateFields (View view){
+        if (nombreET.getText().toString().isEmpty() || apellidosET.getText().toString().isEmpty()
+                || emailET.getText().toString().isEmpty() || passwordET.getText().toString().isEmpty()
+                || passwords2ET.getText().toString().isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "Debe rellenar todos los campos",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }
