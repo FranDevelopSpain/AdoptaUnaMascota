@@ -1,11 +1,14 @@
 package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.tfg.adoptaunamascota.R;
 
 public class RecoverPasswordActivity extends AppCompatActivity {
@@ -17,15 +20,16 @@ public class RecoverPasswordActivity extends AppCompatActivity {
     Button regresarBTN;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recover_password);
-        emailET.findViewById(R.id.emailET);
-        passwordET.findViewById(R.id.passwordET);
-        passwords2ET.findViewById(R.id.password2ET);
-        enviar.findViewById(R.id.enviarBtn);
-        regresarBTN.findViewById(R.id.regresarBTN);
+        emailET = findViewById(R.id.emailET);
+        passwordET = findViewById(R.id.passwordET);
+        passwords2ET = findViewById(R.id.password2ET);
+        enviar = findViewById(R.id.enviarBtn);
+        regresarBTN = findViewById(R.id.regresarBTN);
 
         regresarBTN.setOnClickListener(v -> {
             Intent intent = new Intent(RecoverPasswordActivity.this, LoginActivity.class);
