@@ -110,6 +110,13 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
 
     @Override
     public void onClick(View view, int position) {
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

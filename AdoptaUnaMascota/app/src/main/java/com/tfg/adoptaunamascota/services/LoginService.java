@@ -24,12 +24,5 @@ public interface LoginService {
             @Field("mail") String mail,
             @Field("password") String password
     );
-    @FormUrlEncoded
-    @POST("/register")
-    Call<Register> REGISTER_CALL(
-    @Field("mail") String name,
-    @Field("mail") String mail,
-    @Field("password") String password
-    );
 
 }
