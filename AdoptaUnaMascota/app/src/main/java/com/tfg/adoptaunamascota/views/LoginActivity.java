@@ -40,84 +40,80 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
         forgetPassword = findViewById(R.id.passwordForget);
         loginButton = findViewById(R.id.BtnRegister);
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        register.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = mail.getText().toString().trim();
-                String password = passwordEt.getText().toString().trim();
+        loginButton.setOnClickListener(v -> {
+            String email = mail.getText().toString().trim();
+            String password = passwordEt.getText().toString().trim();
 
-                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                httpClient.addInterceptor(logging);
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            httpClient.addInterceptor(logging);
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://adoptaunamascota.com/api/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                LoginService loginService = retrofit.create(LoginService.class);
-                Call<User> call = loginService.USER_CALL(email, password);
-                Call<Admin> call2 = loginService.ADMIN_CALL(email, password);
-                call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            mail.getText().clear();
-                            passwordEt.getText().clear();
-                            Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        } else if (response.code() == 404) {
-                            Toast.makeText(LoginActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 401) {
-                            Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://adoptaunamascota.com/api/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            LoginService loginService = retrofit.create(LoginService.class);
+            Call<User> call = loginService.USER_CALL(email, password);
+            Call<Admin> call2 = loginService.ADMIN_CALL(email, password);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        mail.getText().clear();
+                        passwordEt.getText().clear();
+                        Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else if (response.code() == 404) {
+                        Toast.makeText(LoginActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 401) {
+                        Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                    } else {
                         Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                call2.enqueue(new Callback<Admin>() {
-                    @Override
-                    public void onResponse(Call<Admin> call, Response<Admin> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            mail.getText().clear();
-                            passwordEt.getText().clear();
-                            Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
-                        } else if (response.code() == 404) {
-                            Toast.makeText(LoginActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 401) {
-                            Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
 
-                        }
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<Admin> call, Throwable t) {
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                }
+            });
+            call2.enqueue(new Callback<Admin>() {
+                @Override
+                public void onResponse(Call<Admin> call, Response<Admin> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        mail.getText().clear();
+                        passwordEt.getText().clear();
+                        Toast.makeText(LoginActivity.this, "Se ha accedido con éxito", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
+                        startActivity(intent);
+                    } else if (response.code() == 404) {
+                        Toast.makeText(LoginActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 401) {
+                        Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                    } else {
                         Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+
                     }
-                });
-            }
+                }
+
+                @Override
+                public void onFailure(Call<Admin> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
     @Override
     public void onClick(View view, int position) {
-        
+
     }
 }
