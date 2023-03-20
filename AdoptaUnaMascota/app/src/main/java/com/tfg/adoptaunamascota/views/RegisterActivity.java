@@ -1,8 +1,6 @@
 package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,15 +9,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.models.Register;
-import com.tfg.adoptaunamascota.services.RegisterService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,7 +23,6 @@ public class RegisterActivity extends AppCompatActivity {
     Button regresarBTN;
     CheckBox aceptoCB;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,22 +42,19 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        registrarseBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nombre = nombreET.getText().toString().trim();
-                String apellido = apellidosET.getText().toString().trim();
-                String email = emailET.getText().toString().trim();
-                String password = passwordET.getText().toString().trim();
-                String password2 = passwords2ET.getText().toString().trim();
-                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                httpClient.addInterceptor(logging);
-                validateFields(v);
-                validateCheckbox(v);
+        registrarseBTN.setOnClickListener(v -> {
+            String nombre = nombreET.getText().toString().trim();
+            String apellido = apellidosET.getText().toString().trim();
+            String email = emailET.getText().toString().trim();
+            String password = passwordET.getText().toString().trim();
+            String password2 = passwords2ET.getText().toString().trim();
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            httpClient.addInterceptor(logging);
+            validateFields(v);
+            validateCheckbox(v);
 
-            }
         });
     }
     public void validateFields (View view){
