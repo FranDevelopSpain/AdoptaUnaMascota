@@ -66,9 +66,9 @@
 
         <CheckBox
             android:id="@+id/aceptoCB"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:text="he leido y acepto los terminos" />
 
         <Button
