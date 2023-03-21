@@ -75,8 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (passwordET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Rellene el campo de contraseña",
                     Toast.LENGTH_SHORT).show();
-        } else if (passwordET.getText().toString().length() < 8 && passwords2ET.getText().toString().length() < 8
-                && passwordET.getText().equals(passwords2ET.getText())) {
+        } else if (!passwordET.equals(passwords2ET)) {
             Toast.makeText(RegisterActivity.this, "Las contraseñas no coinciden",
                     Toast.LENGTH_SHORT).show();
         } else {
