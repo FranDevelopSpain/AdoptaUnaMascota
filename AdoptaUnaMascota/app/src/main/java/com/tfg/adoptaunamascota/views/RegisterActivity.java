@@ -2,26 +2,32 @@ package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.models.Register;
+import com.tfg.adoptaunamascota.models.User;
+import com.tfg.adoptaunamascota.services.RegisterService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.tfg.adoptaunamascota.consts.Constanst;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText nombreET;
-    EditText apellidosET;
-    EditText emailET;
-    EditText passwordET;
-    EditText passwords2ET;
-    Button registrarseBTN;
-    Button regresarBTN;
-    CheckBox aceptoCB;
+    private EditText nombreET, apellidosET, emailET, passwordET, passwords2ET;
+    private Button registrarseBTN, regresarBTN;
+    private CheckBox aceptoCB;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,53 +49,101 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         registrarseBTN.setOnClickListener(v -> {
-            String nombre = nombreET.getText().toString().trim();
-            String apellido = apellidosET.getText().toString().trim();
-            String email = emailET.getText().toString().trim();
-            String password = passwordET.getText().toString().trim();
-            String password2 = passwords2ET.getText().toString().trim();
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.addInterceptor(logging);
-            validateFields(v);
-            validateCheckbox(v);
-
+            if (validateFields() && validateCheckbox()) {
+                registerUser();
+            }
         });
     }
-    public void validateFields (View view){
-        if (nombreET.getText().toString().isEmpty() && apellidosET.getText().toString().isEmpty()
-                && emailET.getText().toString().isEmpty() && passwordET.getText().toString().isEmpty()
-                && passwords2ET.getText().toString().isEmpty()) {
+
+    private boolean validateFields() {
+        if (nombreET.getText().toString().isEmpty() || apellidosET.getText().toString().isEmpty()
+                || emailET.getText().toString().isEmpty() || passwordET.getText().toString().isEmpty()
+                || passwords2ET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Debe rellenar todos los campos",
                     Toast.LENGTH_SHORT).show();
+            return false;
         } else if (nombreET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Rellene el campo de nombre",
                     Toast.LENGTH_SHORT).show();
+            return false;
         } else if (apellidosET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Rellene el campo de apellidos",
                     Toast.LENGTH_SHORT).show();
+            return false;
         } else if (emailET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Rellene el campo de email",
                     Toast.LENGTH_SHORT).show();
+            return false;
         } else if (passwordET.getText().toString().isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Rellene el campo de contraseña",
                     Toast.LENGTH_SHORT).show();
-        } else if (!passwordET.equals(passwords2ET)) {
+            return false;
+        } else if (!passwordET.getText().toString().equals(passwords2ET.getText().toString())) {
             Toast.makeText(RegisterActivity.this, "Las contraseñas no coinciden",
                     Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(RegisterActivity.this, "Registrado con éxito",
-                    Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
     }
-    public void validateCheckbox (View view){
+
+    private boolean validateCheckbox() {
         if (aceptoCB.isChecked()) {
-            Toast.makeText(RegisterActivity.this, "Registrado con éxito",
-                    Toast.LENGTH_SHORT).show();
+            return true;
         } else {
             Toast.makeText(RegisterActivity.this, "Debe aceptar los términos y condiciones",
                     Toast.LENGTH_SHORT).show();
+            return false;
         }
+    }
+
+    private void registerUser() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constanst.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RegisterService service = retrofit.create(RegisterService.class);
+        Register userData = new Register(
+                nombreET.getText().toString(),
+                apellidosET.getText().toString(),
+                emailET.getText().toString(),
+                passwordET.getText().toString()
+        );
+        Call<User> call = service.USER_CALL_REGISTER(userData);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("mail", userData.getMail());
+                    editor.putString("password", userData.getPassword());
+                    editor.putString("name", userData.getName());
+                    editor.putString("surname", userData.getSurname());
+                    editor.apply();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Error: " + response.message(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, "Error de red: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
