@@ -2,6 +2,7 @@ package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.tfg.adoptaunamascota.Adapter;
 import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.services.LoginService;
+import com.tfg.adoptaunamascota.consts.Constanst;
+import com.tfg.adoptaunamascota.services.ApiService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -64,10 +66,10 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
             httpClient.addInterceptor(logging);
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://adoptaunamascota.com/api/")
+                    .baseUrl(Constanst.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            LoginService loginService = retrofit.create(LoginService.class);
+            ApiService apiService = retrofit.create(ApiService.class);
         });
     }
     public boolean validateFills(String email, String password){
@@ -84,14 +86,18 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
             return true;
         }
     }
-    public void verifyIfLoggedAdmin(){
-        if(mail.getText().toString().equals("admin@mail.com")&&passwordEt.getText().toString().equals("admin")){
+    public void verifyIfLoggedAdmin() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+        String savedEmail = sharedPreferences.getString("mail", "");
+        String savedPassword = sharedPreferences.getString("password", "");
+
+        if (mail.getText().toString().equals("admin@mail.com") && passwordEt.getText().toString().equals("admin")) {
             Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
             startActivity(intent);
-        }else if (!mail.getText().toString().equals("admin") && !passwordEt.getText().toString().equals("admin")){
+        } else if (mail.getText().toString().equals(savedEmail) && passwordEt.getText().toString().equals(savedPassword)) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
-        }else {
+        } else {
             Toast.makeText(LoginActivity.this, "No se ha encontrado usuario", Toast.LENGTH_SHORT).show();
         }
     }

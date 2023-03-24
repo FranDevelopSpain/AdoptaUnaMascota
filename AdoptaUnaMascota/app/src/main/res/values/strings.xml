@@ -8,4 +8,6 @@
     <string name="repita_contrase_a">Repita Contraseña</string>
     <string name="registrarse">Registrarse</string>
     <string name="he_leido_y_acepto_los_terminos">He leido y acepto los terminos</string>
+    <string name="navigation_drawer_open">Abrir menú</string>
+    <string name="navigation_drawer_close">Cerrar menú</string>
 </resources>
