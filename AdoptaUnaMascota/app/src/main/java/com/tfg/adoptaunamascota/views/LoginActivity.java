@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
     public void loginUser(String email, String password) {
         String hashedPassword = hashPassword(password);
 
-        if (email.equals("admin@mail.com") && hashedPassword.equals("admin")) {
+        if (email.equals("admin@mail.com") && password.equals("admin")) {
             Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
             startActivity(intent);
         } else {
