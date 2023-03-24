@@ -9,18 +9,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.models.Register;
-import com.tfg.adoptaunamascota.models.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
-import com.tfg.adoptaunamascota.services.ApiClient;
-import com.tfg.adoptaunamascota.services.ApiService;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class RegisterActivity extends AppCompatActivity {
 
