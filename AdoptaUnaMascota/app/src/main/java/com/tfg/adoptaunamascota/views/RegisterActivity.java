@@ -1,6 +1,8 @@
 package com.tfg.adoptaunamascota.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,16 +13,13 @@ import android.widget.Toast;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.Register;
 import com.tfg.adoptaunamascota.models.User;
-import com.tfg.adoptaunamascota.services.RegisterService;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import com.tfg.adoptaunamascota.consts.Constanst;
+import com.tfg.adoptaunamascota.services.ApiClient;
+import com.tfg.adoptaunamascota.services.ApiService;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -97,29 +96,21 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constanst.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RegisterService service = retrofit.create(RegisterService.class);
+        Retrofit retrofit = ApiClient.getClient(Constanst.BASE_URL);
+        ApiService service = retrofit.create(ApiService.class);
         Register userData = new Register(
                 nombreET.getText().toString(),
                 apellidosET.getText().toString(),
                 emailET.getText().toString(),
                 passwordET.getText().toString()
         );
-        Call<User> call = service.USER_CALL_REGISTER(userData);
+        Call<User> call = service.USER_CALL_REGISTER(
+                nombreET.getText().toString(),
+                apellidosET.getText().toString(),
+                emailET.getText().toString(),
+                passwordET.getText().toString()
+        );
 
         call.enqueue(new Callback<User>() {
             @Override

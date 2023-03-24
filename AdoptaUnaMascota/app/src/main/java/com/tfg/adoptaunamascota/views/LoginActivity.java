@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.tfg.adoptaunamascota.Adapter;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.consts.Constanst;
-import com.tfg.adoptaunamascota.services.LoginService;
+import com.tfg.adoptaunamascota.services.ApiService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
                     .baseUrl(Constanst.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            LoginService loginService = retrofit.create(LoginService.class);
+            ApiService apiService = retrofit.create(ApiService.class);
         });
     }
     public boolean validateFills(String email, String password){
