@@ -14,15 +14,17 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/login")
     Call<User> USER_CALL(
-        @Field("mail") String mail,
-        @Field("password") String password
+            @Field("mail") String mail,
+            @Field("password") String password
     );
+
     @FormUrlEncoded
     @POST("/login")
     Call<Admin> ADMIN_CALL(
             @Field("mail") String mail,
             @Field("password") String password
     );
+
     @FormUrlEncoded
     @POST("/register")
     Call<User> USER_CALL_REGISTER(
@@ -35,6 +37,7 @@ public interface ApiService {
     @GET("/register/users")
     Call<Register> REGISTER_CALL_USERS(
             Register userData);
+
     @GET("/register/users/passwords")
     Call<Register> REGISTER_CALL_USERS_PASSWORD(
             Register userData

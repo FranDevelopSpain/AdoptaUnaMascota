@@ -59,6 +59,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
+            android:inputType="textPassword"
             android:hint="contraseña" />
 
         <EditText
@@ -68,6 +69,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
+            android:inputType="textPassword"
             android:hint="repita contraseña" />
 
                 <CheckBox
