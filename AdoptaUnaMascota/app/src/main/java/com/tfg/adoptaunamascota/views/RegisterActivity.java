@@ -1,8 +1,5 @@
 package com.tfg.adoptaunamascota.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,16 +7,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.models.Register;
-import com.tfg.adoptaunamascota.models.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import com.tfg.adoptaunamascota.consts.Constanst;
-import com.tfg.adoptaunamascota.services.ApiClient;
-import com.tfg.adoptaunamascota.services.ApiService;
+import com.tfg.adoptaunamascota.repository.UserRepository;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -27,11 +21,15 @@ public class RegisterActivity extends AppCompatActivity {
     private Button registrarseBTN, regresarBTN;
     private CheckBox aceptoCB;
     private SharedPreferences sharedPreferences;
+    private UserRepository userRepository;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        userRepository = new UserRepository(this);
 
         apellidosET = findViewById(R.id.apellidosET);
         nombreET = findViewById(R.id.nombreET);
@@ -96,45 +94,29 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
-        Retrofit retrofit = ApiClient.getClient(Constanst.BASE_URL);
-        ApiService service = retrofit.create(ApiService.class);
-        Register userData = new Register(
-                nombreET.getText().toString(),
-                apellidosET.getText().toString(),
+        String password = passwordET.getText().toString();
+        String hashedPassword = hashPassword(password);
+        userRepository.registerUser(
                 emailET.getText().toString(),
-                passwordET.getText().toString()
-        );
-        Call<User> call = service.USER_CALL_REGISTER(
+                hashedPassword,
                 nombreET.getText().toString(),
-                apellidosET.getText().toString(),
-                emailET.getText().toString(),
-                passwordET.getText().toString()
+                apellidosET.getText().toString()
         );
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("mail", userData.getMail());
-                    editor.putString("password", userData.getPassword());
-                    editor.putString("name", userData.getName());
-                    editor.putString("surname", userData.getSurname());
-                    editor.apply();
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Error: " + response.message(),
-                            Toast.LENGTH_SHORT).show();
-                }
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+    public String hashPassword(String password) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder stringBuilder = new StringBuilder();
+            for (byte hashByte : hashBytes) {
+                stringBuilder.append(String.format("%02x", hashByte));
             }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Error de red: " + t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+            return stringBuilder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
