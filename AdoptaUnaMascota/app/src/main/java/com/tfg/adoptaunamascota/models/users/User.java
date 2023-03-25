@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.models;
+package com.tfg.adoptaunamascota.models.users;
 
 public class User {
     private String mail;

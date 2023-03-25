@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota;
+package com.tfg.adoptaunamascota.adapters;
 
 import android.view.View;
 import android.view.ViewGroup;

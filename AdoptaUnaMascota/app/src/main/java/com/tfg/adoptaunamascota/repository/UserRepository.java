@@ -2,7 +2,7 @@ package com.tfg.adoptaunamascota.repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.tfg.adoptaunamascota.models.User;
+import com.tfg.adoptaunamascota.models.users.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 

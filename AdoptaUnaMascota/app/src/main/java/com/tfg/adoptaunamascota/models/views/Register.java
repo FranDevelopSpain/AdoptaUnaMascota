@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.models;
+package com.tfg.adoptaunamascota.models.views;
 
 public class Register {
 
