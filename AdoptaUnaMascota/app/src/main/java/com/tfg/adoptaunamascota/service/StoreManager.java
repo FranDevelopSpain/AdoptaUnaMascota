@@ -16,4 +16,7 @@ public class StoreManager {
                 .build();
         apiService = retrofit.create(ApiService.class);
     }
+    public ApiService getApiService() {
+        return apiService;
+    }
 }

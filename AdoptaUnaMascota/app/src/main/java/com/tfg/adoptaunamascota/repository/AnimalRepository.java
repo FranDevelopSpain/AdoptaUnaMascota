@@ -3,12 +3,15 @@ package com.tfg.adoptaunamascota.repository;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.tfg.adoptaunamascota.service.ApiService;
+import com.tfg.adoptaunamascota.service.StoreManager;
+
 public class AnimalRepository {
-    private static final  String ANIMALS = "animals";
-    private SharedPreferences sharedPreferences;
+    private ApiService apiService;
 
     public AnimalRepository(Context context){
-        sharedPreferences = context.getSharedPreferences(ANIMALS, Context.MODE_PRIVATE);
+        StoreManager storeManager = new StoreManager(context);
+        apiService = storeManager.getApiService();
     }
-
+    // Agrega métodos para realizar operaciones CRUD en animales utilizando
 }
