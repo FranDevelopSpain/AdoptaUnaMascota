@@ -14,10 +14,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animals_management);
-        animalRepository = new AnimalRepository(this);
+        animalRepository = new AnimalRepository(this, "http://192.168.43.1:300/");
 
-        // Aquí puedes agregar botones y funciones para realizar operaciones CRUD
-        // en usuarios y animales utilizando los métodos proporcionados por
-        // AnimalRepository.
     }
 }

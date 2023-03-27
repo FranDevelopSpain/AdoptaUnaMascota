@@ -29,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        userRepository = new UserRepository(this);
+        userRepository = new UserRepository(this, "http://192.168.43.1:300/");
 
         apellidosET = findViewById(R.id.apellidosET);
         nombreET = findViewById(R.id.nombreET);

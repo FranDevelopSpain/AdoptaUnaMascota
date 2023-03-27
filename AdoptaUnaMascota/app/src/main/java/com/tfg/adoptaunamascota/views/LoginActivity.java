@@ -16,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class LoginActivity extends AppCompatActivity implements Adapter.ItemClickListener {
+public class LoginActivity extends AppCompatActivity {
 
-    EditText mail;
+    EditText email;
     EditText passwordEt;
     TextView register;
     TextView forgetPassword;
@@ -30,9 +30,8 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userRepository = new UserRepository(this);
-
-        mail = findViewById(R.id.Email);
+        userRepository = new UserRepository(this, "http://192.168.43.1:300/");
+        email = findViewById(R.id.Email);
         passwordEt = findViewById(R.id.Password);
         register = findViewById(R.id.Register);
         forgetPassword = findViewById(R.id.passwordForget);
@@ -49,11 +48,11 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
         });
 
         loginButton.setOnClickListener(v -> {
-            String email = mail.getText().toString().trim();
+            String emailInput = email.getText().toString().trim();
             String password = passwordEt.getText().toString().trim();
 
-            if (validateFills(email, password)) {
-                loginUser(email, password);
+            if (validateFills(emailInput, password)) {
+                loginUser(emailInput, password);
             }
         });
     }
@@ -104,9 +103,6 @@ public class LoginActivity extends AppCompatActivity implements Adapter.ItemClic
             e.printStackTrace();
             return null;
         }
-    }
-    @Override
-    public void onClick(View view, int position) {
     }
 
     @Override

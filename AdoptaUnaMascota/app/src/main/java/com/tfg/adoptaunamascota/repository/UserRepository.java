@@ -4,18 +4,24 @@ import android.content.Context;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.service.ApiService;
 import com.tfg.adoptaunamascota.service.StoreManager;
-
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserRepository {
     private ApiService apiService;
+    private User user;
 
-    public UserRepository(Context context) {
-        StoreManager storeManager = new StoreManager(context);
+    public UserRepository(Context context, String baseUrl) {
+        StoreManager storeManager = new StoreManager(context, baseUrl);
         apiService = storeManager.getApiService();
+    }
+
+
+    public User getUser(String email, String password) {
+        // Implementar la lógica para obtener el usuario en base al email y password
+        // desde SharedPreferences o la API
+        return user;
     }
 
     public void registerUser(String mail, String password, String name, String surname) {
