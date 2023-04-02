@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.repository.UserRepository;
+import com.tfg.adoptaunamascota.service.ApiService;
+import com.tfg.adoptaunamascota.service.StoreManager;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -20,17 +22,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText nombreET, apellidosET, emailET, passwordET, passwords2ET;
     private Button registrarseBTN, regresarBTN;
     private CheckBox aceptoCB;
-    private SharedPreferences sharedPreferences;
     private UserRepository userRepository;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        userRepository = new UserRepository(this, "http://192.168.43.1:300/");
-
         apellidosET = findViewById(R.id.apellidosET);
         nombreET = findViewById(R.id.nombreET);
         emailET = findViewById(R.id.emailET);
@@ -39,6 +36,10 @@ public class RegisterActivity extends AppCompatActivity {
         aceptoCB = findViewById(R.id.aceptoCB);
         registrarseBTN = findViewById(R.id.registrarseBTN);
         regresarBTN = findViewById(R.id.regresarBTN);
+
+        String baseUrl = "http://localhost:8080"; // actualizar con la URL base de su API
+
+        userRepository = new UserRepository(this, baseUrl);
 
         regresarBTN.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -95,28 +96,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerUser() {
         String password = passwordET.getText().toString();
-        String hashedPassword = hashPassword(password);
         userRepository.registerUser(
                 emailET.getText().toString(),
-                hashedPassword,
+                password,
                 nombreET.getText().toString(),
                 apellidosET.getText().toString()
         );
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }
-    public String hashPassword(String password) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder stringBuilder = new StringBuilder();
-            for (byte hashByte : hashBytes) {
-                stringBuilder.append(String.format("%02x", hashByte));
-            }
-            return stringBuilder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 }
