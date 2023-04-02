@@ -20,7 +20,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registro"
+            android:text="@string/registro"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"/>
@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:hint="nombre" />
+            android:hint="@string/nombre" />
 
         <EditText
             android:id="@+id/apellidosET"
@@ -41,7 +41,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:hint="apellidos" />
+            android:hint="@string/apellidos" />
 
         <EditText
             android:id="@+id/emailET"
@@ -50,7 +50,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:hint="email" />
+            android:hint="@string/email" />
 
         <EditText
             android:id="@+id/passwordET"
@@ -60,7 +60,7 @@
             android:layout_marginTop="25dp"
             android:gravity="center"
             android:inputType="textPassword"
-            android:hint="contraseña" />
+            android:hint="@string/contrase_a" />
 
         <EditText
             android:id="@+id/password2ET"
@@ -70,16 +70,16 @@
             android:layout_marginTop="25dp"
             android:gravity="center"
             android:inputType="textPassword"
-            android:hint="repita contraseña" />
+            android:hint="@string/repita_contrase_a" />
 
                 <CheckBox
                     android:id="@+id/aceptoCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="35pt"
+                    android:layout_marginStart="35pt"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="He leido y acepto los terminos" />
+                    android:text="@string/he_leido_y_acepto_los_terminos" />
 
                 <Button
             android:id="@+id/registrarseBTN"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="registrarse"
+            android:text="@string/registrarse"
             android:textColorHint="@color/white"
             android:backgroundTint="#8FA5D5"/>
         <Button
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:text="Volver pantalla inicio"
+            android:text="@string/volver_pantalla_inicio"
             android:textColorHint="@color/white"
             android:backgroundTint="#8FA5D5"/>
         </LinearLayout>
