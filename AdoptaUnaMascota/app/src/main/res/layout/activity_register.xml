@@ -31,34 +31,37 @@
         <EditText
             android:id="@+id/nombreET"
             android:layout_width="375dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:hint="@string/nombre" />
+            android:hint="@string/nombre"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/apellidosET"
             android:layout_width="375dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:hint="@string/apellidos" />
+            android:hint="@string/apellidos"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/emailET"
             android:layout_width="375dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:hint="@string/email" />
+            android:hint="@string/email"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/passwordET"
             android:layout_width="375dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
@@ -68,7 +71,7 @@
         <EditText
             android:id="@+id/password2ET"
             android:layout_width="375dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
