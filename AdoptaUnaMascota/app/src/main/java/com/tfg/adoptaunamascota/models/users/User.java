@@ -1,6 +1,7 @@
 package com.tfg.adoptaunamascota.models.users;
 
 public class User {
+    private String id;
     private String mail;
     private String password;
     private String name;
@@ -43,5 +44,13 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

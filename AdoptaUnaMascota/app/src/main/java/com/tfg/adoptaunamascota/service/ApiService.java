@@ -15,14 +15,11 @@ public interface ApiService {
 
     //Creamos la llamada a la API para obtener el CRUD de usuarios
 
-    @GET("api/v1/users/")
-    Call<List<User>>getAllUsers();
-    @POST("api/v1/users")
-    Call<Void> createUser(@Body User user);
-    @PUT("api/v1/users/{id}")
-    Call<Void> updateUser(@Path("id") int id, @Body User user);
-    @DELETE("api/v1/users/{id}")
-    Call<Void> deleteUser(@Path("id") int id);
+    @GET("/api/users/")
+    Call<List<User>> getUsers();
+
+    @POST("/api/users/")
+    Call<User> createUser(@Body User user);
 
     //Creamos la llamada a la API para obtener el CRUD de animales
 

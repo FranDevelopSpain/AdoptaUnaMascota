@@ -8,14 +8,15 @@ public class StoreManager {
 
     private ApiService apiService;
 
-    public StoreManager(Context context) {
+    public StoreManager(Context context, String baseUrl) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.1:300/")
+                .baseUrl("http://localhost:8080")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        apiService = retrofit.create(ApiService.class);
+        ApiService userService = retrofit.create(ApiService.class);
     }
+
     public ApiService getApiService() {
         return apiService;
     }
