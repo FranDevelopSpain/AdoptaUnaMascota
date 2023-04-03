@@ -5,87 +5,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".views.RegisterActivity">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="155dp"
-                    android:src="@drawable/logo" />
-                <TextView
-                    android:layout_marginTop="25dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/registro"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold"/>
 
-                <EditText
-                    android:id="@+id/nombreET"
-                    android:layout_width="375dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:hint="@string/nombre" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/apellidosET"
-                    android:layout_width="375dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:hint="@string/apellidos" />
-
-                <EditText
-                    android:id="@+id/emailET"
-                    android:layout_width="375dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:hint="@string/email" />
-
-                <EditText
-                    android:id="@+id/passwordET"
-                    android:layout_width="375dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:hint="@string/contrase_a" />
-
-                <EditText
-                    android:id="@+id/password2ET"
-                    android:layout_width="375dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:hint="@string/repita_contrase_a" />
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="155dp"
             android:src="@drawable/logo" />
+
         <TextView
-            android:layout_marginTop="25dp"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
             android:text="@string/registro"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/nombreET"
@@ -121,8 +62,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:inputType="textPassword"
-            android:hint="@string/contrase_a" />
+            android:hint="@string/contrase_a"
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/password2ET"
@@ -131,53 +72,37 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:inputType="textPassword"
-            android:hint="@string/repita_contrase_a" />
+            android:hint="@string/repita_contrase_a"
+            android:inputType="textPassword" />
 
-                <CheckBox
-                    android:id="@+id/aceptoCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="35pt"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/he_leido_y_acepto_los_terminos" />
+        <CheckBox
+            android:id="@+id/aceptoCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35pt"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/he_leido_y_acepto_los_terminos" />
 
-                <Button
-                    android:id="@+id/registrarseBTN"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:text="@string/registrarse"
-                    android:textColorHint="@color/white"
-                    android:backgroundTint="#8FA5D5"/>
-                <Button
-                    android:id="@+id/regresarBTN"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_gravity="center"
-                    android:text="@string/volver_pantalla_inicio"
-                    android:textColorHint="@color/white"
-                    android:backgroundTint="#8FA5D5"/>
+        <Button
             android:id="@+id/registrarseBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#8FA5D5"
             android:text="@string/registrarse"
-            android:textColorHint="@color/white"
-            android:backgroundTint="#8FA5D5"/>
+            android:textColorHint="@color/white" />
+
         <Button
             android:id="@+id/regresarBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#8FA5D5"
             android:text="@string/volver_pantalla_inicio"
-            android:textColorHint="@color/white"
-            android:backgroundTint="#8FA5D5"/>
-        </LinearLayout>
+            android:textColorHint="@color/white" />
+    </LinearLayout>
 
 </ScrollView>
