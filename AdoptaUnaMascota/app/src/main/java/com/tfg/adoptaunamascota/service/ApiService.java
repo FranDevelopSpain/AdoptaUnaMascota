@@ -4,24 +4,23 @@ import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.users.User;
 import java.util.List;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
-    //Creamos la llamada a la API para obtener el CRUD de usuarios
+    @GET("/api/users/login")
+    Call<User> getUserByEmailAndPassword(@Query("email") String email, @Query("hashedPassword") String hashedPassword);
 
-    @GET("/api/users/")
-    Call<List<User>> getUsers();
 
     @POST("/api/users/")
     Call<User> createUser(@Body User user);
-
-    //Creamos la llamada a la API para obtener el CRUD de animales
 
     @GET("animals/{id}")
     Call<List<Animal>>getAllAnimals();

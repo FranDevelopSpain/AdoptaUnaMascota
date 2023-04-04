@@ -76,4 +76,5 @@
             android:backgroundTint="#8FA5D5"
             android:onClick="@{()-> viewModel.onLoginClicked()}"
             android:text="Iniciar sesion" />
+    </LinearLayout>
 </ScrollView>

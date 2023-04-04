@@ -3,6 +3,8 @@ package com.tfg.adoptaunamascota.repository;
 import android.content.Context;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.service.ApiService;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,28 +26,19 @@ public class UserRepository {
         apiService = retrofit.create(ApiService.class);
     }
 
-    public User getUser(String email, String password) {
-        // Implementar la lógica para obtener el usuario en base al email y password
-        // desde SharedPreferences o la API
-        return user;
+    public void getUserByEmailAndPassword(String email, String hashedPassword, Callback<User> callback) {
+        Call<User> call = apiService.getUserByEmailAndPassword(email, hashedPassword);
+        call.enqueue(callback);
     }
 
-    public void registerUser(String mail, String password, String name, String surname) {
-        String hashedPassword = hashPassword(password);
-        User user = new User(mail, hashedPassword, name, surname);
+
+    public void registerUser(User user, Callback<User> callback) {
+        String hashedPassword = hashPassword(user.getPassword());
+        user.setPassword(hashedPassword);
         Call<User> call = apiService.createUser(user);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                // hacer algo con la respuesta
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                // manejar el error
-            }
-        });
+        call.enqueue(callback);
     }
+
 
     private String hashPassword(String password) {
         try {

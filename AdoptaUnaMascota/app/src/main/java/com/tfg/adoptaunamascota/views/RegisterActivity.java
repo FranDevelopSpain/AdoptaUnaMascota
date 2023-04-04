@@ -1,7 +1,6 @@
 package com.tfg.adoptaunamascota.views;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -9,13 +8,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
-import com.tfg.adoptaunamascota.service.ApiService;
-import com.tfg.adoptaunamascota.service.StoreManager;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -37,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         registrarseBTN = findViewById(R.id.registrarseBTN);
         regresarBTN = findViewById(R.id.regresarBTN);
 
-        String baseUrl = "http://localhost:8080"; // actualizar con la URL base de su API
+        String baseUrl = "http://10.0.2.2:8080";
 
         userRepository = new UserRepository(this, baseUrl);
 
@@ -96,14 +93,36 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerUser() {
         String password = passwordET.getText().toString();
-        userRepository.registerUser(
+        User user = new User(
                 emailET.getText().toString(),
                 password,
                 nombreET.getText().toString(),
                 apellidosET.getText().toString()
         );
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
+        userRepository.registerUser(user, new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User registeredUser = response.body();
+                    runOnUiThread(() -> {
+                        Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        intent.putExtra("email", registeredUser.getEmail());
+                        intent.putExtra("password", password);
+                        startActivity(intent);
+                    });
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(RegisterActivity.this, "Error en el registro", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                // manejar el error
+            }
+        });
     }
 
 }

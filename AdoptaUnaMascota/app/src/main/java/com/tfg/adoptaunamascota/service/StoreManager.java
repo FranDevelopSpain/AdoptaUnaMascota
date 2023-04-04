@@ -11,10 +11,10 @@ public class StoreManager {
     public StoreManager(Context context, String baseUrl) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl("http://10.0.2.2:8080")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        ApiService userService = retrofit.create(ApiService.class);
+        apiService = retrofit.create(ApiService.class);
     }
 
     public ApiService getApiService() {
