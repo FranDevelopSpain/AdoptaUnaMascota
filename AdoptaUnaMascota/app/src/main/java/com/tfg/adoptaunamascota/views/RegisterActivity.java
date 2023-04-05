@@ -6,10 +6,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
+import com.tfg.adoptaunamascota.security.PasswordUtil;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,18 +98,19 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordET.getText().toString();
         User user = new User(
                 emailET.getText().toString(),
-                password,
+                password, // Cambiado a password
                 nombreET.getText().toString(),
                 apellidosET.getText().toString()
         );
-        userRepository.registerUser(user, new Callback<User>() {
+        userRepository.registerUser(user, new Callback<User>(){
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
                     User registeredUser = response.body();
                     runOnUiThread(() -> {
                         Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        assert registeredUser != null;
                         intent.putExtra("email", registeredUser.getEmail());
                         intent.putExtra("password", password);
                         startActivity(intent);
@@ -119,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 // manejar el error
             }
         });

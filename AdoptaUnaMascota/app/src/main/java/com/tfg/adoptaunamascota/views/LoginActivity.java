@@ -1,5 +1,5 @@
 package com.tfg.adoptaunamascota.views;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -7,8 +7,6 @@ import retrofit2.Response;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
-import com.tfg.adoptaunamascota.security.PasswordUtil;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -53,14 +51,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String rawPassword = passwordEditText.getText().toString();
-            String hashedPassword = PasswordUtil.hashPassword(rawPassword);
+            validateFills(email, rawPassword);
 
-
-            Log.d("LoginActivity", "Iniciando sesión con email: " + email + " y contraseña: " + rawPassword);
-
-            userRepository.getUserByEmailAndPassword(email, hashedPassword, new Callback<User>()  {
+            userRepository.getUserByEmailAndPassword(email, rawPassword, new Callback<User>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
+                public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                     if (response.isSuccessful()) {
                         User user = response.body();
                         if (user != null && user.getId() != null) {
@@ -73,21 +68,16 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             Log.d("LoginActivity", "Usuario o ID nulos.");
                             runOnUiThread(() -> {
-                                validateFills(email, rawPassword);
                             });
                         }
                     } else {
                         Log.d("LoginActivity", "Respuesta no exitosa: " + response.code());
-                        runOnUiThread(() -> {
-                            Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                        });
+                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show());
                     }
                 }
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
-                    });
+                public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                    runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show());
                 }
             });
         });
@@ -96,28 +86,23 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        long userId = sharedPreferences.getLong("userId", -1);
+        long userId = sharedPreferences.getLong("userId", 0);
         Log.d("LoginActivity", "UserId obtenido de SharedPreferences: " + userId);
 
-        if (userId != -1) {
+        if (userId >0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         }
     }
 
-    public boolean validateFills(String email, String password) {
-        if (email.isEmpty() && password.isEmpty()) {
+    public void validateFills(String email, String rawPassword) {
+        if (email.isEmpty() && rawPassword.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Rellene todos los campos", Toast.LENGTH_SHORT).show();
-            return false;
         } else if (email.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Rellene el campo de email", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (password.isEmpty()) {
+        } else if (rawPassword.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Rellene el campo de contraseña", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
         }
     }
 
@@ -125,10 +110,9 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong("userId", userId);
-        editor.commit(); // Cambiar apply() por commit() para asegurar que la escritura se completa antes de continuar
+        editor.commit();
 
-        // Verificación adicional para depurar
-        long savedUserId = sharedPreferences.getLong("userId", -1);
+        long savedUserId = sharedPreferences.getLong("userId", 0);
         if (savedUserId == userId) {
             Log.d("LoginActivity", "UserId guardado correctamente: " + userId);
         } else {
