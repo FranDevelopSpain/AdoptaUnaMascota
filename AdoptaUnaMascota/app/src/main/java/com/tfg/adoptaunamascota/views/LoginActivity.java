@@ -61,23 +61,24 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null && user.getId() != null) {
                             Log.d("LoginActivity", "User autenticado con éxito, id: " + user.getId());
                             saveUserId(user.getId());
-                            runOnUiThread(() -> {
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                            });
+                            if (user.getEmail().equals("admin") && user.getPassword().equals("admin")) {
+                                user.setIsAdmin(true);
+                            }
+                            Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                            intent.putExtra("user", user);
+                            startActivity(intent);
                         } else {
                             Log.d("LoginActivity", "Usuario o ID nulos.");
-                            runOnUiThread(() -> {
-                            });
                         }
                     } else {
                         Log.d("LoginActivity", "Respuesta no exitosa: " + response.code());
-                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                     }
                 }
+
                 @Override
                 public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                    runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show());
+                    Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
                 }
             });
         });
