@@ -37,6 +37,15 @@
             android:gravity="center"
             android:text="Cargando"
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/bienvenida_text"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text=""
+            android:textSize="20sp" />
     </LinearLayout>
 
 </ScrollView>

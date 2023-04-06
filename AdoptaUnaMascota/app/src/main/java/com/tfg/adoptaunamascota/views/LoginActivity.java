@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
                             intent.putExtra("user", user);
+                            intent.putExtra("userName", user.getName());
                             startActivity(intent);
                         } else {
                             Log.d("LoginActivity", "Usuario o ID nulos.");

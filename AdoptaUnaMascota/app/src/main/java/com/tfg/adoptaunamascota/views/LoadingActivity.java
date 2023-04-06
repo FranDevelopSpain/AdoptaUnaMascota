@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
@@ -16,13 +17,18 @@ public class LoadingActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private int progressStatus = 0;
     private User user;
+    private String userName;
+    private TextView bienvenidaText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         progressBar = findViewById(R.id.progressBar);
+        bienvenidaText = findViewById(R.id.bienvenida_text);
         user = (User) getIntent().getSerializableExtra("user");
+        userName = getIntent().getStringExtra("userName");
+        bienvenidaText.setText("Bienvenido, " + userName);
 
         new Thread(() -> {
             while (progressStatus < 100) {
