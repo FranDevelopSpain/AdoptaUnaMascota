@@ -53,37 +53,74 @@ public class LoginActivity extends AppCompatActivity {
             String rawPassword = passwordEditText.getText().toString();
             validateFills(email, rawPassword);
 
-            userRepository.getUserByEmailAndPassword(email, rawPassword, new Callback<User>() {
-                @Override
-                public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                    if (response.isSuccessful()) {
-                        User user = response.body();
-                        if (user != null && user.getId() != null) {
-                            Log.d("LoginActivity", "User autenticado con éxito, id: " + user.getId());
-                            saveUserId(user.getId());
-                            if (user.getEmail().equals("admin") && user.getPassword().equals("admin")) {
-                                user.setIsAdmin(true);
-                            }
-                            Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
-                            intent.putExtra("user", user);
-                            intent.putExtra("userName", user.getName());
-                            startActivity(intent);
-                        } else {
-                            Log.d("LoginActivity", "Usuario o ID nulos.");
-                        }
-                    } else {
-                        Log.d("LoginActivity", "Respuesta no exitosa: " + response.code());
-                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                    }
-                }
+            if (!email.isEmpty() && !rawPassword.isEmpty()) {
+                userRepository.getAdminByEmailAndPassword(email, rawPassword, new Callback<User>() {
+                    @Override
+                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                        if (response.isSuccessful()) {
+                            User user = response.body();
+                            if (user != null && user.getId() != null) {
+                                Log.d("LoginActivity", "User autenticado con éxito, id: " + user.getId());
+                                saveUserId(user.getId());
+                                boolean isAdmin = user.getIsAdmin();
+                                if (isAdmin) {
+                                    userRepository.getIsAdmin(email, rawPassword, new Callback<User>() {
+                                        @Override
+                                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                                            if (response.isSuccessful()) {
+                                                Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                                                        intent.putExtra("admin", "Administrador");
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Log.d("LoginActivity", "Respuesta no exitosa al autenticar al administrador: " + response.code());
+                                                Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
 
-                @Override
-                public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
-                }
-            });
+                                        @Override
+                                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                                            Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    userRepository.getUserByEmailAndPassword(email, rawPassword, new Callback<User>(){
+                                        @Override
+                                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                                            if (response.isSuccessful()) {Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                                                intent.putExtra("userName", user.getName());
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Log.d("LoginActivity", "Respuesta no exitosa al autenticar al usuario: " + response.code());
+                                                Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                                            Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            } else {
+                                Log.d("LoginActivity", "Usuario o ID nulos.");
+                            }
+                        } else {
+                            Log.d("LoginActivity", "Respuesta no exitosa: " + response.code());
+                            Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                        Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -91,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         long userId = sharedPreferences.getLong("userId", 0);
         Log.d("LoginActivity", "UserId obtenido de SharedPreferences: " + userId);
 
-        if (userId >0) {
+        if (userId > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();

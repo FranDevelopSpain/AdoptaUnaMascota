@@ -1,5 +1,7 @@
 package com.tfg.adoptaunamascota.repository;
 import android.content.Context;
+import android.util.Log;
+
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.service.ApiService;
 import java.util.HashMap;
@@ -24,40 +26,35 @@ public class UserRepository {
         apiService = retrofit.create(ApiService.class);
     }
 
+    public void getAdminByEmailAndPassword(String email, String rawPassword, Callback<User> callback) {
+        Map<String, String> params = new HashMap<>();
+        params.put("email", email);
+        params.put("password", rawPassword);
+        Call<User> call = apiService.loginAdmin(params); // Cambia loginUser a loginAdmin aquí
+        Log.d("UserRepository", "getUserByEmailAndPassword: URL=" + call.request().url());
+        call.enqueue(callback);
+    }
     public void getUserByEmailAndPassword(String email, String rawPassword, Callback<User> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("email", email);
         params.put("password", rawPassword);
-        Call<User> call = apiService.loginUser(params);
+        Call<User> call = apiService.loginUser(params); // Cambia loginUser a loginAdmin aquí
+        Log.d("UserRepository", "getUserByEmailAndPassword: URL=" + call.request().url());
         call.enqueue(callback);
     }
 
+
+    public void getIsAdmin(String email, String rawPassword, Callback<User> callback) {
+        Map<String, String> params = new HashMap<>();
+        params.put("email", email);
+        params.put("password", rawPassword);
+        Call<User> call = apiService.loginAdmin(params);
+        Log.d("UserRepository", "getIsAdmin: URL=" + call.request().url()); // Agrega este registro
+        call.enqueue(callback);
+    }
 
     public void registerUser(User user, Callback<User> callback) {
-        // Elimina la línea que genera el hashedPassword
         Call<User> call = apiService.createUser(user);
         call.enqueue(callback);
-    }
-
-    public static String hashPassword(String rawPassword) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedhash = digest.digest(rawPassword.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedhash);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static String bytesToHex(byte[] hash) {
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
     }
 }

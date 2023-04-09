@@ -16,7 +16,8 @@ public interface ApiService {
     @GET("api/users/auth")
     Call<User> loginUser(@QueryMap Map<String, String> params);
 
-
+    @GET("api/users/admin/auth")
+    Call<User> loginAdmin(@QueryMap Map<String, String> params);
 
     @POST("/api/users/")
     Call<User> createUser(@Body User user);

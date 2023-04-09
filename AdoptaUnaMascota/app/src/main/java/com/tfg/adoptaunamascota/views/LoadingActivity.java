@@ -40,17 +40,18 @@ public class LoadingActivity extends AppCompatActivity {
                 Log.d("LoadingActivity", "Usuario autenticado con éxito, id: " + user.getId());
                 saveUserId(user.getId());
                 Intent intent;
-                if (user.getEmail().equals("admin") && user.getPassword().equals("admin")) {
+                if (user.getEmail().equals("admin@mail.com") && user.getPassword().equals("admin")) {
                     intent = new Intent(LoadingActivity.this, HomeActivityAdmin.class);
+                    startActivity(intent);
                 } else {
                     intent = new Intent(LoadingActivity.this, HomeActivity.class);
+                    startActivity(intent);
                 }
-                startActivity(intent);
-                finish();
             } else {
-                Log.d("LoadingActivity", "Usuario o ID nulos.");
-                Toast.makeText(LoadingActivity.this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
-                finish();
+                runOnUiThread(() -> {
+                    Toast.makeText(LoadingActivity.this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
             }
         }).start();
     }
