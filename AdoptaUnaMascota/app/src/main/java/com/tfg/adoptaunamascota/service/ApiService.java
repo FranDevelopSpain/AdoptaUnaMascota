@@ -21,6 +21,8 @@ public interface ApiService {
 
     @POST("/api/users/")
     Call<User> createUser(@Body User user);
+    @POST("/api/users/updatePassword")
+    Call<User> updateUserPassword(@Query("email") String email, @Query("newPassword") String newPassword);
 }
 
   /*  @GET("animals/{id}")

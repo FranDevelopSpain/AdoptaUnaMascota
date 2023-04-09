@@ -1,18 +1,18 @@
 package com.tfg.adoptaunamascota.repository;
+
 import android.content.Context;
 import android.util.Log;
 
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.service.ApiService;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 
 public class UserRepository {
@@ -26,11 +26,12 @@ public class UserRepository {
         apiService = retrofit.create(ApiService.class);
     }
 
+
     public void getAdminByEmailAndPassword(String email, String rawPassword, Callback<User> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("email", email);
         params.put("password", rawPassword);
-        Call<User> call = apiService.loginAdmin(params); // Cambia loginUser a loginAdmin aquí
+        Call<User> call = apiService.loginAdmin(params);
         Log.d("UserRepository", "getUserByEmailAndPassword: URL=" + call.request().url());
         call.enqueue(callback);
     }
@@ -38,7 +39,7 @@ public class UserRepository {
         Map<String, String> params = new HashMap<>();
         params.put("email", email);
         params.put("password", rawPassword);
-        Call<User> call = apiService.loginUser(params); // Cambia loginUser a loginAdmin aquí
+        Call<User> call = apiService.loginUser(params);
         Log.d("UserRepository", "getUserByEmailAndPassword: URL=" + call.request().url());
         call.enqueue(callback);
     }
@@ -57,4 +58,9 @@ public class UserRepository {
         Call<User> call = apiService.createUser(user);
         call.enqueue(callback);
     }
+    public void updateUserPassword(String email, String newPassword, Callback<User> callback) {
+        Call<User> call = apiService.updateUserPassword(email, newPassword);
+        call.enqueue(callback);
+    }
+
 }

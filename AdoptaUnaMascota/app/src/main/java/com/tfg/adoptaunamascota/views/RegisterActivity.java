@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
-import com.tfg.adoptaunamascota.security.PasswordUtil;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
