@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".views.RegisterActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -65,7 +64,6 @@
             android:padding="6dp"
             android:text="Registrate"
             android:textColor="@color/black" />
-
 
         <Button
             android:id="@+id/BtnRegister"
