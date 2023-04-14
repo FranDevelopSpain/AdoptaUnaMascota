@@ -1,27 +1,32 @@
 package com.tfg.adoptaunamascota.views;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.tfg.adoptaunamascota.adapters.Adapter;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText email;
-    EditText passwordEt;
-    TextView register;
-    TextView forgetPassword;
+    EditText emailEditText;
+    EditText passwordEditText;
+    TextView registerTextView;
+    TextView forgetPasswordTextView;
     Button loginButton;
     UserRepository userRepository;
 
@@ -30,83 +35,86 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userRepository = new UserRepository(this, "http://192.168.43.1:300/");
-        email = findViewById(R.id.Email);
-        passwordEt = findViewById(R.id.Password);
-        register = findViewById(R.id.Register);
-        forgetPassword = findViewById(R.id.passwordForget);
+        userRepository = new UserRepository(this, "http://10.0.2.2:8080");
+        emailEditText = findViewById(R.id.Email);
+        passwordEditText = findViewById(R.id.Password);
+        registerTextView = findViewById(R.id.Register);
+        forgetPasswordTextView = findViewById(R.id.passwordForget);
         loginButton = findViewById(R.id.BtnRegister);
 
-        register.setOnClickListener(v -> {
+        registerTextView.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        forgetPassword.setOnClickListener(v -> {
+        forgetPasswordTextView.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RecoverPasswordActivity.class);
             startActivity(intent);
         });
 
         loginButton.setOnClickListener(v -> {
-            String emailInput = email.getText().toString().trim();
-            String password = passwordEt.getText().toString().trim();
+            String email = emailEditText.getText().toString();
+            String rawPassword = passwordEditText.getText().toString();
+            validateFills(email, rawPassword);
 
-            if (validateFills(emailInput, password)) {
-                loginUser(emailInput, password);
+            if (!email.isEmpty() && !rawPassword.isEmpty()) {
+                userRepository.getUserByEmailAndPassword(email, rawPassword, new Callback<User>() {
+                    @Override
+                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                        if (response.isSuccessful()) {
+                            User user = response.body();
+                            if (user != null && user.getId() != null) {
+                                Log.d("LoginActivity", "User autenticado con éxito, id: " + user.getId());
+                                saveUserId(user.getId());
+                                if(user.getIsAdmin()){
+                                    Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                                    intent.putExtra("user",user);
+                                    startActivity(intent);
+                                }else{
+                                    Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                                    intent.putExtra("user",user);
+                                    startActivity(intent);
+                                }
+
+                            } else {
+                                Log.d("LoginActivity", "Usuario o ID nulos.");
+                            }
+                        } else {
+                            Log.d("LoginActivity", "Respuesta no exitosa: " + response.code());
+                            Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                        Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
 
-    public boolean validateFills(String email, String password) {
-        if (email.isEmpty() && password.isEmpty()) {
+    public void validateFills(String email, String rawPassword) {
+        if (email.isEmpty() && rawPassword.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Rellene todos los campos", Toast.LENGTH_SHORT).show();
-            return false;
         } else if (email.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Rellene el campo de email", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (password.isEmpty()) {
+        } else if (rawPassword.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Rellene el campo de contraseña", Toast.LENGTH_SHORT).show();
-            return false;
+        }
+    }
+
+    private void saveUserId(Long userId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("userId", userId);
+        editor.commit();
+
+        long savedUserId = sharedPreferences.getLong("userId", 0);
+        if (savedUserId == userId) {
+            Log.d("LoginActivity", "UserId guardado correctamente: " + userId);
         } else {
-            return true;
+            Log.e("LoginActivity", "Error al guardar UserId. Se esperaba " + userId + " pero se guardó " + savedUserId);
         }
-    }
-
-    public void loginUser(String email, String password) {
-        String hashedPassword = hashPassword(password);
-
-        if (email.equals("admin@mail.com") && password.equals("admin")) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivityAdmin.class);
-            startActivity(intent);
-        } else {
-            User user = userRepository.getUser(email, hashedPassword);
-
-            if (user != null) {
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    public String hashPassword(String password) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder stringBuilder = new StringBuilder();
-            for (byte hashByte : hashBytes) {
-                stringBuilder.append(String.format("%02x", hashByte));
-            }
-            return stringBuilder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
     }
 }

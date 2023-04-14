@@ -1,47 +1,47 @@
 package com.tfg.adoptaunamascota.models.animals;
 
-public class Animal {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class Animal implements Serializable {
+    @SerializedName("id")
     String id;
+    @SerializedName("type")
     String type;
+    @SerializedName("gender")
     String gender;
+    @SerializedName("name")
     String name;
+    @SerializedName("description")
+    String description;
+    @SerializedName("imageResource")
+    int imageResource;
 
-    public Animal(String id, String type, String gender, String name) {
+    public Animal() {
         this.id = id;
         this.type = type;
         this.gender = gender;
         this.name = name;
+        this.description = description;
+        this.imageResource = imageResource;
     }
 
-    public String getId() {
-        return id;
+    // Getter and Setter methods for id, type, gender, name
+
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getType() {
-        return type;
+    public int getImageResource() {
+        return imageResource;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
     }
 }

@@ -1,8 +1,6 @@
 package com.tfg.adoptaunamascota.repository;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.tfg.adoptaunamascota.service.ApiService;
 import com.tfg.adoptaunamascota.service.StoreManager;
 

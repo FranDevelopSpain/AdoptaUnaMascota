@@ -6,15 +6,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StoreManager {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
     public StoreManager(Context context, String baseUrl) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        ApiService userService = retrofit.create(ApiService.class);
+        apiService = retrofit.create(ApiService.class);
     }
 
     public ApiService getApiService() {

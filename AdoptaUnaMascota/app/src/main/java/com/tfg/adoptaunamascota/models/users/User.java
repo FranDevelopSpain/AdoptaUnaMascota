@@ -1,25 +1,45 @@
 package com.tfg.adoptaunamascota.models.users;
 
-public class User {
-    private String id;
-    private String mail;
-    private String password;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+    @SerializedName("id")
+    private Long id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("surname")
     private String surname;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("password")
+    private String password;
+    @SerializedName("isAdmin")
+    private boolean isAdmin;
 
     public User(String mail, String password, String name, String surname) {
-        this.mail = mail;
+        this.email = mail;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.isAdmin = false;
     }
 
-    public String getMail() {
-        return mail;
+    public Long getId() {
+        return id;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String mail) {
+        this.email = mail;
     }
 
     public String getPassword() {
@@ -38,19 +58,11 @@ public class User {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

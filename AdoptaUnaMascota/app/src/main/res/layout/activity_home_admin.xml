@@ -34,12 +34,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Aquí iría el contenido principal de tu actividad -->
-                    <TextView
+                    <!-- Aqui metemos el filtro -->
+
+
+                    <ExpandableListView
+                        android:id="@+id/expandableListView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Texto de ejemplo"
-                        android:textSize="24sp" />
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="0.5dp"
+                        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/animal_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <!-- Add animal views here -->
+                    </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>
         </ScrollView>
