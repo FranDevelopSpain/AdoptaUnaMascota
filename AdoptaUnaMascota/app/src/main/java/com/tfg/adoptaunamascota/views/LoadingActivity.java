@@ -27,7 +27,7 @@ public class LoadingActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         bienvenidaText = findViewById(R.id.bienvenida_text);
         user = (User) getIntent().getSerializableExtra("user");
-        userName = getIntent().getStringExtra("userName");
+        userName = user.getName();
         bienvenidaText.setText("Bienvenido, " + userName);
 
         new Thread(() -> {
@@ -36,11 +36,11 @@ public class LoadingActivity extends AppCompatActivity {
                 android.os.SystemClock.sleep(50);
                 runOnUiThread(() -> progressBar.setProgress(progressStatus));
             }
+            Log.d("LoadingActivity", "Usuario autenticado con éxito, id: " + user.getId());
             if (user != null && user.getId() != null) {
-                Log.d("LoadingActivity", "Usuario autenticado con éxito, id: " + user.getId());
                 saveUserId(user.getId());
                 Intent intent;
-                if (user.getEmail().equals("admin@mail.com") && user.getPassword().equals("admin")) {
+                if (user.getIsAdmin()) {
                     intent = new Intent(LoadingActivity.this, HomeActivityAdmin.class);
                     startActivity(intent);
                 } else {

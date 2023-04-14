@@ -26,15 +26,6 @@ public class UserRepository {
         apiService = retrofit.create(ApiService.class);
     }
 
-
-    public void getAdminByEmailAndPassword(String email, String rawPassword, Callback<User> callback) {
-        Map<String, String> params = new HashMap<>();
-        params.put("email", email);
-        params.put("password", rawPassword);
-        Call<User> call = apiService.loginAdmin(params);
-        Log.d("UserRepository", "getUserByEmailAndPassword: URL=" + call.request().url());
-        call.enqueue(callback);
-    }
     public void getUserByEmailAndPassword(String email, String rawPassword, Callback<User> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("email", email);

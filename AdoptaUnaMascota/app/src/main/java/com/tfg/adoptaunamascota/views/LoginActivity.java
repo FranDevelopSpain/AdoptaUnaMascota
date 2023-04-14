@@ -1,21 +1,25 @@
 package com.tfg.adoptaunamascota.views;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import com.tfg.adoptaunamascota.R;
-import com.tfg.adoptaunamascota.models.users.User;
-import com.tfg.adoptaunamascota.repository.UserRepository;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.content.Context;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.models.users.User;
+import com.tfg.adoptaunamascota.repository.UserRepository;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             validateFills(email, rawPassword);
 
             if (!email.isEmpty() && !rawPassword.isEmpty()) {
-                userRepository.getAdminByEmailAndPassword(email, rawPassword, new Callback<User>() {
+                userRepository.getUserByEmailAndPassword(email, rawPassword, new Callback<User>() {
                     @Override
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                         if (response.isSuccessful()) {
@@ -62,47 +66,16 @@ public class LoginActivity extends AppCompatActivity {
                             if (user != null && user.getId() != null) {
                                 Log.d("LoginActivity", "User autenticado con éxito, id: " + user.getId());
                                 saveUserId(user.getId());
-                                boolean isAdmin = user.getIsAdmin();
-                                if (isAdmin) {
-                                    userRepository.getIsAdmin(email, rawPassword, new Callback<User>() {
-                                        @Override
-                                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                                            if (response.isSuccessful()) {
-                                                Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
-                                                        intent.putExtra("admin", "Administrador");
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                Log.d("LoginActivity", "Respuesta no exitosa al autenticar al administrador: " + response.code());
-                                                Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                                            Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                } else {
-                                    userRepository.getUserByEmailAndPassword(email, rawPassword, new Callback<User>(){
-                                        @Override
-                                        public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                                            if (response.isSuccessful()) {Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
-                                                intent.putExtra("userName", user.getName());
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                Log.d("LoginActivity", "Respuesta no exitosa al autenticar al usuario: " + response.code());
-                                                Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                                            Toast.makeText(LoginActivity.this, "Error de red, inténtalo de nuevo", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                if(user.getIsAdmin()){
+                                    Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                                    intent.putExtra("user",user);
+                                    startActivity(intent);
+                                }else{
+                                    Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
+                                    intent.putExtra("user",user);
+                                    startActivity(intent);
                                 }
+
                             } else {
                                 Log.d("LoginActivity", "Usuario o ID nulos.");
                             }
@@ -119,20 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        long userId = sharedPreferences.getLong("userId", 0);
-        Log.d("LoginActivity", "UserId obtenido de SharedPreferences: " + userId);
-
-        if (userId > 0) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     public void validateFills(String email, String rawPassword) {

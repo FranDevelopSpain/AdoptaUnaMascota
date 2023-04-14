@@ -34,12 +34,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Aquí iría el contenido principal de tu actividad -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Texto de ejemplo"
-                        android:textSize="24sp" />
+                    <!-- Aqui metemos el filtro -->
+
 
                     <ExpandableListView
                         android:id="@+id/expandableListView"
