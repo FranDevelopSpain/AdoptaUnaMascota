@@ -153,7 +153,6 @@ public class HomeActivityAdmin extends AppCompatActivity {
         } else if (filter.equals("Perros grandes")) {
             animals.add(new Dogs("Max", "Macho", "Perro grande y protector"));
         } else if (filter.equals("Menos de 6 meses")) {
-            animals.add(new Cats());
         } else if (filter.equals("Más de 6 meses")) {
             animals.add(new Cats("Luna", "Hembra", "Gato adulto de 1 año"));
         }

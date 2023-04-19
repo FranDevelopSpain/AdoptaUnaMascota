@@ -78,16 +78,17 @@ public class HomeActivity extends AppCompatActivity {
         List<Animal> animals = new ArrayList<>();
 
         if (filter.equals("Perros pequeños")) {
-            animals.add(new Dogs("Bobby", "Macho", "Perro pequeño y juguetón"));
+            animals.add(new Dogs("1", "Dog", "Macho"));
         } else if (filter.equals("Perros medianos")) {
-            animals.add(new Dogs("Rex", "Macho", "Perro mediano y amigable"));
+            animals.add(new Dogs("2", "Dog", "Macho"));
         } else if (filter.equals("Perros grandes")) {
-            animals.add(new Dogs("Max", "Macho", "Perro grande y protector"));
+            animals.add(new Dogs("3", "Dog", "Macho"));
         } else if (filter.equals("Menos de 6 meses")) {
-            animals.add(new Cats());
+            animals.add(new Cats("4", "Cat", "Hembra"));
         } else if (filter.equals("Más de 6 meses")) {
-            animals.add(new Cats("Luna", "Hembra", "Gato adulto de 1 año"));
+            animals.add(new Cats("5", "Cat", "Hembra"));
         }
+
 
         return animals;
     }
@@ -99,7 +100,6 @@ public class HomeActivity extends AppCompatActivity {
         TextView animalGender = animalView.findViewById(R.id.animal_gender);
         TextView animalDescription = animalView.findViewById(R.id.animal_description);
 
-        animalImage.setImageResource(animal.getImageResource());
         //animalName.setText(animal.getName());
         //animalGender.setText(animal.getGender());
         animalDescription.setText(animal.getDescription());

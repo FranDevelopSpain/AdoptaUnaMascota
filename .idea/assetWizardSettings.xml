@@ -80,7 +80,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Downloads/cats_picture/alex-meier-KGiQFgF7dkc-unsplash.jpg" />
+                                                <entry key="imagePath" value="$USER_HOME$/Downloads/gran-danes-768x576.jpg" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -112,7 +112,10 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="gato1" />
+                                      <entry key="foregroundLayerName" value="Perrogr" />
+                                      <entry key="outputName" value="Perrogrande" />
+                                      <entry key="previewDensity" value="HIGH" />
+                                      <entry key="showSafeZone" value="false" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -296,6 +299,12 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="previewDensity" value="HIGH" />
+                                      <entry key="showSafeZone" value="false" />
                                     </map>
                                   </option>
                                 </PersistentState>

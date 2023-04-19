@@ -13,21 +13,34 @@ public class Animal implements Serializable {
     String gender;
     @SerializedName("name")
     String name;
+    @SerializedName("age")
+    String age;
     @SerializedName("description")
     String description;
-    @SerializedName("imageResource")
-    int imageResource;
+    @SerializedName("image")
+    Integer image;
 
-    public Animal() {
-        this.id = id;
-        this.type = type;
-        this.gender = gender;
-        this.name = name;
-        this.description = description;
-        this.imageResource = imageResource;
+    public Animal(String id, String type, String gender, String name, String age, String description, int image) {
+        this.id = this.id;
+        this.type = this.type;
+        this.gender = this.gender;
+        this.name = this.name;
+        this.age = this.age;
+        this.description = this.description;
+        this.image = this.image;
     }
 
-    // Getter and Setter methods for id, type, gender, name
+    public Animal() {
+
+    }
+
+    public Integer getImage() {
+        return image;
+    }
+
+    public void setImage(Integer image) {
+        this.image = image;
+    }
 
     public String getDescription() {
         return description;
@@ -37,11 +50,23 @@ public class Animal implements Serializable {
         this.description = description;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public String getAge() {
+        return age;
     }
 
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public int getName() {
+        return 0;
+    }
+
+    public int getGender() {
+        return 0;
+    }
+
+    public int getImageResource() {
+        return 0;
     }
 }

@@ -44,8 +44,8 @@
                         android:divider="@android:color/darker_gray"
                         android:dividerHeight="0.5dp"
                         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
                         android:id="@+id/animal_list"
