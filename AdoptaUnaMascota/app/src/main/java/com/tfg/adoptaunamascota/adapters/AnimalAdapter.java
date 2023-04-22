@@ -53,7 +53,6 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
             super(itemView);
             animalImage = itemView.findViewById(R.id.animal_image);
             animalName = itemView.findViewById(R.id.animal_name);
-            animalGender = itemView.findViewById(R.id.animal_gender);
             animalDescription = itemView.findViewById(R.id.animal_description);
         }
     }

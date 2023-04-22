@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +48,7 @@ public class HomeActivityAdmin extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        animalList = findViewById(R.id.animal_list);
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -138,7 +137,7 @@ public class HomeActivityAdmin extends AppCompatActivity {
         animalList.removeAllViews();
 
         for (Animal animal : animals) {
-            View animalView = createAnimalView(animal);
+            View animalView = createAdminAnimalView(animal);
             animalList.addView(animalView);
         }
     }
@@ -159,18 +158,17 @@ public class HomeActivityAdmin extends AppCompatActivity {
 
         return animals;
     }
-    private View createAnimalView(Animal animal) {
+    private View createAdminAnimalView(Animal animal) {
         View animalView = getLayoutInflater().inflate(R.layout.animal_item, null);
 
-        ImageView animalImage = animalView.findViewById(R.id.animal_image);
         TextView animalName = animalView.findViewById(R.id.animal_name);
-        TextView animalGender = animalView.findViewById(R.id.animal_gender);
         TextView animalDescription = animalView.findViewById(R.id.animal_description);
 
-        animalImage.setImageResource(animal.getImageResource());
-        //animalName.setText(animal.getName());
-        //animalGender.setText(animal.getGender());
-        animalDescription.setText(animal.getDescription());
+        String titulo = String.valueOf(animal.getName());
+        String descripcion = animal.getDescription();
+
+        animalName.setText(titulo);
+        animalDescription.setText(descripcion);
 
         animalView.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivityAdmin.this, AnimalDetailActivity.class);

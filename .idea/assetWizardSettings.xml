@@ -80,7 +80,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Downloads/gran-danes-768x576.jpg" />
+                                                <entry key="imagePath" value="$USER_HOME$/Desktop/Perros/ash-v0_MCllHY9M-unsplash.jpg" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -112,8 +112,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="foregroundLayerName" value="Perrogr" />
-                                      <entry key="outputName" value="Perrogrande" />
+                                      <entry key="outputName" value="perro3" />
                                       <entry key="previewDensity" value="HIGH" />
                                       <entry key="showSafeZone" value="false" />
                                     </map>
