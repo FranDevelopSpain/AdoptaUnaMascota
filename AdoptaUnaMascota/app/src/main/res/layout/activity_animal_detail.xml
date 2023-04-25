@@ -77,7 +77,7 @@
         <EditText
             android:id="@+id/domicilioET"
             android:layout_width="375dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:hint="@string/direccion" />
