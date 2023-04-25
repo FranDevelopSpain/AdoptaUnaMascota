@@ -11,4 +11,6 @@
     <string name="navigation_drawer_open">Abrir menú</string>
     <string name="navigation_drawer_close">Cerrar menú</string>
     <string name="volver_pantalla_inicio">Volver pantalla inicio</string>
+    <string name="adopcion">Formulario de Adopcion</string>
+    <string name="enviar_adopcion">Enviar</string>
 </resources>

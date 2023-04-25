@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".views.AnimalDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:src="@drawable/logo" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/gato1" />
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/adopcion"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/nombreET"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:hint="@string/nombre" />
+
+        <EditText
+            android:id="@+id/apellidosET"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:hint="@string/apellidos" />
+
+        <EditText
+            android:id="@+id/emailET"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:hint="@string/email" />
+
+        <EditText
+            android:id="@+id/passwordET"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:inputType="textPassword"
+            android:hint="@string/contrase_a" />
+
+        <EditText
+            android:id="@+id/password2ET"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:inputType="textPassword"
+            android:hint="@string/repita_contrase_a" />
+
+        <CheckBox
+            android:id="@+id/aceptoCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35pt"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/he_leido_y_acepto_los_terminos" />
+
+        <Button
+            android:id="@+id/registrarseBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="@string/enviar_adopcion"
+            android:textColorHint="@color/white"
+            android:backgroundTint="#8FA5D5"/>
+        <Button
+            android:id="@+id/regresarBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:text="@string/volver_pantalla_inicio"
+            android:textColorHint="@color/white"
+            android:backgroundTint="#8FA5D5"/>
+    </LinearLayout>
+
+</ScrollView>
