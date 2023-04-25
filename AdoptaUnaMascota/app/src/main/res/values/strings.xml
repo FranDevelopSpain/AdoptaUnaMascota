@@ -1,16 +1,22 @@
 <resources>
     <string name="app_name">AdoptaUnaMascota</string>
     <string name="registro">Registro</string>
-    <string name="nombre">Nombre</string>
-    <string name="apellidos">Apellidos</string>
-    <string name="email">Email</string>
-    <string name="contrase_a">Contraseña</string>
-    <string name="repita_contrase_a">Repita Contraseña</string>
+    <string name="nombre">*Nombre</string>
+    <string name="apellidos">*Apellidos</string>
+    <string name="email">*Email</string>
+    <string name="contrase_a">*Contraseña</string>
+    <string name="repita_contrase_a">*Repita Contraseña</string>
     <string name="registrarse">Registrarse</string>
     <string name="he_leido_y_acepto_los_terminos">He leido y acepto los terminos</string>
     <string name="navigation_drawer_open">Abrir menú</string>
     <string name="navigation_drawer_close">Cerrar menú</string>
     <string name="volver_pantalla_inicio">Volver pantalla inicio</string>
-    <string name="adopcion">Formulario de Adopcion</string>
+    <string name="adopcion">RELLENAR FORMULARIO DE ADOPCIÓN</string>
     <string name="enviar_adopcion">Enviar</string>
+    <string name="edad">*Edad</string>
+    <string name="sexo">*Sexo</string>
+    <string name="telefono">*Telefono</string>
+    <string name="direccion">*Dirección</string>
+    <string name="comentarios">*Comentarios</string>
+    <string name="campos">Los campos con * son obligatorios</string>
 </resources>
