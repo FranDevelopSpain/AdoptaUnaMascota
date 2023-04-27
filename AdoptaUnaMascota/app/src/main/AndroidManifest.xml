@@ -15,23 +15,23 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".views.AnimalDetailActivity"
+            android:name=".views.home.animalview.AnimalDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".views.RecoverPasswordActivity"
+            android:name=".views.login.RecoverPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".views.RegisterActivity"
+            android:name=".views.login.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".views.HomeActivityAdmin"
+            android:name=".views.home.HomeActivityAdmin"
             android:exported="false"
-            android:parentActivityName=".views.LoginActivity" />
+            android:parentActivityName=".views.login.LoginActivity" />
         <activity
-            android:name=".views.HomeActivity"
+            android:name=".views.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".views.LoginActivity"
+            android:name=".views.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

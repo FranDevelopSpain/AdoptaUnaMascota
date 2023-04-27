@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.views;
+package com.tfg.adoptaunamascota.views.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
+import com.tfg.adoptaunamascota.views.LoadingActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;

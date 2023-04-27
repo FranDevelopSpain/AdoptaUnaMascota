@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.views;
+package com.tfg.adoptaunamascota.views.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import com.tfg.adoptaunamascota.adapters.ExpandableListDataPump;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.animals.Cats;
 import com.tfg.adoptaunamascota.models.animals.Dogs;
+import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.views;
+package com.tfg.adoptaunamascota.views.home.animalview;
 
 import android.os.Bundle;
 

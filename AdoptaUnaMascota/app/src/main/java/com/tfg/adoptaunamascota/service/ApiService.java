@@ -2,6 +2,7 @@ package com.tfg.adoptaunamascota.service;
 
 import com.tfg.adoptaunamascota.models.users.User;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -23,6 +24,8 @@ public interface ApiService {
     Call<User> createUser(@Body User user);
     @POST("/api/users/updatePassword")
     Call<User> updateUserPassword(@Query("email") String email, @Query("newPassword") String newPassword);
+    @GET("/api/users")
+    Call<List<User>> getUsers();
 }
 
   /*  @GET("animals/{id}")

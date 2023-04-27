@@ -7,6 +7,7 @@ import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.service.ApiService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -51,6 +52,10 @@ public class UserRepository {
     }
     public void updateUserPassword(String email, String newPassword, Callback<User> callback) {
         Call<User> call = apiService.updateUserPassword(email, newPassword);
+        call.enqueue(callback);
+    }
+    public void getUsers(Callback<List<User>> callback) {
+        Call<List<User>> call = apiService.getUsers();
         call.enqueue(callback);
     }
 
