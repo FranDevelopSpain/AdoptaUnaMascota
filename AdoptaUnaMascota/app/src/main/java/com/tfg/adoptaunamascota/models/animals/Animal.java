@@ -21,14 +21,15 @@ public class Animal implements Serializable {
     Integer image;
 
     public Animal(String id, String type, String gender, String name, String age, String description, int image) {
-        this.id = this.id;
-        this.type = this.type;
-        this.gender = this.gender;
-        this.name = this.name;
-        this.age = this.age;
-        this.description = this.description;
-        this.image = this.image;
+        this.id = id;
+        this.type = type;
+        this.gender = gender;
+        this.name = name;
+        this.age = age;
+        this.description = description;
+        this.image = image;
     }
+
 
     public Animal() {
 
@@ -58,15 +59,16 @@ public class Animal implements Serializable {
         this.age = age;
     }
 
-    public int getName() {
-        return 0;
+    public String getName() {
+        return name;
     }
 
-    public int getGender() {
-        return 0;
+    public String getGender() {
+        return gender;
     }
 
     public int getImageResource() {
-        return 0;
+        return image;
     }
+
 }

@@ -17,6 +17,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         this.userList = userList;
     }
 
+    // Agrega este método para actualizar la lista de usuarios
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -24,6 +24,7 @@ import com.tfg.adoptaunamascota.adapters.ExpandableListDataPump;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.animals.Cats;
 import com.tfg.adoptaunamascota.models.animals.Dogs;
+import com.tfg.adoptaunamascota.views.home.CrudAdmin.UserManagementActivity;
 import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 
 import java.util.ArrayList;
@@ -59,12 +60,15 @@ public class HomeActivityAdmin extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                Intent intent;
                 switch (id) {
                     case R.id.nav_animales:
                         // Código para mostrar la opción "Animales"
                         break;
                     case R.id.nav_usuarios:
-                        // Código para mostrar la opción "Usuarios"
+                        // Ir a la actividad UserManagementActivity
+                        intent = new Intent(HomeActivityAdmin.this, UserManagementActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         return true;
@@ -73,6 +77,7 @@ public class HomeActivityAdmin extends AppCompatActivity {
                 return true;
             }
         });
+
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         expandableListDetail = ExpandableListDataPump.getData();
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
@@ -147,14 +152,15 @@ public class HomeActivityAdmin extends AppCompatActivity {
         List<Animal> animals = new ArrayList<>();
 
         if (filter.equals("Perros pequeños")) {
-            animals.add(new Dogs("Bobby", "Macho", "Perro pequeño y juguetón"));
+            animals.add(new Dogs("1", "Dog", "Macho", R.drawable.perro1));
         } else if (filter.equals("Perros medianos")) {
-            animals.add(new Dogs("Rex", "Macho", "Perro mediano y amigable"));
+            animals.add(new Dogs("2", "Dog", "Macho", R.drawable.perro2));
         } else if (filter.equals("Perros grandes")) {
-            animals.add(new Dogs("Max", "Macho", "Perro grande y protector"));
+            animals.add(new Dogs("3", "Dog", "Macho", R.drawable.perro3));
         } else if (filter.equals("Menos de 6 meses")) {
+            animals.add(new Cats("4", "Cat", "Hembra", R.drawable.gato1));
         } else if (filter.equals("Más de 6 meses")) {
-            animals.add(new Cats("Luna", "Hembra", "Gato adulto de 1 año"));
+            animals.add(new Cats("5", "Cat", "Hembra", R.drawable.gato2));
         }
 
         return animals;

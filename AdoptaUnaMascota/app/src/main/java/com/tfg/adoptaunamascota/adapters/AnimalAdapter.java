@@ -36,6 +36,8 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         holder.animalName.setText(animal.getName());
         holder.animalGender.setText(animal.getGender());
         holder.animalDescription.setText(animal.getDescription());
+        holder.animalImage.setImageResource(animal.getImageResource());
+
     }
 
     @Override
@@ -53,7 +55,12 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
             super(itemView);
             animalImage = itemView.findViewById(R.id.animal_image);
             animalName = itemView.findViewById(R.id.animal_name);
+            animalGender = itemView.findViewById(R.id.animal_gender); // Añade esta línea
             animalDescription = itemView.findViewById(R.id.animal_description);
         }
     }
+    public void setAnimalList(List<Animal> animalList) {
+        this.animalList = animalList;
+    }
+
 }

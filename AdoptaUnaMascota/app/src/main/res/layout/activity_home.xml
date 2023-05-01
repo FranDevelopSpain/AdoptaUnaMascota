@@ -6,49 +6,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.home.HomeActivity">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/filter_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- Aqui metemos el filtro -->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="183dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:src="@drawable/logo" />
-
-            <ExpandableListView
-                android:id="@+id/expandableListView"
+            <ScrollView
+                android:id="@+id/filter_scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@android:color/darker_gray"
-                android:dividerHeight="0.5dp"
-                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:fillViewport="true">
 
-            <LinearLayout
-                android:id="@+id/animal_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:orientation="vertical"
-                android:padding="16dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- Aqui metemos el filtro -->
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="183dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:src="@drawable/logo" />
+                    <ExpandableListView
+                        android:id="@+id/expandableListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="0.5dp"
+                        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/animal_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
