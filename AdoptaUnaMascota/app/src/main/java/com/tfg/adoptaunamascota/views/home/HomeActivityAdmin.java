@@ -107,22 +107,6 @@ public class HomeActivityAdmin extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
-                return false;
-            }
-        });
     }
     private void setupExpandableListView() {
         HashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
@@ -161,21 +145,25 @@ public class HomeActivityAdmin extends AppCompatActivity {
         List<Animal> filteredAnimals = new ArrayList<>();
 
         for (Animal animal : allAnimals) {
-            if (filter.equals("Perros pequeños") && animal.getType().equals("Dog") && animal.getSize().equals("Pequeño")) {
+            String size = animal.getSize();
+            String type = animal.getType();
+
+            if (filter.equals("Perros pequeños") && "Dog".equals(type) && "Pequeño".equals(size)) {
                 filteredAnimals.add(animal);
-            } else if (filter.equals("Perros medianos") && animal.getType().equals("Dog") && animal.getSize().equals("Mediano")) {
+            } else if (filter.equals("Perros medianos") && "Dog".equals(type) && "Mediano".equals(size)) {
                 filteredAnimals.add(animal);
-            } else if (filter.equals("Perros grandes") && animal.getType().equals("Dog") && animal.getSize().equals("Grande")) {
+            } else if (filter.equals("Perros grandes") && "Dog".equals(type) && "Grande".equals(size)) {
                 filteredAnimals.add(animal);
-            } else if (filter.equals("Menos de 6 meses") && animal.getType().equals("Cat") && animal.getAge() < 6) {
+            } else if (filter.equals("Menos de 6 meses") && "Cat".equals(type) && animal.getAge() < 6) {
                 filteredAnimals.add(animal);
-            } else if (filter.equals("Más de 6 meses") && animal.getType().equals("Cat") && animal.getAge() >= 6) {
+            } else if (filter.equals("Más de 6 meses") && "Cat".equals(type) && animal.getAge() >= 6) {
                 filteredAnimals.add(animal);
             }
         }
 
         return filteredAnimals;
     }
+
 
     private View createAdminAnimalView(Animal animal) {
         View animalView = getLayoutInflater().inflate(R.layout.animal_item, null);
