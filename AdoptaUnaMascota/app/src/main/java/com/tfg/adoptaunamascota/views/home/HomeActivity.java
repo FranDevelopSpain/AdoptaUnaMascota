@@ -1,18 +1,16 @@
-package com.tfg.adoptaunamascota.views;
+package com.tfg.adoptaunamascota.views.home;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tfg.adoptaunamascota.R;
+import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.adapters.CustomExpandableListAdapter;
-import com.tfg.adoptaunamascota.fragments.AnimalListFragment;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.animals.Cats;
 import com.tfg.adoptaunamascota.models.animals.Dogs;
@@ -24,7 +22,8 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private ExpandableListView expandableListView;
-    private LinearLayout animalList;
+    private RecyclerView animalList;
+    private AnimalAdapter animalAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +32,15 @@ public class HomeActivity extends AppCompatActivity {
 
         expandableListView = findViewById(R.id.expandableListView);
         animalList = findViewById(R.id.animal_list);
+        animalList.setLayoutManager(new LinearLayoutManager(this));
 
         setupExpandableListView();
-        AnimalListFragment animalListFragment = new AnimalListFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.animal_list, animalListFragment)
-                .commit();
 
+        List<Animal> animals = new ArrayList<>();
+        animalAdapter = new AnimalAdapter(animals);
+        animalList.setAdapter(animalAdapter);
+        loadInitialAnimals();
     }
-
     private void setupExpandableListView() {
         HashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
         List<String> dogs = new ArrayList<>();
@@ -64,59 +63,47 @@ public class HomeActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             String selectedItem = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
             filterAnimalList(selectedItem);
-            return false;
+            return true;
         });
     }
 
     private void filterAnimalList(String filter) {
         List<Animal> animals = getFilteredAnimals(filter);
-
-        animalList.removeAllViews();
-
-        for (Animal animal : animals) {
-            View animalView = createAnimalView(animal);
-            animalList.addView(animalView);
-        }
+        animalAdapter.setAnimalList(animals);
+        animalAdapter.notifyDataSetChanged();
     }
+
 
     private List<Animal> getFilteredAnimals(String filter) {
         List<Animal> animals = new ArrayList<>();
 
         if (filter.equals("Perros pequeños")) {
-            animals.add(new Dogs("1", "Dog", "Macho"));
+            animals.add(new Dogs("1", "Dog", "Macho", R.drawable.perro1));
         } else if (filter.equals("Perros medianos")) {
-            animals.add(new Dogs("2", "Dog", "Macho"));
+            animals.add(new Dogs("2", "Dog", "Macho", R.drawable.perro2));
         } else if (filter.equals("Perros grandes")) {
-            animals.add(new Dogs("3", "Dog", "Macho"));
+            animals.add(new Dogs("3", "Dog", "Macho", R.drawable.perro3));
         } else if (filter.equals("Menos de 6 meses")) {
-            animals.add(new Cats("4", "Cat", "Hembra"));
+            animals.add(new Cats("4", "Cat", "Hembra", R.drawable.gato1));
         } else if (filter.equals("Más de 6 meses")) {
-            animals.add(new Cats("5", "Cat", "Hembra"));
+            animals.add(new Cats("5", "Cat", "Hembra", R.drawable.gato2));
         }
-
 
         return animals;
     }
-    private View createAnimalView(Animal animal) {
-        View animalView = getLayoutInflater().inflate(R.layout.animal_item, null);
-
-        TextView animalName = animalView.findViewById(R.id.animal_name);
-        TextView animalDescription = animalView.findViewById(R.id.animal_description);
-
-        // Obtener el titulo y descripcion de 'animal'
-        String titulo = String.valueOf(animal.getName());
-        String descripcion = animal.getDescription();
-
-        // Establecer el texto en los TextView correspondientes
-        animalName.setText(titulo);
-        animalDescription.setText(descripcion);
-
-        animalView.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, AnimalDetailActivity.class);
-            intent.putExtra("animal", animal);
-            startActivity(intent);
-        });
-
-        return animalView;
+    private void loadInitialAnimals() {
+        List<Animal> animals = getAllAnimals();
+        animalAdapter.setAnimalList(animals);
+        animalAdapter.notifyDataSetChanged();
+    }
+    private List<Animal> getAllAnimals() {
+        List<Animal> animals = new ArrayList<>();
+        animals.add(new Dogs("1", "Dog1", "Macho", R.drawable.perro1));
+        animals.add(new Dogs("2", "Dog2", "Macho", R.drawable.perro2));
+        animals.add(new Dogs("3", "Dog", "Macho", R.drawable.perro3));
+        animals.add(new Cats("4", "Cat", "Hembra", R.drawable.gato1));
+        animals.add(new Cats("5", "Cat", "Hembra", R.drawable.gato2));
+        // ... agrega todos los animales aquí
+        return animals;
     }
 }

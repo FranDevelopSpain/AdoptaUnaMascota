@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.views;
+package com.tfg.adoptaunamascota.views.login;
 
 import android.content.Intent;
 import android.os.Bundle;

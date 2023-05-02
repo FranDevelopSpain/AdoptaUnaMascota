@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tfg.adoptaunamascota">
@@ -13,26 +14,24 @@
         android:theme="@style/Theme.AdoptaUnaMascota"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
         <activity
-            android:name=".views.RecoverPasswordActivity"
+            android:name=".views.home.animalview.AnimalDetailActivity"
             android:exported="false" />
-
         <activity
-            android:name=".views.RegisterActivity"
+            android:name=".views.login.RecoverPasswordActivity"
             android:exported="false" />
-
         <activity
-            android:name=".views.HomeActivityAdmin"
+            android:name=".views.login.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.home.HomeActivityAdmin"
             android:exported="false"
-            android:parentActivityName=".views.LoginActivity" />
-
+            android:parentActivityName=".views.login.LoginActivity" />
         <activity
-            android:name=".views.HomeActivity"
+            android:name=".views.home.HomeActivity"
             android:exported="false" />
-
         <activity
-            android:name=".views.LoginActivity"
+            android:name=".views.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,11 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".views.LoadingActivity"
             android:exported="false" />
 
+        <activity android:name=".views.home.crudAdmin.UserManagementActivity" />
     </application>
 
 </manifest>
