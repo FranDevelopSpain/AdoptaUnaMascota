@@ -1,4 +1,4 @@
-package com.tfg.adoptaunamascota.views.home.CrudAdmin;
+package com.tfg.adoptaunamascota.views.home.crudAdmin;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

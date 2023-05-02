@@ -24,7 +24,7 @@ import com.tfg.adoptaunamascota.adapters.ExpandableListDataPump;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.animals.Cats;
 import com.tfg.adoptaunamascota.models.animals.Dogs;
-import com.tfg.adoptaunamascota.views.home.CrudAdmin.UserManagementActivity;
+import com.tfg.adoptaunamascota.views.home.crudAdmin.UserManagementActivity;
 import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 
 import java.util.ArrayList;

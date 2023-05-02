@@ -43,7 +43,7 @@
             android:name=".views.LoadingActivity"
             android:exported="false" />
 
-        <activity android:name=".views.home.CrudAdmin.UserManagementActivity" />
+        <activity android:name=".views.home.crudAdmin.UserManagementActivity" />
     </application>
 
 </manifest>
