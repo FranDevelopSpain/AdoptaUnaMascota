@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="animal_species" type="id" />
+    <item name="animal_age" type="id" />
+    <item name="animal_description" type="id" />
+</resources>

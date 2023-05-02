@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/dialog_animal_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del animal" />
+
+    <EditText
+        android:id="@+id/dialog_animal_species"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Especie del animal" />
+
+    <EditText
+        android:id="@+id/dialog_animal_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Edad del animal" />
+
+    <EditText
+        android:id="@+id/dialog_animal_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción del animal" />
+
+</LinearLayout>
+

@@ -27,6 +27,7 @@ import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.animals.Cats;
 import com.tfg.adoptaunamascota.models.animals.Dogs;
 import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
+import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.UserManagementActivity;
 
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class HomeActivityAdmin extends AppCompatActivity {
     private RecyclerView animalList;
     private AnimalAdapter animalAdapter;
 
+    private AnimalsManagementActivity animalsManagementActivity;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,8 @@ public class HomeActivityAdmin extends AppCompatActivity {
         animalList = findViewById(R.id.animal_list);
         animalList.setLayoutManager(new LinearLayoutManager(this));
         List<Animal> animals = new ArrayList<>();
-        animalAdapter = new AnimalAdapter(animals);
+        animalsManagementActivity = new AnimalsManagementActivity();
+        animalAdapter = new AnimalAdapter(animals, this, animalsManagementActivity);
         animalList.setAdapter(animalAdapter);
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -152,22 +157,26 @@ public class HomeActivityAdmin extends AppCompatActivity {
     }
 
     private List<Animal> getFilteredAnimals(String filter) {
-        List<Animal> animals = new ArrayList<>();
+        List<Animal> allAnimals = getAllAnimals(); // Obtén la lista completa de animales
+        List<Animal> filteredAnimals = new ArrayList<>();
 
-        if (filter.equals("Perros pequeños")) {
-            animals.add(new Dogs("1", "Dog", "Macho", R.drawable.perro1));
-        } else if (filter.equals("Perros medianos")) {
-            animals.add(new Dogs("2", "Dog", "Macho", R.drawable.perro2));
-        } else if (filter.equals("Perros grandes")) {
-            animals.add(new Dogs("3", "Dog", "Macho", R.drawable.perro3));
-        } else if (filter.equals("Menos de 6 meses")) {
-            animals.add(new Cats("4", "Cat", "Hembra", R.drawable.gato1));
-        } else if (filter.equals("Más de 6 meses")) {
-            animals.add(new Cats("5", "Cat", "Hembra", R.drawable.gato2));
+        for (Animal animal : allAnimals) {
+            if (filter.equals("Perros pequeños") && animal.getType().equals("Dog") && animal.getSize().equals("Pequeño")) {
+                filteredAnimals.add(animal);
+            } else if (filter.equals("Perros medianos") && animal.getType().equals("Dog") && animal.getSize().equals("Mediano")) {
+                filteredAnimals.add(animal);
+            } else if (filter.equals("Perros grandes") && animal.getType().equals("Dog") && animal.getSize().equals("Grande")) {
+                filteredAnimals.add(animal);
+            } else if (filter.equals("Menos de 6 meses") && animal.getType().equals("Cat") && animal.getAge() < 6) {
+                filteredAnimals.add(animal);
+            } else if (filter.equals("Más de 6 meses") && animal.getType().equals("Cat") && animal.getAge() >= 6) {
+                filteredAnimals.add(animal);
+            }
         }
 
-        return animals;
+        return filteredAnimals;
     }
+
     private View createAdminAnimalView(Animal animal) {
         View animalView = getLayoutInflater().inflate(R.layout.animal_item, null);
 
@@ -204,11 +213,11 @@ public class HomeActivityAdmin extends AppCompatActivity {
     }
     private List<Animal> getAllAnimals() {
         List<Animal> animals = new ArrayList<>();
-        animals.add(new Dogs("1", "Dog1", "Macho", R.drawable.perro1));
-        animals.add(new Dogs("2", "Dog2", "Macho", R.drawable.perro2));
-        animals.add(new Dogs("3", "Dog", "Macho", R.drawable.perro3));
-        animals.add(new Cats("4", "Cat", "Hembra", R.drawable.gato1));
-        animals.add(new Cats("5", "Cat", "Hembra", R.drawable.gato2));
+        animals.add(new Dogs(1L, "Dog1", "Macho", "Pequeño", 24, R.drawable.perro1));
+        animals.add(new Dogs(2L, "Dog2", "Macho", "Mediano", 36, R.drawable.perro2));
+        animals.add(new Dogs(3L, "Dog3", "Macho", "Grande", 48, R.drawable.perro3));
+        animals.add(new Cats(4L, "Cat1", "Hembra", 5, R.drawable.gato1)); // Edad en meses
+        animals.add(new Cats(5L, "Cat2", "Hembra", 9, R.drawable.gato2)); // Edad en meses
         // ... agrega todos los animales aquí
         return animals;
     }
