@@ -19,4 +19,9 @@
     <string name="direccion">*Dirección</string>
     <string name="comentarios">*Comentarios</string>
     <string name="campos">Los campos con * son obligatorios</string>
+    <string name="update">Actualizar</string>
+    <string name="delete">Eliminar</string>
+    <string name="update_user">Actualizar usuario</string>
+    <string name="cancel">Cancelar</string>
+    <string name="add_user">Añadir</string>
 </resources>

@@ -59,4 +59,17 @@ public class UserRepository {
         Log.d("UserRepository", "getUsers: URL=" + call.request().url()); // Agrega este registro
         call.enqueue(callback);
     }
+    public void createUser(User user, Callback<User> callback) {
+        Call<User> call = apiService.createUser(user);
+        call.enqueue(callback);
+    }
+    public void updateUser(long id, User user, Callback<User> callback) {
+        Call<User> call = apiService.updateUser(id, user);
+        call.enqueue(callback);
+    }
+
+    public void deleteUser(long id, Callback<Void> callback) {
+        Call<Void> call = apiService.deleteUser(id);
+        call.enqueue(callback);
+    }
 }

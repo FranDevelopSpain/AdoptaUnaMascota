@@ -30,8 +30,15 @@ public interface ApiService {
     Call<User> createUser(@Body User user);
     @POST("/api/users/updatePassword")
     Call<User> updateUserPassword(@Query("email") String email, @Query("newPassword") String newPassword);
+
+    //Para CRUD
     @GET("/api/users/")
     Call<List<User>> getUsers();
+    @PUT("api/users/{id}")
+    Call<User> updateUser(@Path("id") long id, @Body User user);
+
+    @DELETE("api/users/{id}")
+    Call<Void> deleteUser(@Path("id") long id);
 
     //Animales
     @GET("animals/{id}")
