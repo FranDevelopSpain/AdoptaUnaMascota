@@ -30,7 +30,7 @@ public interface ApiService {
     Call<User> createUser(@Body User user);
     @POST("/api/users/updatePassword")
     Call<User> updateUserPassword(@Query("email") String email, @Query("newPassword") String newPassword);
-    @GET("/api/users")
+    @GET("/api/users/")
     Call<List<User>> getUsers();
 
     //Animales

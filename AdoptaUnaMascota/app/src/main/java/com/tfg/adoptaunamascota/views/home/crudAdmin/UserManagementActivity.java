@@ -1,6 +1,8 @@
 package com.tfg.adoptaunamascota.views.home.crudAdmin;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +38,9 @@ public class UserManagementActivity extends AppCompatActivity {
         userAdapter = new UserAdapter(new ArrayList<>());
         userRecyclerView.setAdapter(userAdapter);
 
-        userRepository = new UserRepository(this, "http://10.0.2.2:8080/");
+        String baseUrl = "http://10.0.2.2:8080";
+
+        userRepository = new UserRepository(this, baseUrl);
 
         userRepository.getUsers(new Callback<List<User>>() {
             @Override
@@ -50,13 +54,13 @@ public class UserManagementActivity extends AppCompatActivity {
                     // Notifica al RecyclerView que los datos han cambiado
                     userAdapter.notifyDataSetChanged();
                 } else {
-                    // Manejar el error de respuesta
+                    Toast.makeText(UserManagementActivity.this, "Error de respuesta: " + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                // Manejar el error de la solicitud
+                Log.e("UserManagementActivity", "Error al obtener usuarios", t);
             }
         });
     }

@@ -59,6 +59,4 @@ public class UserRepository {
         Log.d("UserRepository", "getUsers: URL=" + call.request().url()); // Agrega este registro
         call.enqueue(callback);
     }
-
-
 }
