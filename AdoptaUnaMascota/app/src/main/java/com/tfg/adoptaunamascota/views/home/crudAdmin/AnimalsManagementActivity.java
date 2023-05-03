@@ -1,6 +1,5 @@
 package com.tfg.adoptaunamascota.views.home.crudAdmin;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,16 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.repository.AnimalRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,29 +100,27 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
 
         builder.setTitle("Agregar Animal");
-        builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String name = nameEditText.getText().toString();
-                String species = speciesEditText.getText().toString();
-                int age = Integer.parseInt(ageEditText.getText().toString());
-                Animal newAnimal = new Animal(name, species, age);
+        builder.setPositiveButton("Agregar", (dialog, which) -> {
+            String name = nameEditText.getText().toString();
+            String species = speciesEditText.getText().toString();
+            int ageInMonths = Integer.parseInt(ageEditText.getText().toString());
+            int age = ageInMonths / 12;
+            Animal newAnimal = new Animal(name, species, age);
 
-                animalRepository.createAnimal(newAnimal, new Callback<Animal>() {
-                    @Override
-                    public void onResponse(Call<Animal> call, Response<Animal> response) {
-                        if (response.isSuccessful()) {
-                            getAnimals(); // Actualiza la lista de animales
-                        } else {
-                            Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
-                        }
+            animalRepository.createAnimal(newAnimal, new Callback<Animal>() {
+                @Override
+                public void onResponse(Call<Animal> call, Response<Animal> response) {
+                    if (response.isSuccessful()) {
+                        getAnimals(); // Actualiza la lista de animales
+                    } else {
+                        Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
                     }
-                    @Override
-                    public void onFailure(Call<Animal> call, Throwable t) {
-                        Toast.makeText(AnimalsManagementActivity.this, "Error al crear animal", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+                }
+                @Override
+                public void onFailure(Call<Animal> call, Throwable t) {
+                    Toast.makeText(AnimalsManagementActivity.this, "Error al crear animal", Toast.LENGTH_LONG).show();
+                }
+            });
         });
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
@@ -137,41 +138,38 @@ public class AnimalsManagementActivity extends AppCompatActivity {
 
         nameEditText.setText(animal.getName());
         speciesEditText.setText(animal.getSpecies());
-        ageEditText.setText(String.valueOf(animal.getAge()));
+        ageEditText.setText(String.valueOf(animal.getEdad()));
 
         builder.setTitle("Actualizar Animal");
-        builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String updatedName = nameEditText.getText().toString();
-                String updatedSpecies = speciesEditText.getText().toString();
-                String updatedAgeString = ageEditText.getText().toString();
+        builder.setPositiveButton("Actualizar", (dialog, which) -> {
+            String updatedName = nameEditText.getText().toString();
+            String updatedSpecies = speciesEditText.getText().toString();
+            String updatedAgeString = ageEditText.getText().toString();
 
-                if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedAgeString)) {
-                    Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
-                } else {
-                    int updatedAge = Integer.parseInt(updatedAgeString);
+            if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedAgeString)) {
+                Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
+            } else {
+                int updatedAgeInMonths = Integer.parseInt(updatedAgeString);
+                int updatedAge = updatedAgeInMonths / 12;
+                animal.setName(updatedName);
+                animal.setSpecies(updatedSpecies);
+                animal.setEdad(updatedAge);
 
-                    animal.setName(updatedName);
-                    animal.setSpecies(updatedSpecies);
-                    animal.setAge(updatedAge);
-
-                    animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>() {
-                        @Override
-                        public void onResponse(Call<Animal> call, Response<Animal> response) {
-                            if (response.isSuccessful()) {
-                                getAnimals(); // Actualiza la lista de animales
-                            } else {
-                                Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal: " + response.code(), Toast.LENGTH_LONG).show();
-                            }
+                animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>() {
+                    @Override
+                    public void onResponse(Call<Animal> call, Response<Animal> response) {
+                        if (response.isSuccessful()) {
+                            getAnimals(); // Actualiza la lista de animales
+                        } else {
+                            Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal: " + response.code(), Toast.LENGTH_LONG).show();
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<Animal> call, Throwable t) {
-                            Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(Call<Animal> call, Throwable t) {
+                        Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
         builder.setNegativeButton("Cancelar", null);
@@ -183,26 +181,21 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Eliminar Animal");
         builder.setMessage("¿Estás seguro de que deseas eliminar este animal?");
-        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                    animalRepository.deleteAnimal(animal.getId(), new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            getAnimals(); // Actualiza la lista de animales
-                        } else {
-                            Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal: " + response.code(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal", Toast.LENGTH_LONG).show();
-                    }
-                });
+        builder.setPositiveButton("Eliminar", (dialog, which) -> animalRepository.deleteAnimal(animal.getId(), new Callback<Void>() {
+        @Override
+        public void onResponse(Call<Void> call, Response<Void> response) {
+            if (response.isSuccessful()) {
+                getAnimals(); // Actualiza la lista de animales
+            } else {
+                Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal: " + response.code(), Toast.LENGTH_LONG).show();
             }
-        });
+        }
+
+        @Override
+        public void onFailure(Call<Void> call, Throwable t) {
+            Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal", Toast.LENGTH_LONG).show();
+        }
+    }));
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -213,6 +206,14 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             public void onResponse(Call<List<Animal>> call, Response<List<Animal>> response) {
                 if (response.isSuccessful()) {
                     animalList = response.body();
+
+                    // Añade los gatos y perros a la lista
+                    animalList.add(new Animal("Felipe", "Gato", 7, R.drawable.gato1, "Gato de 7 meses super cute"));
+                    animalList.add(new Animal("Michi", "Gato", 3, R.drawable.gato2, "Gatito de 3 meses adorable"));
+                    animalList.add(new Animal("Sifu", "Gato", 5, R.drawable.gato3, "Gatita buscando hogar de 5 meses"));
+                    animalList.add(new Animal("Max", "Perro", 12, R.drawable.perro1, "Perro pequeño juguetón"));
+                    animalList.add(new Animal("Aquiles", "Perro", 24, R.drawable.perro2, "Perro grande y fiel"));
+
                     // Actualiza el adaptador con la lista de animales
                     animalAdapter.setAnimalList(animalList);
 
@@ -229,4 +230,5 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             }
         });
     }
+
 }

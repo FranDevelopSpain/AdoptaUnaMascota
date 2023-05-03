@@ -147,6 +147,7 @@ public class HomeActivityAdmin extends AppCompatActivity {
         for (Animal animal : allAnimals) {
             String size = animal.getSize();
             String type = animal.getType();
+            int ageInMonths = animal.getEdadEnMeses();
 
             if (filter.equals("Perros pequeños") && "Dog".equals(type) && "Pequeño".equals(size)) {
                 filteredAnimals.add(animal);
@@ -154,15 +155,16 @@ public class HomeActivityAdmin extends AppCompatActivity {
                 filteredAnimals.add(animal);
             } else if (filter.equals("Perros grandes") && "Dog".equals(type) && "Grande".equals(size)) {
                 filteredAnimals.add(animal);
-            } else if (filter.equals("Menos de 6 meses") && "Cat".equals(type) && animal.getAge() < 6) {
+            } else if (filter.equals("Menos de 6 meses") && "Cat".equals(type) && ageInMonths < 6) {
                 filteredAnimals.add(animal);
-            } else if (filter.equals("Más de 6 meses") && "Cat".equals(type) && animal.getAge() >= 6) {
+            } else if (filter.equals("Más de 6 meses") && "Cat".equals(type) && ageInMonths >= 6) {
                 filteredAnimals.add(animal);
             }
         }
 
         return filteredAnimals;
     }
+
 
 
     private View createAdminAnimalView(Animal animal) {
@@ -205,7 +207,7 @@ public class HomeActivityAdmin extends AppCompatActivity {
         animals.add(new Dogs(2L, "Dog2", "Macho", "Mediano", 36, R.drawable.perro2));
         animals.add(new Dogs(3L, "Dog3", "Macho", "Grande", 48, R.drawable.perro3));
         animals.add(new Cats(4L, "Cat1", "Hembra", 5, R.drawable.gato1)); // Edad en meses
-        animals.add(new Cats(5L, "Cat2", "Hembra", 9, R.drawable.gato2)); // Edad en meses
+        animals.add(new Cats(5L, "Cat2", "Hembra", 12, R.drawable.gato2)); // Edad en meses
         // ... agrega todos los animales aquí
         return animals;
     }

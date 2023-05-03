@@ -51,7 +51,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         Animal animal = animalList.get(position);
         holder.animalName.setText(animal.getName());
         holder.animalSpecies.setText(animal.getSpecies());
-        holder.animalAge.setText(String.valueOf(animal.getAge()));
+        holder.animalAge.setText(String.valueOf(animal.getEdadEnMeses()) + " meses");
         holder.animalImage.setImageResource(animal.getImageResource());
 
         if (position == selectedPosition) {

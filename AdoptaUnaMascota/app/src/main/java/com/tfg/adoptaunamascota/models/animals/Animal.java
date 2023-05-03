@@ -13,8 +13,8 @@ public class Animal implements Serializable {
     String gender;
     @SerializedName("name")
     String name;
-    @SerializedName("age")
-    int age;
+    @SerializedName("edad")
+    int edad;
     @SerializedName("description")
     String description;
     @SerializedName("image")
@@ -22,12 +22,12 @@ public class Animal implements Serializable {
     @SerializedName("species")
     String species;
 
-    public Animal(Long id, String type, String gender, String name, int age, String description, int image) {
+    public Animal(Long id, String type, String gender, String name, int edad, String description, int image) {
         this.id = id;
         this.type = type;
         this.gender = gender;
         this.name = name;
-        this.age = age;
+        this.edad = edad;
         this.description = description;
         this.image = image;
         this.species = "";
@@ -37,9 +37,15 @@ public class Animal implements Serializable {
     public Animal(String name, String species, int age) {
         this.name = name;
         this.species = species;
-        this.age = age;
+        this.edad = age;
     }
-
+    public Animal(String name, String species, int edad, int imageResource, String description) {
+        this.name = name;
+        this.species = species;
+        this.edad = edad;
+        this.image = imageResource;
+        this.description = description;
+    }
     public Animal() {
 
     }
@@ -63,12 +69,12 @@ public class Animal implements Serializable {
         this.description = description;
     }
 
-    public int getAge() {
-        return age;
+    public int getEdad() {
+        return edad;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setEdad(int edad) {
+        this.edad = edad;
     }
 
     public String getName() {
@@ -113,6 +119,10 @@ public class Animal implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getEdadEnMeses() {
+        return edad * 12;
     }
 }
 
