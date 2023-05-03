@@ -16,6 +16,26 @@
         android:layout_height="wrap_content"
         android:hint="Especie del animal" />
 
+    <RadioGroup
+        android:id="@+id/dialog_animal_type_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/dialog_animal_type_dog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perro" />
+
+        <RadioButton
+            android:id="@+id/dialog_animal_type_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gato" />
+
+    </RadioGroup>
+
     <EditText
         android:id="@+id/dialog_animal_age"
         android:layout_width="match_parent"
@@ -29,4 +49,3 @@
         android:hint="Descripción del animal" />
 
 </LinearLayout>
-

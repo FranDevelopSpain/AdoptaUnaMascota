@@ -1,18 +1,23 @@
 package com.tfg.adoptaunamascota.views.home;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.adapters.CustomExpandableListAdapter;
 import com.tfg.adoptaunamascota.models.animals.Animal;
-import com.tfg.adoptaunamascota.models.animals.Cats;
-import com.tfg.adoptaunamascota.models.animals.Dogs;
+import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,6 +49,10 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void setupExpandableListView() {
         HashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
+
+        List<String> allAnimals = new ArrayList<>();
+        allAnimals.add("Todos los animales");
+
         List<String> dogs = new ArrayList<>();
         dogs.add("Perros pequeños");
         dogs.add("Perros medianos");
@@ -53,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         cats.add("Menos de 6 meses");
         cats.add("Más de 6 meses");
 
+        expandableListDetail.put("Todos los animales", allAnimals);
         expandableListDetail.put("Adoptar un perro", dogs);
         expandableListDetail.put("Adoptar un gato", cats);
 
@@ -64,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             String selectedItem = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
             filterAnimalList(selectedItem);
-            return true;
+            return false;
         });
     }
 
@@ -74,13 +84,19 @@ public class HomeActivity extends AppCompatActivity {
         animalAdapter.notifyDataSetChanged();
     }
 
-
     private List<Animal> getFilteredAnimals(String filter) {
-        List<Animal> allAnimals = getAllAnimals(); // Obtén la lista completa de animales
+        // Obtén la lista completa de animales directamente desde el adaptador
+        List<Animal> allAnimals = animalAdapter.getAnimals();
+
+        // Si el filtro es "Todos los animales", devolver la lista completa
+        if (filter.equals("Todos los animales")) {
+            return allAnimals;
+        }
+
         List<Animal> filteredAnimals = new ArrayList<>();
 
         for (Animal animal : allAnimals) {
-            String size = animal.getSize();
+            String size = animal.getCategoria();
             String type = animal.getType();
             int ageInMonths = animal.getEdadEnMeses();
 
@@ -100,6 +116,26 @@ public class HomeActivity extends AppCompatActivity {
         return filteredAnimals;
     }
 
+    private View createAdminAnimalView(Animal animal) {
+        View animalView = getLayoutInflater().inflate(R.layout.animal_item, null);
+
+        TextView animalName = animalView.findViewById(R.id.animal_name);
+        TextView animalDescription = animalView.findViewById(R.id.animal_description);
+
+        String titulo = String.valueOf(animal.getName());
+        String descripcion = animal.getDescription();
+
+        animalName.setText(titulo);
+        animalDescription.setText(descripcion);
+
+        animalView.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, AnimalDetailActivity.class);
+            intent.putExtra("animal", animal);
+            startActivity(intent);
+        });
+
+        return animalView;
+    }
 
     private void loadInitialAnimals() {
         List<Animal> animals = getAllAnimals();
@@ -107,14 +143,6 @@ public class HomeActivity extends AppCompatActivity {
         animalAdapter.notifyDataSetChanged();
     }
     private List<Animal> getAllAnimals() {
-        List<Animal> animals = new ArrayList<>();
-        animals.add(new Dogs(1L, "Dog1", "Macho", "Pequeño", 24, R.drawable.perro1));
-        animals.add(new Dogs(2L, "Dog2", "Macho", "Mediano", 36, R.drawable.perro2));
-        animals.add(new Dogs(3L, "Dog3", "Macho", "Grande", 48, R.drawable.perro3));
-        animals.add(new Cats(4L, "Cat1", "Hembra", 24, R.drawable.gato1)); // Edad en meses
-        animals.add(new Cats(5L, "Cat2", "Hembra", 12, R.drawable.gato2)); // Edad en meses
-        // ... agrega todos los animales aquí
-        return animals;
+        return animalAdapter.getAnimals();
     }
-
 }

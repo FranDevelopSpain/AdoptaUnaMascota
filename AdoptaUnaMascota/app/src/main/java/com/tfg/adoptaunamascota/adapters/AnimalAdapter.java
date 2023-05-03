@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
+
 import java.util.List;
 
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder> {
@@ -38,6 +42,11 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         return null;
     }
 
+    // Añade el método getAnimals() para devolver la lista de animales
+    public List<Animal> getAnimals() {
+        return animalList;
+    }
+
     @NonNull
     @Override
     public AnimalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,7 +61,13 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         holder.animalName.setText(animal.getName());
         holder.animalSpecies.setText(animal.getSpecies());
         holder.animalAge.setText(String.valueOf(animal.getEdadEnMeses()) + " meses");
-        holder.animalImage.setImageResource(animal.getImageResource());
+
+        // Usamos Glide para cargar la imagen desde la URL
+        Glide.with(context)
+                .load(animal.getImage())
+                .placeholder(R.drawable.placeholder_image) // Añade un marcador de posición si la imagen aún no se ha cargado
+                .error(R.drawable.error_image) // Añade una imagen de error en caso de que la carga falle
+                .into(holder.animalImage);
 
         if (position == selectedPosition) {
             holder.itemView.setBackgroundColor(Color.parseColor("#EEEEEE"));
