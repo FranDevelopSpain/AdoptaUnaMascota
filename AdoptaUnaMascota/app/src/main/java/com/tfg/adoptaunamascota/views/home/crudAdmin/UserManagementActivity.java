@@ -8,20 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.adapters.UserAdapter;
 import com.tfg.adoptaunamascota.models.users.User;
 import com.tfg.adoptaunamascota.repository.UserRepository;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,6 +56,7 @@ public class UserManagementActivity extends AppCompatActivity {
                 showAddUserDialog();
             }
         });
+
         updateUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +68,7 @@ public class UserManagementActivity extends AppCompatActivity {
                 }
             }
         });
+
         deleteUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,25 +105,31 @@ public class UserManagementActivity extends AppCompatActivity {
                 String surname = surnameEditText.getText().toString();
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                User newUser = new User(name, surname, email, password);
 
-                userRepository.createUser(newUser, new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            getUsers(); // Actualiza la lista de usuarios
-                        } else {
-                            Toast.makeText(UserManagementActivity.this, "Error al agregar usuario: " + response.code(), Toast.LENGTH_LONG).show();
+                if(email.equalsIgnoreCase("admin@mail.com")){
+                    Toast.makeText(UserManagementActivity.this, "Ya existe un usuario administrador", Toast.LENGTH_LONG).show();
+                } else {
+                    User newUser = new User(name, surname, email, password);
+
+                    userRepository.createUser(newUser, new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            if (response.isSuccessful()) {
+                                getUsers(); // Actualiza la lista de usuarios
+                            } else {
+                                Toast.makeText(UserManagementActivity.this, "Error al agregar usuario: " + response.code(), Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(UserManagementActivity.this, "Error al agregar usuario", Toast.LENGTH_LONG).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Toast.makeText(UserManagementActivity.this, "Error al agregar usuario", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
+
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -146,8 +150,7 @@ public class UserManagementActivity extends AppCompatActivity {
         nameEditText.setText(user.getName());
         surnameEditText.setText(user.getSurname());
         emailEditText.setText(user.getEmail());
-        // Aquí puedes establecer la contraseña actual si la tienes almacenada en el objeto 'user'
-        // passwordEditText.setText(user.getPassword());
+
 
         builder.setTitle("Actualizar Usuario");
         builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
@@ -155,8 +158,8 @@ public class UserManagementActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String updatedName = nameEditText.getText().toString();
                 String updatedSurname = surnameEditText.getText().toString();
-                String updatedEmail = emailEditText.getText().toString();
-                String updatedPassword = passwordEditText.getText().toString();
+                String updatedEmail = user.getEmail(); // Usa el email actual. No se puede actualizar.
+                String updatedPassword = user.getPassword(); // Usa el password actual. No se puede actualizar.
 
                 user.setName(updatedName);
                 user.setSurname(updatedSurname);
@@ -180,9 +183,11 @@ public class UserManagementActivity extends AppCompatActivity {
                 });
             }
         });
+
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 
 
@@ -193,9 +198,9 @@ public class UserManagementActivity extends AppCompatActivity {
         builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Aquí puedes llamar al método para eliminar el usuario de la base de datos, luego actualizar la lista y notificar al adaptador
             }
         });
+
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -214,7 +219,6 @@ public class UserManagementActivity extends AppCompatActivity {
                 Toast.makeText(UserManagementActivity.this, "Error al eliminar usuario", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private void getUsers() {

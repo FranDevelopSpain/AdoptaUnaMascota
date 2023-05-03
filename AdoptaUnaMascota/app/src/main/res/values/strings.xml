@@ -24,4 +24,5 @@
     <string name="update_user">Actualizar usuario</string>
     <string name="cancel">Cancelar</string>
     <string name="add_user">Añadir</string>
+    <string name="add_animal">Añadir</string>
 </resources>

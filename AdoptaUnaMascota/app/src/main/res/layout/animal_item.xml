@@ -23,12 +23,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Felipe" />
+
         <TextView
-            android:id="@+id/animal_gender"
+            android:id="@+id/animal_species"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender"/>
+            android:text="Species" />
 
+        <TextView
+            android:id="@+id/animal_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age" />
         <TextView
             android:id="@+id/animal_description"
             android:layout_width="wrap_content"
@@ -37,3 +43,4 @@
 
     </LinearLayout>
 </LinearLayout>
+

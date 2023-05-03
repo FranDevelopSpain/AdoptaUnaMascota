@@ -41,12 +41,12 @@ public interface ApiService {
     Call<Void> deleteUser(@Path("id") long id);
 
     //Animales
-    @GET("animals/{id}")
-    Call<List<Animal>>getAllAnimals();
-    @POST("animals")
-    Call<Void> createAnimal(@Body Animal animal);
-    @PUT("animals/{id}")
-    Call<Void> updateAnimal(@Path("id") int id, @Body Animal animal);
-    @DELETE("animals/{id}")
-    Call<Void> deleteAnimal(@Path("id") int id, @Body Animal animal);
+    @GET("api/animals")
+    Call<List<Animal>> getAnimals();
+    @POST("api/animals")
+    Call<Animal> createAnimal(@Body Animal animal);
+    @PUT("api/animals/{id}")
+    Call<Animal> updateAnimal(@Path("id") long id, @Body Animal animal);
+    @DELETE("api/animals/{id}")
+    Call<Void> deleteAnimal(@Path("id") long id);
 }

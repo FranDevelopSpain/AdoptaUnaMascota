@@ -1,5 +1,7 @@
 package com.tfg.adoptaunamascota.adapters;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +11,40 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.animals.Animal;
+import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
 
 import java.util.List;
 
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder> {
 
     private List<Animal> animalList;
+    private Context context;
+    private AnimalsManagementActivity animalsManagementActivity;
+    private int selectedPosition = -1;
 
-    public AnimalAdapter(List<Animal> animalList) {
+    public AnimalAdapter(List<Animal> animalList, Context context, AnimalsManagementActivity animalsManagementActivity) {
         this.animalList = animalList;
+        this.context = context;
+        this.animalsManagementActivity = animalsManagementActivity;
+    }
+
+    public void setAnimalList(List<Animal> animalList) {
+        this.animalList = animalList;
+    }
+
+    public Animal getSelectedAnimal() {
+        if (selectedPosition >= 0 && selectedPosition < animalList.size()) {
+            return animalList.get(selectedPosition);
+        }
+        return null;
+    }
+
+    // Añade el método getAnimals() para devolver la lista de animales
+    public List<Animal> getAnimals() {
+        return animalList;
     }
 
     @NonNull
@@ -34,10 +59,21 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
     public void onBindViewHolder(@NonNull AnimalViewHolder holder, int position) {
         Animal animal = animalList.get(position);
         holder.animalName.setText(animal.getName());
-        holder.animalGender.setText(animal.getGender());
-        holder.animalDescription.setText(animal.getDescription());
-        holder.animalImage.setImageResource(animal.getImageResource());
+        holder.animalSpecies.setText(animal.getSpecies());
+        holder.animalAge.setText(String.valueOf(animal.getEdadEnMeses()) + " meses");
 
+        // Usamos Glide para cargar la imagen desde la URL
+        Glide.with(context)
+                .load(animal.getImage())
+                .placeholder(R.drawable.placeholder_image) // Añade un marcador de posición si la imagen aún no se ha cargado
+                .error(R.drawable.error_image) // Añade una imagen de error en caso de que la carga falle
+                .into(holder.animalImage);
+
+        if (position == selectedPosition) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#EEEEEE"));
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     @Override
@@ -45,22 +81,32 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         return animalList.size();
     }
 
-    public static class AnimalViewHolder extends RecyclerView.ViewHolder {
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
+    class AnimalViewHolder extends RecyclerView.ViewHolder {
         private ImageView animalImage;
         private TextView animalName;
-        private TextView animalGender;
-        private TextView animalDescription;
+        private TextView animalSpecies;
+        private TextView animalAge;
 
         public AnimalViewHolder(@NonNull View itemView) {
             super(itemView);
             animalImage = itemView.findViewById(R.id.animal_image);
             animalName = itemView.findViewById(R.id.animal_name);
-            animalGender = itemView.findViewById(R.id.animal_gender); // Añade esta línea
-            animalDescription = itemView.findViewById(R.id.animal_description);
+            animalSpecies = itemView.findViewById(R.id.animal_species);
+            animalAge = itemView.findViewById(R.id.animal_age);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    setSelectedPosition(position);
+                    animalsManagementActivity.setSelectedAnimal(animalList.get(position));
+                }
+            });
         }
     }
-    public void setAnimalList(List<Animal> animalList) {
-        this.animalList = animalList;
-    }
-
 }
