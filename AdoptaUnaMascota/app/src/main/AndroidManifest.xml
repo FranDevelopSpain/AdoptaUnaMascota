@@ -44,6 +44,7 @@
             android:exported="false" />
 
         <activity android:name=".views.home.crudAdmin.UserManagementActivity" />
+        <activity android:name=".views.home.crudAdmin.AnimalsManagementActivity" />
     </application>
 
 </manifest>

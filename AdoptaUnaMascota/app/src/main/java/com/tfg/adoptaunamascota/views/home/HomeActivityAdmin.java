@@ -74,7 +74,9 @@ public class HomeActivityAdmin extends AppCompatActivity {
                 Intent intent;
                 switch (id) {
                     case R.id.nav_animales:
-                        // Código para mostrar la opción "Animales"
+                        // Ir a la actividad AnimalsManagementActivity
+                        intent = new Intent(HomeActivityAdmin.this, AnimalsManagementActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.nav_usuarios:
                         // Ir a la actividad UserManagementActivity
