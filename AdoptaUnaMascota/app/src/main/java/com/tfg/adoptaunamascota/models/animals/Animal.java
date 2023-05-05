@@ -28,8 +28,10 @@ public class Animal implements Serializable {
     String subcategoria;
     @SerializedName("raza")
     String raza;
+    @SerializedName("image_byte_array")
+    byte[] imageByteArray;
 
-    public Animal(Long id, String type, String gender, String name, int edad, String description, String image, String species, String categoria, String subcategoria, String raza) {
+    public Animal(Long id, String type, String gender, String name, int edad, String description, String image, String species, String categoria, String subcategoria, String raza, byte[] imageByteArray) {
         this.id = id;
         this.type = type;
         this.gender = gender;
@@ -41,23 +43,49 @@ public class Animal implements Serializable {
         this.categoria = categoria;
         this.subcategoria = subcategoria;
         this.raza = raza;
+        this.imageByteArray = imageByteArray;
     }
 
-    public Animal(String name, String species, int edad) {
+    public Animal(String name, String species, int edad, byte[] imageByteArray) {
         this.name = name;
         this.species = species;
         this.edad = edad;
+        this.imageByteArray = imageByteArray;
+
     }
 
-    public Animal(String name, String category, String breed, int age, String description) {
+    public Animal(String name, String category, String breed, int age, String description, String animalType, byte[] imageByteArray) {
         this.name = name;
         this.categoria = category;
         this.raza = breed;
         this.edad = age;
         this.description = description;
+        this.imageByteArray = imageByteArray;
+
     }
 
+    public Animal(String name, String species, int age) {
+    }
+
+    public Animal(String name, String category, String breed, int age, String description) {
+    }
+
+    public Animal(Long id, String cat, String gender, String name, int age, String description, String image, String species, String category, String subcategory, String breed) {
+    }
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
+    public void setImageByteArray(byte[] imageByteArray) {
+        this.imageByteArray = imageByteArray;
+    }
+
+
     public Animal() {
+    }
+
+    public Animal(String name, String category, String breed, int parseInt, String description, String animalType) {
     }
 
     public long getId() {

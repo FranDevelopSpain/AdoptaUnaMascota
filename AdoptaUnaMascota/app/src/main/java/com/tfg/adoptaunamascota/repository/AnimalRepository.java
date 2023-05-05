@@ -12,7 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-    public class AnimalRepository {
+public class AnimalRepository {
         private ApiService apiService;
 
         public AnimalRepository(Context context, String baseUrl) {

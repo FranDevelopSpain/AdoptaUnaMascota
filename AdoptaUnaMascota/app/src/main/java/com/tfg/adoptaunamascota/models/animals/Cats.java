@@ -29,6 +29,6 @@ public class Cats extends Animal {
 
     @Override
     public int getEdadEnMeses() {
-        return getEdad() * 12;
+        return getAge() * 12;
     }
 }
