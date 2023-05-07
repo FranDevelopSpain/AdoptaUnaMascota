@@ -16,7 +16,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -64,7 +63,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         animalAdapter = new AnimalAdapter(new ArrayList<>(), this, this);
         animalRecyclerView.setAdapter(animalAdapter);
 
-        String baseUrl = "http://192.168.43.1:300";
+        String baseUrl = "http://10.0.2.2:8080";
 
         animalRepository = new AnimalRepository(this, baseUrl);
         Button addAnimalButton = findViewById(R.id.add_animal_button);
@@ -113,8 +112,8 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_add_animal, null);
         builder.setView(dialogView);
         final EditText nameEditText = dialogView.findViewById(R.id.dialog_animal_name);
-        final EditText categorieEditText = dialogView.findViewById(R.id.dialog_animal_species);
-        final Spinner breedSpinner = dialogView.findViewById(R.id.dialog_animal_breed_spinner);
+        final EditText speciesEditText = dialogView.findViewById(R.id.dialog_animal_species);
+        final EditText razaEditText = dialogView.findViewById(R.id.dialog_animal_breed_spinner);
         final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
         final EditText descriptionEditText = dialogView.findViewById(R.id.dialog_animal_description);
         imageAnimal = dialogView.findViewById(R.id.dialog_animal_image);
@@ -122,7 +121,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         final RadioGroup animalTypeRadioGroup = dialogView.findViewById(R.id.dialog_animal_type_radio_group);
         final RadioButton dogRadioButton = dialogView.findViewById(R.id.dialog_animal_type_dog);
         final RadioButton catRadioButton = dialogView.findViewById(R.id.dialog_animal_type_cat);
-
         selectImageButton.setOnClickListener(v -> {
             startDrawableImagePickerDialog();
         });
@@ -131,18 +129,18 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         builder.setTitle("Agregar Animal");
         builder.setPositiveButton("Agregar", (dialog, which) -> {
             String name = nameEditText.getText().toString();
-            String category = categorieEditText.getText().toString();
-            String breed = breedSpinner.getSelectedItem().toString();
+            String category = speciesEditText.getText().toString();
+            String raza = razaEditText.getText().toString();
             String age = ageEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
             String animalType = dogRadioButton.isChecked() ? "Dog" : "Cat";
 
-            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(category) && !TextUtils.isEmpty(breed) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(description) && imageAnimal.getDrawable() != null) {
+            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(category) && !TextUtils.isEmpty(raza) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(description) && imageAnimal.getDrawable() != null) {
                 imageAnimal.setDrawingCacheEnabled(true);
                 byte[] imageBytes = bitmapToByteArray(imageAnimal.getDrawingCache());
-                Animal animal = new Animal(name, category, breed, Integer.parseInt(age), description, animalType, imageBytes);
+                Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBytes);
                 addAnimal(animal);
-            } else {
+                } else {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, complete todos los campos y seleccione una imagen.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -368,5 +366,4 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         drawableImagePickerDialog = builder.create();
         drawableImagePickerDialog.show();
     }
-
 }

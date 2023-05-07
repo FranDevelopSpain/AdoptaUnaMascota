@@ -7,41 +7,36 @@ import java.io.Serializable;
 public class Animal implements Serializable {
     @SerializedName("id")
     long id;
-    @SerializedName("type")
-    String type;
-    @SerializedName("gender")
-    String gender;
-    @SerializedName("name")
-    String name;
-    @SerializedName("edad")
-    int edad;
-    @SerializedName("description")
-    String description;
-    @SerializedName("image")
-    String image;
-
-    @SerializedName("species")
-    String species;
     @SerializedName("categoria")
     String categoria;
-    @SerializedName("subcategoria")
-    String subcategoria;
+    @SerializedName("description")
+    String description;
+    @SerializedName("name")
+    String name;
     @SerializedName("raza")
     String raza;
+    @SerializedName("gender")
+    String gender;
+    @SerializedName("image")
+    String image;
     @SerializedName("image_byte_array")
     byte[] imageByteArray;
+    @SerializedName("species")
+    String species;
+    @SerializedName("type")
+    String type;
+    @SerializedName("edad")
+    int edad;
 
-    public Animal(Long id, String type, String gender, String name, int edad, String description, String image, String species, String categoria, String subcategoria, String raza, byte[] imageByteArray) {
+    public Animal(Long id, String type, String gender, String name, int edad, String description, String species, String categoria, String raza, byte[] imageByteArray) {
         this.id = id;
         this.type = type;
         this.gender = gender;
         this.name = name;
         this.edad = edad;
         this.description = description;
-        this.image = image;
         this.species = species;
         this.categoria = categoria;
-        this.subcategoria = subcategoria;
         this.raza = raza;
         this.imageByteArray = imageByteArray;
     }
@@ -64,13 +59,13 @@ public class Animal implements Serializable {
 
     }
 
+    public Animal(Long id, String cat, String gender, String name, int age, String description, String image, String species, String category, String subcategory, String breed) {
+    }
+
     public Animal(String name, String species, int age) {
     }
 
     public Animal(String name, String category, String breed, int age, String description) {
-    }
-
-    public Animal(Long id, String cat, String gender, String name, int age, String description, String image, String species, String category, String subcategory, String breed) {
     }
 
     public byte[] getImageByteArray() {
@@ -83,9 +78,6 @@ public class Animal implements Serializable {
 
 
     public Animal() {
-    }
-
-    public Animal(String name, String category, String breed, int parseInt, String description, String animalType) {
     }
 
     public long getId() {
@@ -102,14 +94,6 @@ public class Animal implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getName() {
@@ -140,10 +124,6 @@ public class Animal implements Serializable {
         return image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public String getSpecies() {
         return species;
     }
@@ -154,26 +134,6 @@ public class Animal implements Serializable {
 
     public String getCategoria() {
         return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getSubcategoria() {
-        return subcategoria;
-    }
-
-    public void setSubcategoria(String subcategoria) {
-        this.subcategoria = subcategoria;
-    }
-
-    public String getRaza() {
-        return raza;
-    }
-
-    public void setRaza(String raza) {
-        this.raza = raza;
     }
 
     public int getEdadEnMeses() {
