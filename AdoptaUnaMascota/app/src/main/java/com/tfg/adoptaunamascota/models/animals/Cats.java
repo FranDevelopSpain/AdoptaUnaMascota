@@ -2,8 +2,8 @@ package com.tfg.adoptaunamascota.models.animals;
 
 public class Cats extends Animal {
 
-    public Cats(Long id, String gender, String name, int age, String species, String category, String subcategory, String breed, String image, String description) {
-        super(id, "Cat", gender, name, age, description, image, species, category, subcategory, breed);
+    public Cats(Long id, String gender, String name, int age, String species, String category, String subcategory, String breed, byte[] image, String description) {
+        super(id, "Cat", gender, name, age, description, species, category, breed, image);
     }
 
     public Cats(String name, String species, int age) {

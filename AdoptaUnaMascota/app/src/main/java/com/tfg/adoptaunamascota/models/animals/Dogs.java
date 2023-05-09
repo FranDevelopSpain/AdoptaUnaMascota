@@ -4,8 +4,8 @@ public class Dogs extends Animal {
 
     private String size;
 
-    public Dogs(Long id, String gender, String name, String size, int age, String species, String category, String subcategory, String breed, String image, String description) {
-        super(id, "Dog", gender, name, age, description, image, species, category, subcategory, breed);
+    public Dogs(Long id, String gender, String name, String size, int age, String species, String category, String subcategory, String breed, byte[] image, String description) {
+        super(id, "Dog", gender, name, age, description, species, category, breed, image);
         setType("Dog");
         this.size = size;
     }

@@ -47,12 +47,20 @@ public interface ApiService {
     Call<Void> deleteUser(@Path("id") long id);
 
     //Animales
-    @GET("api/animals")
+    @GET("api/animals/")
     Call<List<Animal>> getAnimals();
 
     @Multipart
-    @POST("api/animals")
-    Call<Animal> createAnimal(@Part("animal") RequestBody animal, @Part MultipartBody.Part image);
+    @POST("api/animals/")
+    Call<Animal> createAnimal(
+            @Part("name") RequestBody name,
+            @Part("category") RequestBody category,
+            @Part("raza") RequestBody raza,
+            @Part("age") RequestBody age,
+            @Part("description") RequestBody description,
+            @Part("animalType") RequestBody animalType,
+            @Part MultipartBody.Part image
+    );
 
     @PUT("api/animals/{id}")
     Call<Animal> updateAnimal(@Path("id") long id, @Body Animal animal);

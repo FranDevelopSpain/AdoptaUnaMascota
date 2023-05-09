@@ -9,18 +9,16 @@ public class Animal implements Serializable {
     long id;
     @SerializedName("categoria")
     String categoria;
-    @SerializedName("description")
-    String description;
+    @SerializedName("descripcion")
+    String descripcion;
     @SerializedName("name")
     String name;
     @SerializedName("raza")
     String raza;
     @SerializedName("gender")
     String gender;
-    @SerializedName("image")
-    String image;
-    @SerializedName("image_byte_array")
-    byte[] imageByteArray;
+    @SerializedName("imageByteArray")
+    byte[] image;
     @SerializedName("species")
     String species;
     @SerializedName("type")
@@ -34,18 +32,16 @@ public class Animal implements Serializable {
         this.gender = gender;
         this.name = name;
         this.edad = edad;
-        this.description = description;
+        this.descripcion = descripcion;
         this.species = species;
         this.categoria = categoria;
         this.raza = raza;
-        this.imageByteArray = imageByteArray;
     }
 
     public Animal(String name, String species, int edad, byte[] imageByteArray) {
         this.name = name;
         this.species = species;
         this.edad = edad;
-        this.imageByteArray = imageByteArray;
 
     }
 
@@ -54,12 +50,12 @@ public class Animal implements Serializable {
         this.categoria = category;
         this.raza = breed;
         this.edad = age;
-        this.description = description;
-        this.imageByteArray = imageByteArray;
+        this.descripcion = descripcion;
 
     }
 
-    public Animal(Long id, String cat, String gender, String name, int age, String description, String image, String species, String category, String subcategory, String breed) {
+    public Animal(Long id, String cat, String gender, String name, int age, String description,byte[] image,
+                  String species, String category, String subcategory, String breed) {
     }
 
     public Animal(String name, String species, int age) {
@@ -68,17 +64,9 @@ public class Animal implements Serializable {
     public Animal(String name, String category, String breed, int age, String description) {
     }
 
-    public byte[] getImageByteArray() {
-        return imageByteArray;
-    }
-
-    public void setImageByteArray(byte[] imageByteArray) {
-        this.imageByteArray = imageByteArray;
-    }
-
-
     public Animal() {
     }
+
 
     public long getId() {
         return id;
@@ -113,16 +101,20 @@ public class Animal implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return descripcion;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.descripcion = description;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
 
     public String getSpecies() {
         return species;

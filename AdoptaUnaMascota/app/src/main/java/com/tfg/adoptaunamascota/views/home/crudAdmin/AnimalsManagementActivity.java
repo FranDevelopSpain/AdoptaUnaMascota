@@ -320,11 +320,18 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Animal addedAnimal = response.body();
                     // Establece la imagen en el animal agregado
-                    addedAnimal.setImageByteArray(animal.getImageByteArray());
+                    addedAnimal.setImage(animal.getImage());
                     animalList.add(addedAnimal);
                     animalAdapter.setAnimalList(animalList); // Cambia setAnimals a setAnimalList
-                } else {
-                    Toast.makeText(AnimalsManagementActivity.this, "Error al agregar animal", Toast.LENGTH_SHORT).show();
+                    String errorMessage = "Error al agregar animal";
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage = response.errorBody().string();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Toast.makeText(AnimalsManagementActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -334,6 +341,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             }
         });
     }
+
     private void startDrawableImagePickerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
