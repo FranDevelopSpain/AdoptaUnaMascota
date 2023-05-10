@@ -33,6 +33,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
 
     public void setAnimalList(List<Animal> animalList) {
         this.animalList = animalList;
+        notifyDataSetChanged();
     }
 
     public Animal getSelectedAnimal() {

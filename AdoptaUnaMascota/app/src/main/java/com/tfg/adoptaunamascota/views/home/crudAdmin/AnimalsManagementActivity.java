@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,27 +50,20 @@ public class AnimalsManagementActivity extends AppCompatActivity {
     private ImageView imageAnimal;
     private AlertDialog drawableImagePickerDialog;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animals_management);
-
         animalRecyclerView = findViewById(R.id.recyclerView);
         animalRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         // Inicializa el adaptador con una lista vacía y pasa el contexto y la instancia de AnimalsManagementActivity
         animalAdapter = new AnimalAdapter(new ArrayList<>(), this, this);
         animalRecyclerView.setAdapter(animalAdapter);
-
         String baseUrl = "http://10.0.2.2:8080";
-
         animalRepository = new AnimalRepository(this, baseUrl);
         Button addAnimalButton = findViewById(R.id.add_animal_button);
         Button updateAnimalButton = findViewById(R.id.btnUpdate);
         Button deleteAnimalButton = findViewById(R.id.btnDelete);
-
         getAnimals();
 
         addAnimalButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +95,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             }
         });
     }
-
     public void setSelectedAnimal(Animal animal) {
         this.selectedAnimal = animal;
     }
@@ -124,8 +117,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         selectImageButton.setOnClickListener(v -> {
             startDrawableImagePickerDialog();
         });
-
-
         builder.setTitle("Agregar Animal");
         builder.setPositiveButton("Agregar", (dialog, which) -> {
             String name = nameEditText.getText().toString();
@@ -134,44 +125,26 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             String age = ageEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
             String animalType = dogRadioButton.isChecked() ? "Dog" : "Cat";
-
             if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(category) && !TextUtils.isEmpty(raza) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(description) && imageAnimal.getDrawable() != null) {
                 imageAnimal.setDrawingCacheEnabled(true);
                 byte[] imageBytes = bitmapToByteArray(imageAnimal.getDrawingCache());
                 Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBytes);
                 addAnimal(animal);
-                } else {
+            } else {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, complete todos los campos y seleccione una imagen.", Toast.LENGTH_SHORT).show();
             }
         });
-
         builder.setNegativeButton("Cancelar", (dialog, which) -> {
             dialog.dismiss();
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-    private void startGalleryIntent() {
-        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getIntent.setType("image/*");
-
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
-
-        Intent chooserIntent = Intent.createChooser(getIntent, "Seleccione una imagen");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-
-        startActivityForResult(chooserIntent, 1000);
-    }
-
     private byte[] bitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -196,9 +169,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             }
         }
     }
-
     private void showUpdateAnimalDialog(final Animal animal) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_update_animal, null);
@@ -213,13 +184,11 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         nameEditText.setText(animal.getName());
         speciesEditText.setText(animal.getSpecies());
         ageEditText.setText(String.valueOf(animal.getEdad()));
-
         builder.setTitle("Actualizar Animal");
         builder.setPositiveButton("Actualizar", (dialog, which) -> {
             String updatedName = nameEditText.getText().toString();
             String updatedSpecies = speciesEditText.getText().toString();
             String updatedAgeString = ageEditText.getText().toString();
-
             if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedAgeString)) {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
             } else {
@@ -233,11 +202,9 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                     Toast.makeText(AnimalsManagementActivity.this, "Por favor, seleccione si el animal es un perro o un gato.", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 animal.setName(updatedName);
                 animal.setSpecies(updatedSpecies);
                 animal.setEdad(updatedAge);
-
                 animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>() {
                     @Override
                     public void onResponse(Call<Animal> call, Response<Animal> response) {
@@ -247,7 +214,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                             Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal: " + response.code(), Toast.LENGTH_LONG).show();
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Animal> call, Throwable t) {
                         Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal", Toast.LENGTH_LONG).show();
@@ -255,13 +221,10 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                 });
             }
         });
-
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
     private void deleteAnimal(final Animal animal) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -277,13 +240,11 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                     Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal: " + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal", Toast.LENGTH_LONG).show();
             }
         }));
-
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -295,11 +256,8 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             public void onResponse(Call<List<Animal>> call, Response<List<Animal>> response) {
                 if (response.isSuccessful()) {
                     animalList = response.body();
-
-                    // Actualiza el adaptador con la lista de animales
+                    Log.d("AnimalsManagementActivity", "Obtained " + animalList.size() + " animals from the server");
                     animalAdapter.setAnimalList(animalList);
-
-                    // Notifica al RecyclerView que los datos han cambiado
                     animalAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(AnimalsManagementActivity.this, "Error de respuesta: " + response.code(), Toast.LENGTH_LONG).show();
@@ -314,15 +272,23 @@ public class AnimalsManagementActivity extends AppCompatActivity {
     }
 
     private void addAnimal(Animal animal) {
+        // Convertir la imagen a Base64 antes de enviarla
+        String imageBase64 = Base64.encodeToString(animal.getImage(), Base64.DEFAULT);
+        animal.setImageString(imageBase64);
+
         animalRepository.createAnimal(animal, new Callback<Animal>() {
             @Override
             public void onResponse(Call<Animal> call, Response<Animal> response) {
                 if (response.isSuccessful()) {
                     Animal addedAnimal = response.body();
-                    // Establece la imagen en el animal agregado
-                    addedAnimal.setImage(animal.getImage());
+                    // Decodificar la imagen desde Base64 antes de establecerla en el animal agregado
+                    byte[] decodedImage = Base64.decode(addedAnimal.getImageString(), Base64.DEFAULT);
+                    addedAnimal.setImage(String.valueOf(decodedImage));
+
                     animalList.add(addedAnimal);
                     animalAdapter.setAnimalList(animalList); // Cambia setAnimals a setAnimalList
+
+                } else {
                     String errorMessage = "Error al agregar animal";
                     if (response.errorBody() != null) {
                         try {
@@ -347,10 +313,8 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_drawable_image_picker, null);
         builder.setView(dialogView);
-
         GridView gridView = dialogView.findViewById(R.id.drawable_image_picker_gridview);
         List<Integer> imageResourceIds = new ArrayList<>();
-
         // Agrega los IDs de recursos de las imágenes de la carpeta drawable aquí
         imageResourceIds.add(R.drawable.gato1);
         imageResourceIds.add(R.drawable.gato2);
@@ -358,19 +322,15 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         imageResourceIds.add(R.drawable.perro1);
         imageResourceIds.add(R.drawable.perro2);
         imageResourceIds.add(R.drawable.perro3);
-
         DrawableImagePickerAdapter adapter = new DrawableImagePickerAdapter(this, imageResourceIds);
         gridView.setAdapter(adapter);
-
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             int selectedImageResourceId = imageResourceIds.get(position);
             imageAnimal.setImageResource(selectedImageResourceId);
             drawableImagePickerDialog.dismiss();
         });
-
         builder.setTitle("Seleccione una imagen");
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-
         drawableImagePickerDialog = builder.create();
         drawableImagePickerDialog.show();
     }

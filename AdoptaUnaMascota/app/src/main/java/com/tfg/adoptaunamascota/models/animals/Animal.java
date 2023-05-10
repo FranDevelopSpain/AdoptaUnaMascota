@@ -1,5 +1,7 @@
 package com.tfg.adoptaunamascota.models.animals;
 
+import android.util.Base64;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -15,46 +17,49 @@ public class Animal implements Serializable {
     String name;
     @SerializedName("raza")
     String raza;
-    @SerializedName("gender")
-    String gender;
-    @SerializedName("imageByteArray")
-    byte[] image;
+    @SerializedName("image")
+    String image;  // Ahora es String
+
     @SerializedName("species")
     String species;
     @SerializedName("type")
     String type;
-    @SerializedName("edad")
-    int edad;
+    @SerializedName("age")
+    int age;
+    @SerializedName("gender")
+    String gender;
 
-    public Animal(Long id, String type, String gender, String name, int edad, String description, String species, String categoria, String raza, byte[] imageByteArray) {
+    // Actualiza los constructores para aceptar la imagen como String
+    public Animal(Long id, String type, String name, String s, int age, String descripcion, String species, String categoria, String raza, String imageBase64) {
         this.id = id;
         this.type = type;
-        this.gender = gender;
         this.name = name;
-        this.edad = edad;
+        this.age = age;
         this.descripcion = descripcion;
         this.species = species;
         this.categoria = categoria;
         this.raza = raza;
+        this.image = imageBase64;
     }
 
-    public Animal(String name, String species, int edad, byte[] imageByteArray) {
+    public Animal(String name, String species, String raza, int age, String imageBase64, String animalType, byte[] imageBytes) {
         this.name = name;
         this.species = species;
-        this.edad = edad;
-
+        this.age = age;
+        this.image = imageBase64;
     }
 
-    public Animal(String name, String category, String breed, int age, String description, String animalType, byte[] imageByteArray) {
+    public Animal(String name, String category, String breed, int age, String descripcion, String animalType, String imageBase64) {
         this.name = name;
         this.categoria = category;
         this.raza = breed;
-        this.edad = age;
+        this.age = age;
         this.descripcion = descripcion;
-
+        this.image = imageBase64;
     }
 
-    public Animal(Long id, String cat, String gender, String name, int age, String description,byte[] image,
+
+    public Animal(Long id, String cat, String gender, String name, int age, String descripcion,byte[] image,
                   String species, String category, String subcategory, String breed) {
     }
 
@@ -93,11 +98,11 @@ public class Animal implements Serializable {
     }
 
     public int getEdad() {
-        return edad;
+        return age;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setEdad(int age) {
+        this.age = age;
     }
 
     public String getDescription() {
@@ -109,10 +114,11 @@ public class Animal implements Serializable {
     }
 
     public byte[] getImage() {
-        return image;
+        return Base64.decode(image, Base64.DEFAULT);
     }
-    public void setImage(byte[] image) {
-        this.image = image;
+
+    public void setImage(String imageBase64) {
+        this.image = imageBase64;
     }
 
 
@@ -129,10 +135,17 @@ public class Animal implements Serializable {
     }
 
     public int getEdadEnMeses() {
-        return edad * 12;
+        return age * 12;
     }
 
     public int getAge() {
-        return edad;
+        return age;
+    }
+
+    public void setImageString(String imageBase64) {
+    }
+
+    public byte[] getImageString() {
+        return Base64.decode(image, Base64.DEFAULT);
     }
 }

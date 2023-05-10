@@ -2,6 +2,7 @@ package com.tfg.adoptaunamascota.repository;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.service.ApiService;
 
@@ -32,20 +33,19 @@ public class AnimalRepository {
     }
 
     public void createAnimal(Animal animal, Callback<Animal> callback) {
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), animal.getName() != null ? animal.getName() : "");
-        RequestBody category = RequestBody.create(MediaType.parse("text/plain"), animal.getCategoria() != null ? animal.getCategoria() : "");
-        RequestBody raza = RequestBody.create(MediaType.parse("text/plain"), animal.getSpecies() != null ? animal.getSpecies() : "");
-        RequestBody age = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(animal.getEdad()));
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), animal.getDescription() != null ? animal.getDescription() : "");
-        RequestBody animalType = RequestBody.create(MediaType.parse("text/plain"), animal.getType() != null ? animal.getType() : "");
+        // Convertir el objeto Animal a JSON
+        Gson gson = new Gson();
+        String animalJson = gson.toJson(animal);
+        RequestBody animalRequestBody = RequestBody.create(MediaType.parse("application/json"), animalJson);
 
         // Crear MultipartBody.Part a partir de los bytes de la imagen
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), animal.getImage() != null ? animal.getImage() : new byte[0]);
         MultipartBody.Part image = MultipartBody.Part.createFormData("image", "animal_image.png", requestBody);
 
-        Call<Animal> call = apiService.createAnimal(name, category, raza, age, description, animalType, image);
+        Call<Animal> call = apiService.createAnimal(animalRequestBody, image);
         call.enqueue(callback);
     }
+
 
     public void updateAnimal(long id, Animal animal, Callback<Animal> callback) {
         Call<Animal> call = apiService.updateAnimal(id, animal);
