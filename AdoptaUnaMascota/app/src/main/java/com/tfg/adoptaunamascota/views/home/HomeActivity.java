@@ -50,9 +50,6 @@ public class HomeActivity extends AppCompatActivity {
     private void setupExpandableListView() {
         HashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
 
-        List<String> allAnimals = new ArrayList<>();
-        allAnimals.add("Todos los animales");
-
         List<String> dogs = new ArrayList<>();
         dogs.add("Perros pequeños");
         dogs.add("Perros medianos");
@@ -62,7 +59,6 @@ public class HomeActivity extends AppCompatActivity {
         cats.add("Menos de 6 meses");
         cats.add("Más de 6 meses");
 
-        expandableListDetail.put("Todos los animales", allAnimals);
         expandableListDetail.put("Adoptar un perro", dogs);
         expandableListDetail.put("Adoptar un gato", cats);
 

@@ -7,57 +7,43 @@ import java.io.Serializable;
 public class Animal implements Serializable {
     @SerializedName("id")
     long id;
-    @SerializedName("type")
-    String type;
-    @SerializedName("gender")
-    String gender;
     @SerializedName("name")
     String name;
-    @SerializedName("edad")
-    int edad;
-    @SerializedName("description")
-    String description;
-    @SerializedName("image")
-    String image;
-
     @SerializedName("species")
     String species;
+    @SerializedName("age")
+    int age;
     @SerializedName("categoria")
     String categoria;
-    @SerializedName("subcategoria")
-    String subcategoria;
+    @SerializedName("type")
+    String type;
+    @SerializedName("descripcion")
+    String descripcion;
     @SerializedName("raza")
     String raza;
+    @SerializedName("image")
+    String imageBase64;
+    @SerializedName("gender")
+    String gender;
 
-    public Animal(Long id, String type, String gender, String name, int edad, String description, String image, String species, String categoria, String subcategoria, String raza) {
-        this.id = id;
-        this.type = type;
-        this.gender = gender;
-        this.name = name;
-        this.edad = edad;
-        this.description = description;
-        this.image = image;
-        this.species = species;
-        this.categoria = categoria;
-        this.subcategoria = subcategoria;
-        this.raza = raza;
-    }
 
-    public Animal(String name, String species, int edad) {
-        this.name = name;
-        this.species = species;
-        this.edad = edad;
-    }
-
-    public Animal(String name, String category, String breed, int age, String description) {
+    public Animal(String name, String category, String raza, int i, String description, String animalType, String imageBase64,String gender) {
         this.name = name;
         this.categoria = category;
-        this.raza = breed;
-        this.edad = age;
-        this.description = description;
+        this.raza = raza;
+        this.age = i;
+        this.descripcion = description;
+        this.type = animalType;
+        this.gender=gender;
+        this.imageBase64 = imageBase64;
     }
 
-    public Animal() {
+    public Animal(String name, String species, String raza, int age, String imageBase64) {
+        this.name = name;
+        this.species = species;
+        this.raza = raza;
+        this.age = age;
+        this.imageBase64 = imageBase64;
     }
 
     public long getId() {
@@ -76,14 +62,6 @@ public class Animal implements Serializable {
         this.type = type;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getName() {
         return name;
     }
@@ -93,27 +71,27 @@ public class Animal implements Serializable {
     }
 
     public int getEdad() {
-        return edad;
+        return age;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setEdad(int age) {
+        this.age = age;
     }
 
     public String getDescription() {
-        return description;
+        return descripcion;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.descripcion = description;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageBase64() {
+        return imageBase64;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 
     public String getSpecies() {
@@ -128,31 +106,20 @@ public class Animal implements Serializable {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getSubcategoria() {
-        return subcategoria;
-    }
-
-    public void setSubcategoria(String subcategoria) {
-        this.subcategoria = subcategoria;
-    }
-
-    public String getRaza() {
-        return raza;
-    }
-
-    public void setRaza(String raza) {
-        this.raza = raza;
-    }
-
     public int getEdadEnMeses() {
-        return edad * 12;
+        return age * 12;
     }
 
     public int getAge() {
-        return edad;
+        return age;
+    }
+
+    public void setImageString(String imageBase64) {
+        this.imageBase64 = imageBase64;
+    }
+
+    public String getImageString() {
+        return imageBase64;
     }
 }
+

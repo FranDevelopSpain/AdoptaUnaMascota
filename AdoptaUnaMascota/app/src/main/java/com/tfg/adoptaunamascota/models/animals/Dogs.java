@@ -1,34 +1,12 @@
 package com.tfg.adoptaunamascota.models.animals;
 
 public class Dogs extends Animal {
-
-    private String size;
-
-    public Dogs(Long id, String gender, String name, String size, int age, String species, String category, String subcategory, String breed, String image, String description) {
-        super(id, "Dog", gender, name, age, description, image, species, category, subcategory, breed);
-        setType("Dog");
-        this.size = size;
+    public Dogs(String name, String category, String raza, int i, String description, String animalType, String imageBase64, String gender) {
+        super(name, category, raza, i, description, animalType, imageBase64,gender);
     }
 
-    public Dogs(String name, String species, int age) {
-        super(name, species, age);
-        setType("Dog");
-        setDescription("This is a dog description");
-    }
-
-    public Dogs(String name, String category, String breed, int age, String description) {
-        super(name, category, breed, age, description);
-        setType("Dog");
-    }
-
-    public Dogs() {
-        super();
-        setType("Dog");
-        setDescription("This is a dog description");
-    }
-
-    public String getSize() {
-        return size;
+    public Dogs(String name, String species, String raza, int age, String imageBase64) {
+        super(name, species, raza, age, imageBase64);
     }
 
     @Override

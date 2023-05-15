@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="animal_images">
+        <item>perro1</item>
+        <item>gato1</item>
+        <!-- Añade más nombres de imágenes aquí -->
+    </string-array>
+</resources>

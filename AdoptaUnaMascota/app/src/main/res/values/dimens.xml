@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin" />
     <dimen name="activity_horizontal_margin" />
     <dimen name="nav_header_height" />
+    <dimen name="image_size">100dp</dimen>
 </resources>
