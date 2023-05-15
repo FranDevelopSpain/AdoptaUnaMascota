@@ -9,7 +9,6 @@ import com.tfg.adoptaunamascota.service.ApiService;
 import java.util.List;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,13 +37,11 @@ public class AnimalRepository {
         String animalJson = gson.toJson(animal);
         RequestBody animalRequestBody = RequestBody.create(MediaType.parse("application/json"), animalJson);
 
-        // Crear MultipartBody.Part a partir de los bytes de la imagen
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), animal.getImage() != null ? animal.getImage() : new byte[0]);
-        MultipartBody.Part image = MultipartBody.Part.createFormData("image", "animal_image.png", requestBody);
-
-        Call<Animal> call = apiService.createAnimal(animalRequestBody, image);
+        Call<Animal> call = apiService.createAnimal(animalRequestBody);
         call.enqueue(callback);
     }
+
+
 
 
     public void updateAnimal(long id, Animal animal, Callback<Animal> callback) {

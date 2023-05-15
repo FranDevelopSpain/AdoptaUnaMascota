@@ -128,7 +128,8 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(category) && !TextUtils.isEmpty(raza) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(description) && imageAnimal.getDrawable() != null) {
                 imageAnimal.setDrawingCacheEnabled(true);
                 byte[] imageBytes = bitmapToByteArray(imageAnimal.getDrawingCache());
-                Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBytes);
+                String imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBase64);
                 addAnimal(animal);
             } else {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, complete todos los campos y seleccione una imagen.", Toast.LENGTH_SHORT).show();
@@ -140,6 +141,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private byte[] bitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -272,18 +274,22 @@ public class AnimalsManagementActivity extends AppCompatActivity {
     }
 
     private void addAnimal(Animal animal) {
-        // Convertir la imagen a Base64 antes de enviarla
-        String imageBase64 = Base64.encodeToString(animal.getImage(), Base64.DEFAULT);
-        animal.setImageString(imageBase64);
 
         animalRepository.createAnimal(animal, new Callback<Animal>() {
             @Override
             public void onResponse(Call<Animal> call, Response<Animal> response) {
                 if (response.isSuccessful()) {
                     Animal addedAnimal = response.body();
+
                     // Decodificar la imagen desde Base64 antes de establecerla en el animal agregado
-                    byte[] decodedImage = Base64.decode(addedAnimal.getImageString(), Base64.DEFAULT);
-                    addedAnimal.setImage(String.valueOf(decodedImage));
+                    String imageBase64 = addedAnimal.getImageString();
+                    if (imageBase64 != null) {
+                        byte[] decodedImage = Base64.decode(imageBase64, Base64.DEFAULT);
+                        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+
+                        // Establecer la imagen decodificada en el ImageView
+                        imageAnimal.setImageBitmap(decodedBitmap);
+                    }
 
                     animalList.add(addedAnimal);
                     animalAdapter.setAnimalList(animalList); // Cambia setAnimals a setAnimalList
@@ -307,6 +313,8 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void startDrawableImagePickerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

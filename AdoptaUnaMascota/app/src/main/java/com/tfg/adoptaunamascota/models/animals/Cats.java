@@ -1,27 +1,12 @@
 package com.tfg.adoptaunamascota.models.animals;
 
 public class Cats extends Animal {
-
-    public Cats(Long id, String gender, String name, int age, String species, String category, String subcategory, String breed, String imageBase64, String description) {
-        super(id, "Cat", gender, name, age, description, species, category, breed, imageBase64);
+    public Cats(String name, String category, String raza, int i, String description, String animalType, String imageBase64) {
+        super(name, category, raza, i, description, animalType, imageBase64);
     }
 
-
-    public Cats(String name, String species, int age) {
-        super(name, species, age);
-        setType("Cat");
-        setDescription("This is a cat description");
-    }
-
-    public Cats(String name, String category, String breed, int age, String description) {
-        super(name, category, breed, age, description);
-        setType("Cat");
-    }
-
-    public Cats() {
-        super();
-        setType("Cat");
-        setDescription("This is a cat description");
+    public Cats(String name, String species, String raza, int age, String imageBase64) {
+        super(name, species, raza, age, imageBase64);
     }
 
     public String getSize() {

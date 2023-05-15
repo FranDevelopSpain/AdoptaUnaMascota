@@ -4,4 +4,6 @@
     <item name="animal_age" type="id" />
     <item name="animal_description" type="id" />
     <item name="dialog_animal_breed" type="id" />
+    <item name="animal_category" type="id" />
+    <item name="animal_type" type="id" />
 </resources>
