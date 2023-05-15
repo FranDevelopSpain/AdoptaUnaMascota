@@ -1,18 +1,24 @@
 package com.tfg.adoptaunamascota.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
+
 import java.util.List;
 
 
@@ -35,6 +41,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
     // y notificar al RecyclerView que los datos han cambiado
     public void setAnimalList(List<Animal> animalList) {
         this.animalList = animalList;
+        Log.d("Prueba", "Entramos¿: ");
         notifyDataSetChanged();
     }
     //Este método devuelve el animal seleccionado actualmente en la lista, si hay alguno.
@@ -66,6 +73,9 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
     @Override
     public void onBindViewHolder(@NonNull AnimalViewHolder holder, int position) {
         Animal animal = animalList.get(position);
+        byte[] decodedImage = Base64.decode(animal.getImageBase64(), Base64.DEFAULT);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+        holder.animalImage.setImageBitmap(decodedBitmap);
         holder.animalName.setText(animal.getName());
         holder.animalSpecies.setText(animal.getSpecies());
         holder.animalAge.setText(String.valueOf(animal.getAge()) + " meses");
@@ -73,12 +83,14 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         holder.animalType.setText(animal.getType());
         holder.animalDescription.setText(animal.getDescription());
 
+        Log.d("Prueba", "Entra?: ");
+
         // Usamos Glide para cargar la imagen desde la URL
-        Glide.with(context)
+        /*Glide.with(context)
                 .load(animal.getImageBase64())
                 .placeholder(R.drawable.placeholder_image) // Añade un marcador de posición si la imagen aún no se ha cargado
                 .error(R.drawable.error_image) // Añade una imagen de error en caso de que la carga falle
-                .into(holder.animalImage);
+                .into(holder.animalImage);*/
 
         if (position == selectedPosition) {
             holder.itemView.setBackgroundColor(Color.parseColor("#EEEEEE"));

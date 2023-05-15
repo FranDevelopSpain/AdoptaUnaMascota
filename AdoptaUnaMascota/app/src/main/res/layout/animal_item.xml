@@ -7,9 +7,8 @@
 
     <ImageView
         android:id="@+id/animal_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/gato1" />
+        android:layout_width="131dp"
+        android:layout_height="141dp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,24 +21,34 @@
             android:id="@+id/animal_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Felipe" />
+            android:text="Nombre:" />
 
         <TextView
             android:id="@+id/animal_species"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Species" />
+            android:text="Especie" />
 
         <TextView
             android:id="@+id/animal_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Age" />
+            android:text="Edad:" />
+        <TextView
+            android:id="@+id/animal_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categoria:" />
+        <TextView
+            android:id="@+id/animal_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo:" />
         <TextView
             android:id="@+id/animal_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gato de 7 meses super cute" />
+            android:text="Descripcion:" />
 
     </LinearLayout>
 </LinearLayout>

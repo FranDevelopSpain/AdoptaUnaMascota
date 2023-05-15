@@ -2,6 +2,7 @@ package com.tfg.adoptaunamascota.views.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
@@ -24,6 +25,7 @@ import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.adapters.CustomExpandableListAdapter;
 import com.tfg.adoptaunamascota.adapters.ExpandableListDataPump;
 import com.tfg.adoptaunamascota.models.animals.Animal;
+import com.tfg.adoptaunamascota.repository.AnimalRepository;
 import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.UserManagementActivity;
@@ -33,6 +35,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeActivityAdmin extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -41,8 +47,12 @@ public class HomeActivityAdmin extends AppCompatActivity {
     private ExpandableListAdapter expandableListAdapter;
     private List<String> expandableListTitle;
     private HashMap<String, List<String>> expandableListDetail;
-    private RecyclerView animalList;
+    private List<Animal> animalList;
+    private RecyclerView animalRecyclerView;
+
     private AnimalAdapter animalAdapter;
+    private AnimalRepository animalRepository;
+
 
     private AnimalsManagementActivity animalsManagementActivity;
 
@@ -55,18 +65,21 @@ public class HomeActivityAdmin extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        animalList = findViewById(R.id.animal_list);
-        animalList.setLayoutManager(new LinearLayoutManager(this));
+        animalRecyclerView = findViewById(R.id.recyclerView);
+        animalRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Animal> animals = new ArrayList<>();
         animalsManagementActivity = new AnimalsManagementActivity();
         animalAdapter = new AnimalAdapter(animals, this, animalsManagementActivity);
-        animalList.setAdapter(animalAdapter);
+        animalRecyclerView.setAdapter(animalAdapter);
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         navigationView = findViewById(R.id.navigation_view);
-        loadInitialAnimals();
+        String baseUrl = "http://10.0.2.2:8080";
+        animalRepository = new AnimalRepository(this, baseUrl);
+
+        getAnimals();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -96,15 +109,15 @@ public class HomeActivityAdmin extends AppCompatActivity {
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView = findViewById(R.id.expandableListView);
-        animalList = findViewById(R.id.animal_list);
+        animalRecyclerView = findViewById(R.id.recyclerView);
         setupExpandableListView();
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
+                /*Toast.makeText(getApplicationContext(),
                         expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
             }
         });
     }
@@ -206,12 +219,24 @@ public class HomeActivityAdmin extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-    private void loadInitialAnimals() {
-        List<Animal> animals = getAllAnimals();
-        animalAdapter.setAnimalList(animals);
-        animalAdapter.notifyDataSetChanged();
-    }
-    private List<Animal> getAllAnimals() {
-        return animalAdapter.getAnimals();
+    private void getAnimals() {
+        animalRepository.getAnimals(new Callback<List<Animal>>() {
+            @Override
+            public void onResponse(Call<List<Animal>> call, Response<List<Animal>> response) {
+                if (response.isSuccessful()) {
+                    animalList = response.body();
+                    Log.d("AnimalsManagementActivity", "Obtained " + animalList.size() + " animals from the server");
+                    animalAdapter.setAnimalList(animalList);
+                    animalAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(HomeActivityAdmin.this, "Error de respuesta: " + response.code(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Animal>> call, Throwable t) {
+                Log.e("AnimalsManagementActivity", "Error al obtener animales", t);
+            }
+        });
     }
 }

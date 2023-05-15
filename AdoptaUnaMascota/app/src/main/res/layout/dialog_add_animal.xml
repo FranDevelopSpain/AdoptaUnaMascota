@@ -17,6 +17,12 @@
         android:hint="Especie del animal" />
 
     <EditText
+        android:id="@+id/dialog_animal_gender"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Genero del animal" />
+
+    <EditText
         android:id="@+id/dialog_animal_breed_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

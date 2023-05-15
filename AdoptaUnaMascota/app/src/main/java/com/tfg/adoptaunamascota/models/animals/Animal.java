@@ -27,13 +27,14 @@ public class Animal implements Serializable {
     String gender;
 
 
-    public Animal(String name, String category, String raza, int i, String description, String animalType, String imageBase64) {
+    public Animal(String name, String category, String raza, int i, String description, String animalType, String imageBase64,String gender) {
         this.name = name;
         this.categoria = category;
         this.raza = raza;
         this.age = i;
         this.descripcion = description;
         this.type = animalType;
+        this.gender=gender;
         this.imageBase64 = imageBase64;
     }
 

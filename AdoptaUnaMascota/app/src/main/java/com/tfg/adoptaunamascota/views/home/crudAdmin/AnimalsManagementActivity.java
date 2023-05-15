@@ -106,6 +106,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         builder.setView(dialogView);
         final EditText nameEditText = dialogView.findViewById(R.id.dialog_animal_name);
         final EditText speciesEditText = dialogView.findViewById(R.id.dialog_animal_species);
+        final EditText genderEditText = dialogView.findViewById(R.id.dialog_animal_gender);
         final EditText razaEditText = dialogView.findViewById(R.id.dialog_animal_breed_spinner);
         final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
         final EditText descriptionEditText = dialogView.findViewById(R.id.dialog_animal_description);
@@ -121,6 +122,7 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         builder.setPositiveButton("Agregar", (dialog, which) -> {
             String name = nameEditText.getText().toString();
             String category = speciesEditText.getText().toString();
+            String gender = genderEditText.getText().toString();
             String raza = razaEditText.getText().toString();
             String age = ageEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
@@ -129,8 +131,9 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                 imageAnimal.setDrawingCacheEnabled(true);
                 byte[] imageBytes = bitmapToByteArray(imageAnimal.getDrawingCache());
                 String imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBase64);
+                Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBase64,gender);
                 addAnimal(animal);
+                animalAdapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, complete todos los campos y seleccione una imagen.", Toast.LENGTH_SHORT).show();
             }
