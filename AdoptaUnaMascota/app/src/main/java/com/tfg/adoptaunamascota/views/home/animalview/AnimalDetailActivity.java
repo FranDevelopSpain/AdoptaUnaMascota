@@ -9,11 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.animals.Animal;
+import com.tfg.adoptaunamascota.models.solicitud.Solicitud;
+import com.tfg.adoptaunamascota.repository.SolicitudRepository;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AnimalDetailActivity extends AppCompatActivity {
     private ImageView animalImage;
@@ -23,6 +30,8 @@ public class AnimalDetailActivity extends AppCompatActivity {
     private TextView animalCategory;
     private TextView animalType;
     private TextView animalDescription;
+    private SolicitudRepository solicitudRepository;
+
 
     private EditText nombreET, apellidosET, edadET, sexoET, movilET, domicilioET, emailET, comentariosET;
     private Button btnRegresar, registrarseBTN;
@@ -31,6 +40,8 @@ public class AnimalDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_detail);
+        String baseUrl = "http://10.0.2.2:8080";
+        solicitudRepository = new SolicitudRepository(this, baseUrl);
 
         // Obtener el Animal del Intent
         Animal selectedAnimal = (Animal) getIntent().getSerializableExtra("selected_animal");
@@ -74,11 +85,57 @@ public class AnimalDetailActivity extends AppCompatActivity {
 
         // Aquí puedes agregar el OnClickListener para el botón registrarse si lo necesitas
         // Por ejemplo, podrías querer recoger la información de los EditText y enviarla a algún lado
-        registrarseBTN.setOnClickListener(new View.OnClickListener() {
+        registrarseBTN.setOnClickListener(view -> {
+            if (validateFields()) {
+                registerSolicitud();
+            }
+        });
+    }
+
+    private boolean validateFields() {
+        if (nombreET.getText().toString().isEmpty() || apellidosET.getText().toString().isEmpty()
+                || edadET.getText().toString().isEmpty() || sexoET.getText().toString().isEmpty()
+                || movilET.getText().toString().isEmpty() || domicilioET.getText().toString().isEmpty()
+                || emailET.getText().toString().isEmpty() || comentariosET.getText().toString().isEmpty()) {
+            Toast.makeText(AnimalDetailActivity.this, "Debe rellenar todos los campos",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // Aquí puedes agregar más validaciones para cada campo si lo necesitas
+        return true;
+    }
+    private void registerSolicitud() {
+
+        Animal selectedAnimal = (Animal) getIntent().getSerializableExtra("selected_animal");
+        Solicitud solicitudAdopcion = new Solicitud();
+        solicitudAdopcion.setIdAnimal(selectedAnimal.getId());
+        solicitudAdopcion.setNombre(nombreET.getText().toString());
+        solicitudAdopcion.setApellidos(apellidosET.getText().toString());
+        solicitudAdopcion.setEdad(Integer.parseInt(edadET.getText().toString()));
+        solicitudAdopcion.setSexo(sexoET.getText().toString());
+        solicitudAdopcion.setTelefono(movilET.getText().toString());
+        solicitudAdopcion.setDomicilio(domicilioET.getText().toString());
+        solicitudAdopcion.setEmail(emailET.getText().toString());
+        solicitudAdopcion.setDetalleSolicitud(comentariosET.getText().toString());
+
+        solicitudRepository.registerSolicitud(solicitudAdopcion, new Callback<Solicitud>() {
             @Override
-            public void onClick(View view) {
-                // Recoge la información de los EditText y haz algo con ella
+            public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(AnimalDetailActivity.this, "Solicitud enviada correctamente",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AnimalDetailActivity.this, "Error al enviar la solicitud",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Solicitud> call, Throwable t) {
+                Toast.makeText(AnimalDetailActivity.this, "Error al comunicarse con el servidor",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 }
+

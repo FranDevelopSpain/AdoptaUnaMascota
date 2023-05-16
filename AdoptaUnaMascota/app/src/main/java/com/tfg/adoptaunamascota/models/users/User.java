@@ -27,6 +27,12 @@ public class User implements Serializable {
         this.isAdmin = false;
     }
 
+    public User(String name, String surname, String mail) {
+        this.name = name;
+        this.surname = surname;
+        this.email = mail;
+    }
+
     public Long getId() {
         return id;
     }

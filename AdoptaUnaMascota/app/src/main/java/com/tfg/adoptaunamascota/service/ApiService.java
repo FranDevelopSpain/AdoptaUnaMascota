@@ -1,6 +1,7 @@
 package com.tfg.adoptaunamascota.service;
 
 import com.tfg.adoptaunamascota.models.animals.Animal;
+import com.tfg.adoptaunamascota.models.solicitud.Solicitud;
 import com.tfg.adoptaunamascota.models.users.User;
 
 import java.util.List;
@@ -59,5 +60,6 @@ public interface ApiService {
 
 
     @POST("/api/solicitud/")
-    Call<Animal> registerSolicitud(@Body RequestBody animal);
+    Call<Solicitud> registerSolicitud(@Body Solicitud solicitud);
+
 }
