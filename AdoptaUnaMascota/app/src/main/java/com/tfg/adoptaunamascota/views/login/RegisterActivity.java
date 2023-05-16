@@ -90,10 +90,10 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser() {
         String password = passwordET.getText().toString();
         User user = new User(
-                emailET.getText().toString(),
-                password,
                 nombreET.getText().toString(),
-                apellidosET.getText().toString()
+                apellidosET.getText().toString(),
+                emailET.getText().toString(),
+                password
         );
         userRepository.registerUser(user, new Callback<User>(){
             @Override
