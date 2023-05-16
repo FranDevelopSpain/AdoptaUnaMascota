@@ -78,12 +78,12 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         byte[] decodedImage = Base64.decode(animal.getImageBase64(), Base64.DEFAULT);
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
         holder.animalImage.setImageBitmap(decodedBitmap);
-        holder.animalName.setText(animal.getName());
-        holder.animalSpecies.setText(animal.getSpecies());
-        holder.animalAge.setText(String.valueOf(animal.getAge()) + " meses");
-        holder.animalCategory.setText(animal.getCategoria());
-        holder.animalType.setText(animal.getType());
-        holder.animalDescription.setText(animal.getDescription());
+        holder.animalName.setText("Nombre: " + animal.getName());
+        holder.animalSpecies.setText("Especie: " + animal.getSpecies());
+        holder.animalAge.setText("Edad: " + String.valueOf(animal.getAge()) + " meses");
+        holder.animalCategory.setText("Categoria: " + animal.getCategoria());
+        holder.animalType.setText("Tipo: " + animal.getType());
+        holder.animalDescription.setText("Descripcion: " + animal.getDescription());
 
         // Agrega OnClickListener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
