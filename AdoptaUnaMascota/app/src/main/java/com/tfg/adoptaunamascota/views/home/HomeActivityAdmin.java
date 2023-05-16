@@ -29,6 +29,7 @@ import com.tfg.adoptaunamascota.repository.AnimalRepository;
 import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.UserManagementActivity;
+import com.tfg.adoptaunamascota.views.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,11 +50,8 @@ public class HomeActivityAdmin extends AppCompatActivity {
     private HashMap<String, List<String>> expandableListDetail;
     private List<Animal> animalList;
     private RecyclerView animalRecyclerView;
-
     private AnimalAdapter animalAdapter;
     private AnimalRepository animalRepository;
-
-
     private AnimalsManagementActivity animalsManagementActivity;
 
 
@@ -96,7 +94,11 @@ public class HomeActivityAdmin extends AppCompatActivity {
                         intent = new Intent(HomeActivityAdmin.this, UserManagementActivity.class);
                         startActivity(intent);
                         break;
-                    default:
+                    case R.id.nav_cerra_sesion:
+                            intent = new Intent(HomeActivityAdmin.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        default:
                         return true;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
