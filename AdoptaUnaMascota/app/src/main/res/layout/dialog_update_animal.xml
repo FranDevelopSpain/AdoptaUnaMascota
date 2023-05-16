@@ -7,14 +7,33 @@
     <EditText
         android:id="@+id/dialog_animal_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Nombre del animal" />
 
     <EditText
         android:id="@+id/dialog_animal_species"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Especie del animal" />
+
+    <EditText
+        android:id="@+id/dialog_animal_gender"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Genero del animal" />
+
+    <EditText
+        android:id="@+id/dialog_animal_breed_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Raza del animal" />
+
+    <EditText
+        android:id="@+id/dialog_animal_age"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Edad del animal"
+        android:inputType="number" />
 
     <RadioGroup
         android:id="@+id/dialog_animal_type_radio_group"
@@ -35,12 +54,6 @@
             android:text="Gato" />
 
     </RadioGroup>
-
-    <EditText
-        android:id="@+id/dialog_animal_age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Edad del animal" />
 
     <EditText
         android:id="@+id/dialog_animal_description"

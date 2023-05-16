@@ -1,6 +1,7 @@
 package com.tfg.adoptaunamascota.service;
 
 import com.tfg.adoptaunamascota.models.animals.Animal;
+import com.tfg.adoptaunamascota.models.solicitud.Solicitud;
 import com.tfg.adoptaunamascota.models.users.User;
 
 import java.util.List;
@@ -51,11 +52,14 @@ public interface ApiService {
     Call<Animal> createAnimal(@Body RequestBody animal);
 
 
-
-
     @PUT("api/animals/{id}")
     Call<Animal> updateAnimal(@Path("id") long id, @Body Animal animal);
 
     @DELETE("api/animals/{id}")
     Call<Void> deleteAnimal(@Path("id") long id);
+
+
+    @POST("/api/solicitud/")
+    Call<Solicitud> registerSolicitud(@Body Solicitud solicitud);
+
 }

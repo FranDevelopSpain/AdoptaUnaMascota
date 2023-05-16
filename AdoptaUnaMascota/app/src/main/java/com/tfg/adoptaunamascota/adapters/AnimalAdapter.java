@@ -1,6 +1,7 @@
 package com.tfg.adoptaunamascota.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.animals.Animal;
+import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
 
 import java.util.List;
@@ -76,21 +78,28 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
         byte[] decodedImage = Base64.decode(animal.getImageBase64(), Base64.DEFAULT);
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
         holder.animalImage.setImageBitmap(decodedBitmap);
-        holder.animalName.setText(animal.getName());
-        holder.animalSpecies.setText(animal.getSpecies());
-        holder.animalAge.setText(String.valueOf(animal.getAge()) + " meses");
-        holder.animalCategory.setText(animal.getCategoria());
-        holder.animalType.setText(animal.getType());
-        holder.animalDescription.setText(animal.getDescription());
+        holder.animalName.setText("Nombre: " + animal.getName());
+        holder.animalSpecies.setText("Especie: " + animal.getSpecies());
+        holder.animalAge.setText("Edad: " + String.valueOf(animal.getAge()) + " meses");
+        holder.animalCategory.setText("Categoria: " + animal.getCategoria());
+        holder.animalType.setText("Tipo: " + animal.getType());
+        holder.animalDescription.setText("Descripcion: " + animal.getDescription());
 
-        Log.d("Prueba", "Entra?: ");
+        // Agrega OnClickListener
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSelectedPosition(position);
+                Animal selectedAnimal = animalList.get(position);
+                animalsManagementActivity.setSelectedAnimal(selectedAnimal);
 
-        // Usamos Glide para cargar la imagen desde la URL
-        /*Glide.with(context)
-                .load(animal.getImageBase64())
-                .placeholder(R.drawable.placeholder_image) // Añade un marcador de posición si la imagen aún no se ha cargado
-                .error(R.drawable.error_image) // Añade una imagen de error en caso de que la carga falle
-                .into(holder.animalImage);*/
+                // Iniciar la nueva actividad
+                Intent intent = new Intent(context, AnimalDetailActivity.class);
+                // Pasar el objeto Animal seleccionado
+                intent.putExtra("selected_animal", selectedAnimal);
+                context.startActivity(intent);
+            }
+        });
 
         if (position == selectedPosition) {
             holder.itemView.setBackgroundColor(Color.parseColor("#EEEEEE"));
@@ -98,6 +107,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
+
     //Este método devuelve la cantidad de elementos en la lista,
     // que RecyclerView utiliza para determinar cuántos elementos necesita mostrar.
     @Override
@@ -138,15 +148,6 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalView
             animalCategory = itemView.findViewById(R.id.animal_category);
             animalType = itemView.findViewById(R.id.animal_type);
             animalDescription = itemView.findViewById(R.id.animal_description);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    setSelectedPosition(position);
-                    animalsManagementActivity.setSelectedAnimal(animalList.get(position));
-                }
-            });
         }
     }
 }

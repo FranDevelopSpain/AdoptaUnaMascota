@@ -109,9 +109,9 @@ public class UserManagementActivity extends AppCompatActivity {
                 if(email.equalsIgnoreCase("admin@mail.com")){
                     Toast.makeText(UserManagementActivity.this, "Ya existe un usuario administrador", Toast.LENGTH_LONG).show();
                 } else {
-                    User newUser = new User(name, surname, email, password);
+                    User user = new User(name, surname, email, password);
 
-                    userRepository.createUser(newUser, new Callback<User>() {
+                    userRepository.createUser(user, new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             if (response.isSuccessful()) {
@@ -145,12 +145,10 @@ public class UserManagementActivity extends AppCompatActivity {
         final EditText nameEditText = dialogView.findViewById(R.id.dialog_user_name);
         final EditText surnameEditText = dialogView.findViewById(R.id.dialog_user_surname);
         final EditText emailEditText = dialogView.findViewById(R.id.dialog_user_email);
-        final EditText passwordEditText = dialogView.findViewById(R.id.dialog_user_password);
 
         nameEditText.setText(user.getName());
         surnameEditText.setText(user.getSurname());
         emailEditText.setText(user.getEmail());
-
 
         builder.setTitle("Actualizar Usuario");
         builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
@@ -158,13 +156,12 @@ public class UserManagementActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String updatedName = nameEditText.getText().toString();
                 String updatedSurname = surnameEditText.getText().toString();
-                String updatedEmail = user.getEmail(); // Usa el email actual. No se puede actualizar.
-                String updatedPassword = user.getPassword(); // Usa el password actual. No se puede actualizar.
+                String updatedEmail = emailEditText.getText().toString();
 
                 user.setName(updatedName);
                 user.setSurname(updatedSurname);
                 user.setEmail(updatedEmail);
-                user.setPassword(updatedPassword);
+
 
                 userRepository.updateUser(user.getId(), user, new Callback<User>() {
                     @Override
@@ -187,8 +184,8 @@ public class UserManagementActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
+
 
 
     private void deleteUser(final User user) {
