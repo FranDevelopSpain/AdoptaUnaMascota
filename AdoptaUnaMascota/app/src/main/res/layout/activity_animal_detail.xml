@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:text="@string/volver_pantalla_inicio"
+            android:text="@string/volver_pantalla_anterior"
             android:textColorHint="@color/white"
             android:backgroundTint="#8FA5D5"/>
     </LinearLayout>

@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,8 @@ public class AnimalDetailActivity extends AppCompatActivity {
     private TextView animalType;
     private TextView animalDescription;
 
+    private Button btnRegresar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +37,20 @@ public class AnimalDetailActivity extends AppCompatActivity {
         animalCategory = findViewById(R.id.animal_category);
         animalType = findViewById(R.id.animal_type);
         animalDescription = findViewById(R.id.animal_description);
+        btnRegresar = findViewById(R.id.regresarBTN);
 
         Animal selectedAnimal = (Animal) getIntent().getSerializableExtra("selected_animal");
 
-        // Aquí es donde se establecen los datos del animal en las vistas
         byte[] decodedImage = Base64.decode(selectedAnimal.getImageBase64(), Base64.DEFAULT);
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
         animalImage.setImageBitmap(decodedBitmap);
+
+        // Establecer el OnClickListener para el botón regresar
+        btnRegresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish(); // Este método finaliza la actividad actual y vuelve a la anterior
+            }
+        });
     }
 }
