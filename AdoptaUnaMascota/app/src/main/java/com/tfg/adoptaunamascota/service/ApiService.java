@@ -56,4 +56,8 @@ public interface ApiService {
 
     @DELETE("api/animals/{id}")
     Call<Void> deleteAnimal(@Path("id") long id);
+
+
+    @POST("/api/solicitud/")
+    Call<Animal> registerSolicitud(@Body RequestBody animal);
 }

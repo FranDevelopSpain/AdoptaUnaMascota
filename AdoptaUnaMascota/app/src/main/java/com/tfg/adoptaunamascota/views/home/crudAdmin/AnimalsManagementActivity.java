@@ -19,24 +19,20 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.adapters.DrawableImagePickerAdapter;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.repository.AnimalRepository;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -196,9 +192,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         ageEditText.setText(String.valueOf(animal.getEdad()));
         descriptionEditText.setText(animal.getDescription());
 
-        // Aquí necesitas un método para establecer el tipo de animal en el radio group
-        // Esto dependerá de cómo estés almacenando y recuperando esta información en tu clase Animal
-
         builder.setTitle("Actualizar Animal");
         builder.setPositiveButton("Actualizar", (dialog, which) -> {
             String updatedName = nameEditText.getText().toString();
@@ -207,7 +200,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
             String updatedBreed = breedEditText.getText().toString();
             String updatedAgeString = ageEditText.getText().toString();
             String updatedDescription = descriptionEditText.getText().toString();
-            // Aquí necesitas un método para obtener el tipo de animal del radio group
 
             if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedGender)
                     || TextUtils.isEmpty(updatedBreed) || TextUtils.isEmpty(updatedAgeString) || TextUtils.isEmpty(updatedDescription)) {

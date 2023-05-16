@@ -67,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         navigationView = findViewById(R.id.navigation_view);
         setupExpandableListView();
-
         List<Animal> animals = new ArrayList<>();
         animalsManagementActivity = new AnimalsManagementActivity();
         animalAdapter = new AnimalAdapter(animals, this, animalsManagementActivity);
