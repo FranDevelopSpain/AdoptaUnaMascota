@@ -22,10 +22,4 @@
         android:layout_height="48dp"
         android:hint="Correo electrónico" />
 
-    <EditText
-        android:id="@+id/dialog_user_password"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Contraseña" />
-
 </LinearLayout>

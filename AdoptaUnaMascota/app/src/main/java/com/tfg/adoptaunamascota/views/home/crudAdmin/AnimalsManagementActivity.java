@@ -1,5 +1,6 @@
 package com.tfg.adoptaunamascota.views.home.crudAdmin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -179,37 +180,46 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_update_animal, null);
         builder.setView(dialogView);
+
         final EditText nameEditText = dialogView.findViewById(R.id.dialog_animal_name);
         final EditText speciesEditText = dialogView.findViewById(R.id.dialog_animal_species);
+        final EditText genderEditText = dialogView.findViewById(R.id.dialog_animal_gender);
+        final EditText breedEditText = dialogView.findViewById(R.id.dialog_animal_breed_spinner);
         final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
         final RadioGroup animalTypeRadioGroup = dialogView.findViewById(R.id.dialog_animal_type_radio_group);
         final RadioButton dogRadioButton = dialogView.findViewById(R.id.dialog_animal_type_dog);
         final RadioButton catRadioButton = dialogView.findViewById(R.id.dialog_animal_type_cat);
+        final EditText descriptionEditText = dialogView.findViewById(R.id.dialog_animal_description);
 
         nameEditText.setText(animal.getName());
         speciesEditText.setText(animal.getSpecies());
         ageEditText.setText(String.valueOf(animal.getEdad()));
+        descriptionEditText.setText(animal.getDescription());
+
+        // Aquí necesitas un método para establecer el tipo de animal en el radio group
+        // Esto dependerá de cómo estés almacenando y recuperando esta información en tu clase Animal
+
         builder.setTitle("Actualizar Animal");
         builder.setPositiveButton("Actualizar", (dialog, which) -> {
             String updatedName = nameEditText.getText().toString();
             String updatedSpecies = speciesEditText.getText().toString();
+            String updatedGender = genderEditText.getText().toString();
+            String updatedBreed = breedEditText.getText().toString();
             String updatedAgeString = ageEditText.getText().toString();
-            if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedAgeString)) {
+            String updatedDescription = descriptionEditText.getText().toString();
+            // Aquí necesitas un método para obtener el tipo de animal del radio group
+
+            if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedGender)
+                    || TextUtils.isEmpty(updatedBreed) || TextUtils.isEmpty(updatedAgeString) || TextUtils.isEmpty(updatedDescription)) {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
             } else {
-                int updatedAgeInMonths = Integer.parseInt(updatedAgeString);
-                int updatedAge;
-                if (dogRadioButton.isChecked()) {
-                    updatedAge = updatedAgeInMonths / 12;
-                } else if (catRadioButton.isChecked()) {
-                    updatedAge = updatedAgeInMonths;
-                } else {
-                    Toast.makeText(AnimalsManagementActivity.this, "Por favor, seleccione si el animal es un perro o un gato.", Toast.LENGTH_LONG).show();
-                    return;
-                }
+                int updatedAge = Integer.parseInt(updatedAgeString);
+
                 animal.setName(updatedName);
                 animal.setSpecies(updatedSpecies);
                 animal.setEdad(updatedAge);
+                animal.setDescription(updatedDescription);
+
                 animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>() {
                     @Override
                     public void onResponse(Call<Animal> call, Response<Animal> response) {
@@ -232,28 +242,34 @@ public class AnimalsManagementActivity extends AppCompatActivity {
     }
     private void deleteAnimal(final Animal animal) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_delete_animal, null);
-        builder.setView(dialogView);
         builder.setTitle("Eliminar Animal");
-        builder.setPositiveButton("Eliminar", (dialog, which) -> animalRepository.deleteAnimal(animal.getId(), new Callback<Void>() {
+        builder.setMessage("¿Estás seguro de que deseas eliminar este animal?");
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    getAnimals(); // Actualiza la lista de animales
-                } else {
-                    Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal: " + response.code(), Toast.LENGTH_LONG).show();
-                }
+            public void onClick(DialogInterface dialog, int which) {
+                animalRepository.deleteAnimal(animal.getId(), new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            getAnimals(); // Actualiza la lista de animales
+                        } else {
+                            Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal: " + response.code(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal", Toast.LENGTH_LONG).show();
-            }
-        }));
+        });
+
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 
     private void getAnimals() {
         animalRepository.getAnimals(new Callback<List<Animal>>() {

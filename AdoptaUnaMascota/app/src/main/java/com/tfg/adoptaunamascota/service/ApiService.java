@@ -51,8 +51,6 @@ public interface ApiService {
     Call<Animal> createAnimal(@Body RequestBody animal);
 
 
-
-
     @PUT("api/animals/{id}")
     Call<Animal> updateAnimal(@Path("id") long id, @Body Animal animal);
 

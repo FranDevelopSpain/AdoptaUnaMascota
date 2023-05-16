@@ -34,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
         aceptoCB = findViewById(R.id.aceptoCB);
         registrarseBTN = findViewById(R.id.registrarseBTN);
         regresarBTN = findViewById(R.id.regresarBTN);
-
         String baseUrl = "http://10.0.2.2:8080";
 
         userRepository = new UserRepository(this, baseUrl);
@@ -43,14 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
         });
-
         registrarseBTN.setOnClickListener(v -> {
             if (validateFields() && validateCheckbox()) {
                 registerUser();
             }
         });
     }
-
     private boolean validateFields() {
         if (nombreET.getText().toString().isEmpty() || apellidosET.getText().toString().isEmpty()
                 || emailET.getText().toString().isEmpty() || passwordET.getText().toString().isEmpty()
@@ -81,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return true;
     }
-
     private boolean validateCheckbox() {
         if (aceptoCB.isChecked()) {
             return true;
@@ -91,12 +87,11 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
     }
-
     private void registerUser() {
         String password = passwordET.getText().toString();
         User user = new User(
                 emailET.getText().toString(),
-                password, // Cambiado a password
+                password,
                 nombreET.getText().toString(),
                 apellidosET.getText().toString()
         );
@@ -119,12 +114,9 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                // manejar el error
             }
         });
     }
-
 }
