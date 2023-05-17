@@ -186,32 +186,41 @@ public class AnimalsManagementActivity extends AppCompatActivity implements OnAn
         final EditText sexoEditText = dialogView.findViewById(R.id.dialog_animal_sexo);
         final EditText razaEditText = dialogView.findViewById(R.id.dialog_animal_raza);
         final EditText descriptionEditText = dialogView.findViewById(R.id.dialog_animal_description);
+        final EditText sizeEditText = dialogView.findViewById(R.id.dialog_animal_size);
+        final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
 
+        // Establecer los valores actuales del animal
         nameEditText.setText(animal.getNombre());
         categoriaEditText.setText(animal.getCategoria());
         subCategoriaEditText.setText(animal.getSubcategoria());
         sexoEditText.setText(animal.getSexo());
         razaEditText.setText(animal.getRaza());
         descriptionEditText.setText(animal.getDescripcion());
+        sizeEditText.setText(animal.getTamaño());
+        ageEditText.setText(String.valueOf(animal.getEdad()));
+
         builder.setTitle("Actualizar Animal");
         builder.setPositiveButton("Actualizar", (dialog, which) -> {
             String updatedName = nameEditText.getText().toString();
             String updatedCategory = categoriaEditText.getText().toString();
             String updatedSubCategory = subCategoriaEditText.getText().toString();
-            String updatedRaza= razaEditText.getText().toString();
+            String updatedRaza = razaEditText.getText().toString();
             String updatedSexo = sexoEditText.getText().toString();
             String updatedDescription = descriptionEditText.getText().toString();
-            if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedCategory) || TextUtils.isEmpty(updatedSexo)
-                    || TextUtils.isEmpty(updatedSubCategory) || TextUtils.isEmpty(updatedRaza) || TextUtils.isEmpty(updatedDescription)) {
-                Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
-            } else {
+            String updatedSize = sizeEditText.getText().toString();
+
+            if (!TextUtils.isEmpty(updatedName) && !TextUtils.isEmpty(updatedCategory)
+                    && !TextUtils.isEmpty(updatedRaza)
+                    && !TextUtils.isEmpty(updatedDescription)) {
                 animal.setNombre(updatedName);
                 animal.setCategoria(updatedCategory);
                 animal.setSubcategoria(updatedSubCategory);
                 animal.setSexo(updatedSexo);
                 animal.setRaza(updatedRaza);
                 animal.setDescripcion(updatedDescription);
-                animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>() {
+                animal.setTamaño(updatedSize);
+                System.out.println("Updating animal with ID: " + animal.getId());
+                animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>(){
                     @Override
                     public void onResponse(Call<Animal> call, Response<Animal> response) {
                         if (response.isSuccessful()) {
@@ -225,12 +234,15 @@ public class AnimalsManagementActivity extends AppCompatActivity implements OnAn
                         Toast.makeText(AnimalsManagementActivity.this, "Error al actualizar animal", Toast.LENGTH_LONG).show();
                     }
                 });
+            } else {
+                Toast.makeText(AnimalsManagementActivity.this, "Por favor, complete todos los campos necesarios.", Toast.LENGTH_LONG).show();
             }
         });
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void deleteAnimal(final Animal animal) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Eliminar Animal");
