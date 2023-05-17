@@ -35,6 +35,18 @@
         android:hint="Raza del animal" />
 
     <EditText
+        android:id="@+id/dialog_animal_size"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Tamaño(Solo para el Perro)" />
+
+    <EditText
+        android:id="@+id/dialog_animal_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Edad(Solo para los gatos)" />
+
+    <EditText
         android:id="@+id/dialog_animal_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
