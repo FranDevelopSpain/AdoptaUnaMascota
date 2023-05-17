@@ -1,5 +1,6 @@
 package com.tfg.adoptaunamascota.views.home.animalview;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.models.solicitud.Solicitud;
 import com.tfg.adoptaunamascota.repository.SolicitudRepository;
+import com.tfg.adoptaunamascota.views.home.HomeActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,12 +26,12 @@ import retrofit2.Response;
 
 public class AnimalDetailActivity extends AppCompatActivity {
     private ImageView animalImage;
-    private TextView animalName;
-    private TextView animalSpecies;
-    private TextView animalAge;
-    private TextView animalCategory;
-    private TextView animalType;
-    private TextView animalDescription;
+    private TextView animalNombre;
+    private TextView animalCategoria;
+    private TextView animalSubCategoria;
+    private TextView animalRaza;
+    private TextView animalSexo;
+    private TextView animalDescripcion;
     private SolicitudRepository solicitudRepository;
 
 
@@ -46,18 +48,18 @@ public class AnimalDetailActivity extends AppCompatActivity {
         // Obtener el Animal del Intent
         Animal selectedAnimal = (Animal) getIntent().getSerializableExtra("selected_animal");
         animalImage = findViewById(R.id.animal_image);
-        animalName = findViewById(R.id.animal_name);
-        animalSpecies = findViewById(R.id.animal_species);
-        animalAge = findViewById(R.id.animal_age);
-        animalCategory = findViewById(R.id.animal_category);
-        animalType = findViewById(R.id.animal_type);
-        animalDescription = findViewById(R.id.animal_description);
-        animalName.setText("Nombre: " + selectedAnimal.getName());
-        animalSpecies.setText("Especie: " + selectedAnimal.getSpecies());
-        animalAge.setText("Edad: " + String.valueOf(selectedAnimal.getAge()));
-        animalCategory.setText("Categoría: " + selectedAnimal.getCategoria());
-        animalType.setText("Tipo: " + selectedAnimal.getType());
-        animalDescription.setText("Descripción: " + selectedAnimal.getDescription());
+        animalNombre = findViewById(R.id.animal_name);
+        animalCategoria = findViewById(R.id.animal_category);
+        animalSubCategoria = findViewById(R.id.animal_subCategory);
+        animalRaza = findViewById(R.id.animal_raza);
+        animalSexo = findViewById(R.id.animal_sex);
+        animalDescripcion = findViewById(R.id.animal_description);
+        animalNombre.setText("Nombre: " + selectedAnimal.getNombre());
+        animalCategoria.setText("Categoría: " + selectedAnimal.getCategoria());
+        animalSubCategoria.setText("SubCategoria: " + selectedAnimal.getSubcategoria());
+        animalRaza.setText("Raza: " + selectedAnimal.getRaza());
+        animalSexo.setText("Sexo: " + selectedAnimal.getSexo());
+        animalDescripcion.setText("Descripción: " + selectedAnimal.getDescripcion());
         //Campos del formulario de registro
         nombreET = findViewById(R.id.nombreET);
         apellidosET = findViewById(R.id.apellidosET);
@@ -93,10 +95,14 @@ public class AnimalDetailActivity extends AppCompatActivity {
     }
 
     private boolean validateFields() {
-        if (nombreET.getText().toString().isEmpty() || apellidosET.getText().toString().isEmpty()
-                || edadET.getText().toString().isEmpty() || sexoET.getText().toString().isEmpty()
-                || movilET.getText().toString().isEmpty() || domicilioET.getText().toString().isEmpty()
-                || emailET.getText().toString().isEmpty() || comentariosET.getText().toString().isEmpty()) {
+        if (nombreET.getText().toString().isEmpty()
+                || apellidosET.getText().toString().isEmpty()
+                || edadET.getText().toString().isEmpty()
+                || sexoET.getText().toString().isEmpty()
+                || movilET.getText().toString().isEmpty()
+                || domicilioET.getText().toString().isEmpty()
+                || emailET.getText().toString().isEmpty()
+                || comentariosET.getText().toString().isEmpty()) {
             Toast.makeText(AnimalDetailActivity.this, "Debe rellenar todos los campos",
                     Toast.LENGTH_SHORT).show();
             return false;
@@ -118,12 +124,14 @@ public class AnimalDetailActivity extends AppCompatActivity {
         solicitudAdopcion.setEmail(emailET.getText().toString());
         solicitudAdopcion.setDetalleSolicitud(comentariosET.getText().toString());
 
-        solicitudRepository.registerSolicitud(solicitudAdopcion, new Callback<Solicitud>() {
+        solicitudRepository.createSolicitud(solicitudAdopcion, new Callback<Solicitud>() {
             @Override
             public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(AnimalDetailActivity.this, "Solicitud enviada correctamente",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnimalDetailActivity.this, "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AnimalDetailActivity.this, HomeActivity.class);
+                    startActivity(intent);
+
                 } else {
                     Toast.makeText(AnimalDetailActivity.this, "Error al enviar la solicitud",
                             Toast.LENGTH_SHORT).show();

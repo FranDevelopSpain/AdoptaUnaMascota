@@ -6,4 +6,5 @@
     <item name="dialog_animal_breed" type="id" />
     <item name="animal_category" type="id" />
     <item name="animal_type" type="id" />
+    <item name="animal_size" type="id" />
 </resources>

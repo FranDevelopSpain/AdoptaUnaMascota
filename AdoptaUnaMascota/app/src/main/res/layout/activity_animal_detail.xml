@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".views.home.animalview.AnimalDetailActivity">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/logo"
             android:layout_width="match_parent"
@@ -42,26 +41,29 @@
                     android:text="Nombre:" />
 
                 <TextView
-                    android:id="@+id/animal_species"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Especie" />
-
-                <TextView
-                    android:id="@+id/animal_age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Edad:" />
-                <TextView
                     android:id="@+id/animal_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Categoria:" />
+                    android:text="Categoria" />
+
                 <TextView
-                    android:id="@+id/animal_type"
+                    android:id="@+id/animal_subCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tipo:" />
+                    android:text="SubCategoria:" />
+
+                <TextView
+                    android:id="@+id/animal_raza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Raza:" />
+
+                <TextView
+                    android:id="@+id/animal_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sexo:" />
+
                 <TextView
                     android:id="@+id/animal_description"
                     android:layout_width="wrap_content"
