@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -27,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.adapters.DrawableImagePickerAdapter;
+import com.tfg.adoptaunamascota.adapters.OnAnimalClick;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.repository.AnimalRepository;
 import java.io.ByteArrayOutputStream;
@@ -37,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AnimalsManagementActivity extends AppCompatActivity {
+public class AnimalsManagementActivity extends AppCompatActivity implements OnAnimalClick {
 
     private AnimalRepository animalRepository;
     private List<Animal> animalList;
@@ -46,7 +45,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
     private Animal selectedAnimal;
     private ImageView imageAnimal;
     private AlertDialog drawableImagePickerDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,46 +100,52 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_add_animal, null);
         builder.setView(dialogView);
         final EditText nameEditText = dialogView.findViewById(R.id.dialog_animal_name);
-        final EditText speciesEditText = dialogView.findViewById(R.id.dialog_animal_species);
-        final EditText genderEditText = dialogView.findViewById(R.id.dialog_animal_gender);
-        final EditText razaEditText = dialogView.findViewById(R.id.dialog_animal_breed_spinner);
-        final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
+        final EditText categoriaEditText = dialogView.findViewById(R.id.dialog_animal_categoria);
+        final EditText subCategoriaEditText = dialogView.findViewById(R.id.dialog_animal_subcategoria);
+        final EditText sexoEditText = dialogView.findViewById(R.id.dialog_animal_sexo);
+        final EditText razaEditText = dialogView.findViewById(R.id.dialog_animal_raza);
         final EditText descriptionEditText = dialogView.findViewById(R.id.dialog_animal_description);
-        imageAnimal = dialogView.findViewById(R.id.dialog_animal_image);
+        final EditText sizeEditText = dialogView.findViewById(R.id.dialog_animal_size);
+        final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
         final Button selectImageButton = dialogView.findViewById(R.id.dialog_animal_select_image);
-        final RadioGroup animalTypeRadioGroup = dialogView.findViewById(R.id.dialog_animal_type_radio_group);
-        final RadioButton dogRadioButton = dialogView.findViewById(R.id.dialog_animal_type_dog);
-        final RadioButton catRadioButton = dialogView.findViewById(R.id.dialog_animal_type_cat);
+        imageAnimal = dialogView.findViewById(R.id.dialog_animal_image);
         selectImageButton.setOnClickListener(v -> {
             startDrawableImagePickerDialog();
         });
         builder.setTitle("Agregar Animal");
         builder.setPositiveButton("Agregar", (dialog, which) -> {
-            String name = nameEditText.getText().toString();
-            String category = speciesEditText.getText().toString();
-            String gender = genderEditText.getText().toString();
+            String nombre = nameEditText.getText().toString();
+            String categoria = categoriaEditText.getText().toString();
+            String subcategoria = subCategoriaEditText.getText().toString();
+            String sexo = sexoEditText.getText().toString();
             String raza = razaEditText.getText().toString();
-            String age = ageEditText.getText().toString();
-            String description = descriptionEditText.getText().toString();
-            String animalType = dogRadioButton.isChecked() ? "Dog" : "Cat";
-            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(category) && !TextUtils.isEmpty(raza) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(description) && imageAnimal.getDrawable() != null) {
+            String descripcion = descriptionEditText.getText().toString();
+            String tamaño = sizeEditText.getText().toString();
+            Integer edad = null;
+            try {
+                edad = Integer.parseInt(ageEditText.getText().toString());
+            } catch (NumberFormatException e) {
+            }
+            if (!TextUtils.isEmpty(nombre) && !TextUtils.isEmpty(categoria)
+                    && !TextUtils.isEmpty(raza)
+                    && !TextUtils.isEmpty(descripcion) && imageAnimal.getDrawable() != null) {
                 imageAnimal.setDrawingCacheEnabled(true);
                 byte[] imageBytes = bitmapToByteArray(imageAnimal.getDrawingCache());
                 String imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                Animal animal = new Animal(name, category, raza, Integer.parseInt(age), description, animalType, imageBase64,gender);
+                Animal animal = new Animal(nombre, categoria, subcategoria, raza, sexo, descripcion, imageBase64, tamaño, edad);
                 addAnimal(animal);
                 animalAdapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, complete todos los campos y seleccione una imagen.", Toast.LENGTH_SHORT).show();
             }
         });
+
         builder.setNegativeButton("Cancelar", (dialog, which) -> {
             dialog.dismiss();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     private byte[] bitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -176,42 +180,37 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_update_animal, null);
         builder.setView(dialogView);
-
         final EditText nameEditText = dialogView.findViewById(R.id.dialog_animal_name);
-        final EditText speciesEditText = dialogView.findViewById(R.id.dialog_animal_species);
-        final EditText genderEditText = dialogView.findViewById(R.id.dialog_animal_gender);
-        final EditText breedEditText = dialogView.findViewById(R.id.dialog_animal_breed_spinner);
-        final EditText ageEditText = dialogView.findViewById(R.id.dialog_animal_age);
-        final RadioGroup animalTypeRadioGroup = dialogView.findViewById(R.id.dialog_animal_type_radio_group);
-        final RadioButton dogRadioButton = dialogView.findViewById(R.id.dialog_animal_type_dog);
-        final RadioButton catRadioButton = dialogView.findViewById(R.id.dialog_animal_type_cat);
+        final EditText categoriaEditText = dialogView.findViewById(R.id.dialog_animal_categoria);
+        final EditText subCategoriaEditText = dialogView.findViewById(R.id.dialog_animal_subcategoria);
+        final EditText sexoEditText = dialogView.findViewById(R.id.dialog_animal_sexo);
+        final EditText razaEditText = dialogView.findViewById(R.id.dialog_animal_raza);
         final EditText descriptionEditText = dialogView.findViewById(R.id.dialog_animal_description);
 
-        nameEditText.setText(animal.getName());
-        speciesEditText.setText(animal.getSpecies());
-        ageEditText.setText(String.valueOf(animal.getEdad()));
-        descriptionEditText.setText(animal.getDescription());
-
+        nameEditText.setText(animal.getNombre());
+        categoriaEditText.setText(animal.getCategoria());
+        subCategoriaEditText.setText(animal.getSubcategoria());
+        sexoEditText.setText(animal.getSexo());
+        razaEditText.setText(animal.getRaza());
+        descriptionEditText.setText(animal.getDescripcion());
         builder.setTitle("Actualizar Animal");
         builder.setPositiveButton("Actualizar", (dialog, which) -> {
             String updatedName = nameEditText.getText().toString();
-            String updatedSpecies = speciesEditText.getText().toString();
-            String updatedGender = genderEditText.getText().toString();
-            String updatedBreed = breedEditText.getText().toString();
-            String updatedAgeString = ageEditText.getText().toString();
+            String updatedCategory = categoriaEditText.getText().toString();
+            String updatedSubCategory = subCategoriaEditText.getText().toString();
+            String updatedRaza= razaEditText.getText().toString();
+            String updatedSexo = sexoEditText.getText().toString();
             String updatedDescription = descriptionEditText.getText().toString();
-
-            if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedSpecies) || TextUtils.isEmpty(updatedGender)
-                    || TextUtils.isEmpty(updatedBreed) || TextUtils.isEmpty(updatedAgeString) || TextUtils.isEmpty(updatedDescription)) {
+            if (TextUtils.isEmpty(updatedName) || TextUtils.isEmpty(updatedCategory) || TextUtils.isEmpty(updatedSexo)
+                    || TextUtils.isEmpty(updatedSubCategory) || TextUtils.isEmpty(updatedRaza) || TextUtils.isEmpty(updatedDescription)) {
                 Toast.makeText(AnimalsManagementActivity.this, "Por favor, ingrese todos los campos.", Toast.LENGTH_LONG).show();
             } else {
-                int updatedAge = Integer.parseInt(updatedAgeString);
-
-                animal.setName(updatedName);
-                animal.setSpecies(updatedSpecies);
-                animal.setEdad(updatedAge);
-                animal.setDescription(updatedDescription);
-
+                animal.setNombre(updatedName);
+                animal.setCategoria(updatedCategory);
+                animal.setSubcategoria(updatedSubCategory);
+                animal.setSexo(updatedSexo);
+                animal.setRaza(updatedRaza);
+                animal.setDescripcion(updatedDescription);
                 animalRepository.updateAnimal(animal.getId(), animal, new Callback<Animal>() {
                     @Override
                     public void onResponse(Call<Animal> call, Response<Animal> response) {
@@ -248,7 +247,6 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                             Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal: " + response.code(), Toast.LENGTH_LONG).show();
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         Toast.makeText(AnimalsManagementActivity.this, "Error al eliminar animal", Toast.LENGTH_LONG).show();
@@ -256,13 +254,10 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                 });
             }
         });
-
         builder.setNegativeButton("Cancelar", null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
     private void getAnimals() {
         animalRepository.getAnimals(new Callback<List<Animal>>() {
             @Override
@@ -276,35 +271,28 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                     Toast.makeText(AnimalsManagementActivity.this, "Error de respuesta: " + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<List<Animal>> call, Throwable t) {
                 Log.e("AnimalsManagementActivity", "Error al obtener animales", t);
             }
         });
     }
-
     private void addAnimal(Animal animal) {
-
         animalRepository.createAnimal(animal, new Callback<Animal>() {
             @Override
             public void onResponse(Call<Animal> call, Response<Animal> response) {
                 if (response.isSuccessful()) {
                     Animal addedAnimal = response.body();
-
                     // Decodificar la imagen desde Base64 antes de establecerla en el animal agregado
-                    String imageBase64 = addedAnimal.getImageString();
+                    String imageBase64 = addedAnimal.getImageBase64();
                     if (imageBase64 != null) {
                         byte[] decodedImage = Base64.decode(imageBase64, Base64.DEFAULT);
                         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
-
                         // Establecer la imagen decodificada en el ImageView
                         imageAnimal.setImageBitmap(decodedBitmap);
                     }
-
                     animalList.add(addedAnimal);
                     animalAdapter.setAnimalList(animalList); // Cambia setAnimals a setAnimalList
-
                 } else {
                     String errorMessage = "Error al agregar animal";
                     if (response.errorBody() != null) {
@@ -317,16 +305,12 @@ public class AnimalsManagementActivity extends AppCompatActivity {
                     Toast.makeText(AnimalsManagementActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Animal> call, Throwable t) {
                 Toast.makeText(AnimalsManagementActivity.this, "Error al agregar animal: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
-
     private void startDrawableImagePickerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -352,5 +336,13 @@ public class AnimalsManagementActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
         drawableImagePickerDialog = builder.create();
         drawableImagePickerDialog.show();
+    }
+    @Override
+    public void onAnimalClick(int position, Animal animal) {
+
+    }
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

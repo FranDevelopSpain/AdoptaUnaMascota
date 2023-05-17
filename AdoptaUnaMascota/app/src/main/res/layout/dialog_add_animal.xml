@@ -11,49 +11,40 @@
         android:hint="Nombre del animal" />
 
     <EditText
-        android:id="@+id/dialog_animal_species"
+        android:id="@+id/dialog_animal_categoria"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Especie del animal" />
+        android:hint="Categoria" />
 
     <EditText
-        android:id="@+id/dialog_animal_gender"
+        android:id="@+id/dialog_animal_subcategoria"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Genero del animal" />
+        android:hint="SubCategoria" />
 
     <EditText
-        android:id="@+id/dialog_animal_breed_spinner"
+        android:id="@+id/dialog_animal_sexo"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Sexo" />
+
+    <EditText
+        android:id="@+id/dialog_animal_raza"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Raza del animal" />
 
     <EditText
-        android:id="@+id/dialog_animal_age"
+        android:id="@+id/dialog_animal_size"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Edad del animal"
-        android:inputType="number" />
+        android:hint="Tamaño(Solo para el Perro)" />
 
-    <RadioGroup
-        android:id="@+id/dialog_animal_type_radio_group"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/dialog_animal_age"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/dialog_animal_type_dog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Perro" />
-
-        <RadioButton
-            android:id="@+id/dialog_animal_type_cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gato" />
-
-    </RadioGroup>
+        android:hint="Edad(Solo para los gatos)" />
 
     <EditText
         android:id="@+id/dialog_animal_description"

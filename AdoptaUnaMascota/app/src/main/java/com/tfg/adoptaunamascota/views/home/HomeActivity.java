@@ -22,8 +22,10 @@ import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.adapters.AnimalAdapter;
 import com.tfg.adoptaunamascota.adapters.CustomExpandableListAdapter;
 import com.tfg.adoptaunamascota.adapters.ExpandableListDataPump;
+import com.tfg.adoptaunamascota.adapters.OnAnimalClick;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.repository.AnimalRepository;
+import com.tfg.adoptaunamascota.views.home.animalview.AnimalDetailActivity;
 import com.tfg.adoptaunamascota.views.home.crudAdmin.AnimalsManagementActivity;
 import com.tfg.adoptaunamascota.views.login.LoginActivity;
 
@@ -36,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements OnAnimalClick {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
@@ -70,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
         List<Animal> animals = new ArrayList<>();
         animalsManagementActivity = new AnimalsManagementActivity();
         animalAdapter = new AnimalAdapter(animals, this, animalsManagementActivity);
+        animalRecyclerView.setAdapter(animalAdapter);
+        animalAdapter = new AnimalAdapter(animals, this, this);
         animalRecyclerView.setAdapter(animalAdapter);
         String baseUrl = "http://10.0.2.2:8080";
         animalRepository = new AnimalRepository(this, baseUrl);
@@ -108,11 +112,17 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+    @Override
+    public void onAnimalClick(int position, Animal animal) {
+        Intent intent = new Intent(this, AnimalDetailActivity.class);
+        intent.putExtra("selected_animal", animal);
+        startActivity(intent);
+    }
     private void setupExpandableListView() {
         HashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
 
         List<String> dogs = new ArrayList<>();
-        dogs.add("Perros pequeños");
+        dogs.add("Perros pequeno");
         dogs.add("Perros medianos");
         dogs.add("Perros grandes");
 
@@ -130,15 +140,13 @@ public class HomeActivity extends AppCompatActivity {
 
         expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             String selectedItem = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
-            filterAnimalList(selectedItem);
+            filterAnimalList(selectedItem.toLowerCase());
             return false;
         });
     }
 
     private void filterAnimalList(String filter) {
-        List<Animal> animals = getFilteredAnimals(filter);
-        animalAdapter.setAnimalList(animals);
-        animalAdapter.notifyDataSetChanged();
+        animalAdapter.getFilter().filter(filter);
     }
 
     private List<Animal> getFilteredAnimals(String filter) {
@@ -154,20 +162,7 @@ public class HomeActivity extends AppCompatActivity {
 
         for (Animal animal : allAnimals) {
             String size = animal.getCategoria();
-            String type = animal.getType();
-            int ageInMonths = animal.getEdadEnMeses();
-
-            if (filter.equals("Perros pequeños") && "Dog".equals(type) && "Pequeño".equals(size)) {
-                filteredAnimals.add(animal);
-            } else if (filter.equals("Perros medianos") && "Dog".equals(type) && "Mediano".equals(size)) {
-                filteredAnimals.add(animal);
-            } else if (filter.equals("Perros grandes") && "Dog".equals(type) && "Grande".equals(size)) {
-                filteredAnimals.add(animal);
-            } else if (filter.equals("Menos de 6 meses") && "Cat".equals(type) && ageInMonths < 6) {
-                filteredAnimals.add(animal);
-            } else if (filter.equals("Más de 6 meses") && "Cat".equals(type) && ageInMonths >= 6) {
-                filteredAnimals.add(animal);
-            }
+            String type = animal.getSubcategoria();
         }
 
         return filteredAnimals;

@@ -2,14 +2,11 @@ package com.tfg.adoptaunamascota.repository;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
 import com.tfg.adoptaunamascota.models.animals.Animal;
 import com.tfg.adoptaunamascota.service.ApiService;
 
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -32,17 +29,9 @@ public class AnimalRepository {
     }
 
     public void createAnimal(Animal animal, Callback<Animal> callback) {
-        // Convertir el objeto Animal a JSON
-        Gson gson = new Gson();
-        String animalJson = gson.toJson(animal);
-        RequestBody animalRequestBody = RequestBody.create(MediaType.parse("application/json"), animalJson);
-
-        Call<Animal> call = apiService.createAnimal(animalRequestBody);
+        Call<Animal> call = apiService.createAnimal(animal);
         call.enqueue(callback);
     }
-
-
-
 
     public void updateAnimal(long id, Animal animal, Callback<Animal> callback) {
         Call<Animal> call = apiService.updateAnimal(id, animal);

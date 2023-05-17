@@ -7,7 +7,6 @@ import com.tfg.adoptaunamascota.models.users.User;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -49,7 +48,7 @@ public interface ApiService {
     Call<List<Animal>> getAnimals();
 
     @POST("api/animals/")
-    Call<Animal> createAnimal(@Body RequestBody animal);
+    Call<Animal> createAnimal(@Body Animal animal);
 
 
     @PUT("api/animals/{id}")
@@ -58,8 +57,7 @@ public interface ApiService {
     @DELETE("api/animals/{id}")
     Call<Void> deleteAnimal(@Path("id") long id);
 
-
     @POST("/api/solicitud/")
-    Call<Solicitud> registerSolicitud(@Body Solicitud solicitud);
+    Call<Solicitud> createSolicitud(@Body Solicitud solicitud);
 
 }

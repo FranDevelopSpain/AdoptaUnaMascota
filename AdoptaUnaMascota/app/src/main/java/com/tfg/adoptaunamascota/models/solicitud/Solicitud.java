@@ -12,6 +12,19 @@ public class Solicitud {
     private String sexo;
     private String domicilio;
 
+    public Solicitud() {
+        this.idAnimal = idAnimal;
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.email = email;
+        this.detalleSolicitud = detalleSolicitud;
+        this.edad = edad;
+        this.sexo = sexo;
+        this.domicilio = domicilio;
+    }
+
     public Long getIdAnimal() {
         return idAnimal;
     }
