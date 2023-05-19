@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tfg.adoptaunamascota.R;
 import com.tfg.adoptaunamascota.models.users.User;
+import com.tfg.adoptaunamascota.views.home.HomeActivity;
+import com.tfg.adoptaunamascota.views.home.HomeActivityAdmin;
 
 
 public class LoadingActivity extends AppCompatActivity {

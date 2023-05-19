@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".views.home.animalview.AnimalDetailActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/animal_image"
+                android:layout_width="131dp"
+                android:layout_height="141dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/animal_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre:" />
+
+                <TextView
+                    android:id="@+id/animal_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Categoria" />
+
+                <TextView
+                    android:id="@+id/animal_subCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SubCategoria:" />
+
+                <TextView
+                    android:id="@+id/animal_raza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Raza:" />
+
+                <TextView
+                    android:id="@+id/animal_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sexo:" />
+
+                <TextView
+                    android:id="@+id/animal_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Descripcion:" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/adopcion"
+            android:textColor="@color/purple_200"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/nombreET"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:hint="@string/nombre" />
+
+        <EditText
+            android:id="@+id/apellidosET"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:hint="@string/apellidos" />
+
+        <EditText
+            android:id="@+id/edadET"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:inputType="number"
+            android:hint="@string/edad" />
+        <EditText
+            android:id="@+id/sexoET"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:hint="@string/sexo" />
+
+        <EditText
+            android:id="@+id/movilET"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:inputType="number"
+            android:hint="@string/telefono" />
+
+        <EditText
+            android:id="@+id/domicilioET"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:hint="@string/direccion" />
+
+        <EditText
+            android:id="@+id/emailET"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:hint="@string/email" />
+
+        <EditText
+            android:id="@+id/comentariosET"
+            android:layout_width="375dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/textbox_background"
+            android:hint="@string/comentarios" />
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/campos"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+
+        <Button
+            android:id="@+id/registrarseBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="@string/enviar_adopcion"
+            android:textColorHint="@color/white"
+            android:backgroundTint="#8FA5D5"/>
+        <Button
+            android:id="@+id/regresarBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:text="@string/volver_pantalla_anterior"
+            android:textColorHint="@color/white"
+            android:backgroundTint="#8FA5D5"/>
+    </LinearLayout>
+
+</ScrollView>

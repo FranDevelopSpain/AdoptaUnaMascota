@@ -2,34 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <ImageView
         android:id="@+id/animal_image"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop" />
+        android:layout_width="131dp"
+        android:layout_height="141dp" />
 
-    <TextView
-        android:id="@+id/animal_name"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingTop="8dp" />
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/animal_gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:paddingTop="4dp" />
+        <TextView
+            android:id="@+id/animal_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre:" />
 
-    <TextView
-        android:id="@+id/animal_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:paddingTop="4dp" />
+        <TextView
+            android:id="@+id/animal_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categoria" />
+
+        <TextView
+            android:id="@+id/animal_subCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SubCategoria:" />
+
+        <TextView
+            android:id="@+id/animal_raza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Raza:" />
+
+        <TextView
+            android:id="@+id/animal_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexo:" />
+
+        <TextView
+            android:id="@+id/animal_tamano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tamaño:" />
+
+        <TextView
+            android:id="@+id/animal_edad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edad:" />
+        <TextView
+            android:id="@+id/animal_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripcion:" />
+
+    </LinearLayout>
 </LinearLayout>
+

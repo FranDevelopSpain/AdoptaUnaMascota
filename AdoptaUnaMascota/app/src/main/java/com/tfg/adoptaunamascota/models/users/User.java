@@ -18,12 +18,19 @@ public class User implements Serializable {
     @SerializedName("isAdmin")
     private boolean isAdmin;
 
-    public User(String mail, String password, String name, String surname) {
+    public User(String name, String surname, String mail, String password) {
+        this.id=id;
         this.email = mail;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.isAdmin = false;
+    }
+
+    public User(String name, String surname, String mail) {
+        this.name = name;
+        this.surname = surname;
+        this.email = mail;
     }
 
     public Long getId() {
@@ -52,6 +59,13 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
+    }
+    public String getSurname(){
+        return surname;
+    }
+    public String setSurname(String surname){
+        this.surname=surname;
+        return surname;
     }
 
     public void setName(String name) {
